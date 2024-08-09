@@ -1,0 +1,18 @@
+{
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "61.0",
+    "packageDirectories": [
+        {
+            "path": "src-temp",
+            "default": true
+        },
+        {
+            "path": "src/shared-datamodel",
+            "package": "shared-datamodel",
+            "versionNumber": "0.0.0.NEXT",
+            "definitionFile": "config/project-scratch-def.json"
+        }
+    ],
+    "packageAliases": {
+    }
+}
