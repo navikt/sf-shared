@@ -1,0 +1,10 @@
+name: "Quick build"
+on:
+  push:
+    paths:
+      - "src/**"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    uses: navikt/sf-platform/.github/workflows/ciQuickBuild.yml@main
