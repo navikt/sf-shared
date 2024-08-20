@@ -8,3 +8,6 @@ on:
 jobs:
   validate:
     uses: navikt/sf-platform/.github/workflows/ciQuickBuild.yml@main
+    permissions:
+      contents: read
+      packages: write
