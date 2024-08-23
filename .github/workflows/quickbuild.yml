@@ -12,3 +12,5 @@ jobs:
     permissions:
       contents: read
       packages: write
+    secrets:
+      SF_DEVHUB_URL: ${{ secrets.SF_DEVHUB_URL  }}
