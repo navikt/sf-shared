@@ -9,13 +9,18 @@
     {
       "path": "src/shared-data-model",
       "package": "shared-data-model",
-      "versionName": "ver 0.1",
       "versionNumber": "0.1.0.NEXT",
       "default": false,
-      "versionDescription": "Monorepo for shared packages on NAVs Salesforce Platform. Maintained by Team Platforce."
+      "dependencies": [
+        {
+          "package": "platform-data-model",
+          "versionNumber": "0.1.0.LATEST"
+        }
+      ]
     }
   ],
   "packageAliases": {
-    "shared-data-model": "0HoKB00000000060AA"
+    "shared-data-model": "0HoKB00000000060AA",
+    "platform-data-model": "0HoKB00000000010AA"
   }
 }
