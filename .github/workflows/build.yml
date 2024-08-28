@@ -1,0 +1,16 @@
+name: "Build"
+on:
+  workflow_run:
+    workflows: ["quickBuild"]
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: navikt/sf-platform/.github/workflows/ciBuild.yml@main
+    permissions:
+      contents: write
+      packages: write
+    secrets:
+      SF_DEVHUB_URL: ${{ secrets.SF_DEVHUB_URL  }}
