@@ -10,7 +10,6 @@
       "path": "src/shared-data-model",
       "package": "shared-data-model",
       "versionNumber": "0.1.0.NEXT",
-      "default": false,
       "dependencies": [
         {
           "package": "platform-data-model",
