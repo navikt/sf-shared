@@ -10,7 +10,18 @@
             "path": "src/shared-datamodel",
             "package": "shared-datamodel",
             "versionNumber": "0.0.0.NEXT",
-            "definitionFile": "config/project-scratch-def.json"
+            "definitionFile": "config/project-scratch-def.json",
+            "default": false,
+            "versionDescription": "Package containing the general data model."
+        },
+        {
+          "path": "src/integration/public360",
+          "package": "shared-integration-public360",
+          "versionName": "ver 0.1",
+          "versionNumber": "0.1.0.NEXT",
+          "default": false,
+          "versionDescription": "Package containing the shared Public 360 integration.",
+          "definitionFile": "config/project-scratch-def.json"
         }
     ],
     "packageAliases": {
