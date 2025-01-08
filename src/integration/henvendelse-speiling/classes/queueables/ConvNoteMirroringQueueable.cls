@@ -1,4 +1,7 @@
 public without sharing class ConvNoteMirroringQueueable implements Queueable {
+    private static LoggerUtility logger = new LoggerUtility(
+        'Henvendelse Mirroring'
+    );
     private Set<Id> convNoteIds;
 
     public ConvNoteMirroringQueueable(Set<Id> convNoteIds) {
@@ -15,6 +18,20 @@ public without sharing class ConvNoteMirroringQueueable implements Queueable {
         List<CRM_Henvendelse> henvendelseList = convertToHenvendelseList(
             convNotesBybehandlingKjedeIds
         );
+
+        if (henvendelseList.size() > 0) {
+            HenvendelseMirroringService.postHenvendelser(
+                henvendelseList,
+                convNoteIds
+            );
+        } else {
+            logger.error(
+                'Unbale to find henvendelse' + convNoteIds.tostring(),
+                null,
+                CRM_ApplicationDomain.Domain.NKS
+            );
+            logger.publish();
+        }
     }
 
     private List<CRM_Henvendelse> convertToHenvendelseList(
