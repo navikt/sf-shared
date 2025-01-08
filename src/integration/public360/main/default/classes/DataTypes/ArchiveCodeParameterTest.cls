@@ -1,13 +1,20 @@
 /**
- * @description Test class for ArchiveCodeParameter class.
+ * @description Test class for `ArchiveCodeParameter` class.
  *
- * @author Kenneth Soerensen >kenneth.sorensen@nav.com>, NAV
+ * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
  * @since 0.1.0, December 2024
  * @group Public 360 Integration
  * @see ArchiveCodeParameter
  */
 @IsTest
 private class ArchiveCodeParameterTest {
+    /**
+     * @description Test `constructor` with no parameters.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @since 0.1.0, December 2024
+     * @see ArchiveCodeParameter
+     */
     @IsTest
     static void constructorEmpty() {
         ArchiveCodeParameter archiveCodeParameterDataType;
@@ -37,7 +44,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with two parameters.
+     * @description Test `constructor` with two parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -71,8 +78,8 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with two parameters and expect an exception to be
-     * thrown on ArchiveType field because it is missing or set to null.
+     * @description Test `constructor` with two parameters and expect an exception to be
+     * thrown on `ArchiveType` field because it is missing or set to `null`.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -113,8 +120,8 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with two parameters and expect an exception to be
-     * thrown on SortOrder field because it is missing or set to null.
+     * @description Test `constructor` with two parameters and expect an exception to be
+     * thrown on `SortOrder` field because it is missing or set to `null`.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -155,9 +162,9 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with two parameters and expect an exception to be
-     * thrown on both ArchiveType and SortOrder fields because they are missing or set
-     * to null.
+     * @description Test `constructor` with two parameters and expect an exception to be
+     * thrown on both `ArchiveType` and `SortOrder` fields because they are missing or set
+     * to `null`.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -198,7 +205,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with four parameters.
+     * @description Test `constructor` with four parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -246,8 +253,8 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with four parameters and expect an exception to be
-     * thrown on ArchiveType field because it is missing or set to null.
+     * @description Test `constructor` with four parameters and expect an exception to be
+     * thrown on `ArchiveType` field because it is missing or set to `null`.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -292,8 +299,8 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with four parameters and expect an exception to be
-     * thrown on SortOrder field because it is missing or set to null.
+     * @description Test `constructor` with four parameters and expect an exception to be
+     * thrown on `SortOrder` field because it is missing or set to `null`.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -338,9 +345,9 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test constructor with four parameters and expect an exception to be
-     * thrown on both ArchiveType and SortOrder fields because they are missing or set
-     * to null.
+     * @description Test `constructor` with four parameters and expect an exception to be
+     * thrown on both `ArchiveType` and `SortOrder` fields because they are missing or set
+     * to `null`.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -385,7 +392,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test toJson method.
+     * @description Test `toJson` method.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -420,7 +427,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test toJson method.
+     * @description Test `toJson` method.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -472,7 +479,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test toJson method with extra child.
+     * @description Test `toJson` method with extra child.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -524,7 +531,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test validate method.
+     * @description Test `validate` method.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -558,7 +565,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test validate method with missing ArchiveType field and expect an exception to be thrown.
+     * @description Test `validate` method with missing `ArchiveType` field and expect an exception to be thrown.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -596,7 +603,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test validate method with missing SortOrder field and expect an exception to be thrown.
+     * @description Test `validate` method with missing `SortOrder` field and expect an exception to be thrown.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -634,7 +641,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test validate method with missing ArchiveType and SortOrder fields
+     * @description Test `validate` method with missing `ArchiveType` and `SortOrder` fields
      * and expect an exception to be thrown.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>

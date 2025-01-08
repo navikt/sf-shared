@@ -1,8 +1,15 @@
 /**
  * @description This class is used to represent an archive code parameter in the Public 360 API.
+ * See the Public 360 API documentation for more information on the fields.
+ * The class is intended to be used in conjunction with the Public 360 API.
+ * Features:
+ * - The class can be serialized to and deserialized from JSON.
+ * - The class also has a `validation` method to ensure that mandatory fields are set.
+ * - The class has a private `constructor` for use with the `fromJson` method.
+ * - The class has a custom exception class for use with the `validation` method.
  *
  * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
- * @since 0.1.0, November 2024
+ * @since 0.1.0, December 2024
  * @group Public 360 Integration
  * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
  * @example
@@ -20,7 +27,7 @@ public class ArchiveCodeParameter {
     public Boolean IsManualText;
 
     /**
-     * @description Private Constructor for the ArchiveCodeParameter class for use with the fromJson method.
+     * @description Private Constructor for the `ArchiveCodeParameter` class for use with the fromJson method.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -31,12 +38,13 @@ public class ArchiveCodeParameter {
     }
 
     /**
-     * @description Constructor for the ArchiveCodeParameter class with mandatory fields as parameters.
+     * @description Constructor for the `ArchiveCodeParameter` class with mandatory fields as parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
-     * @param sortOrder
-     * @param archiveType
+     * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
+     * @param archiveType The type of the archive code - See Public 360 API documentation for details.
+     * @param sortOrder The sort order of the archive code - See Public 360 API documentation for details.
      */
     public ArchiveCodeParameter(String archiveType, Integer sortOrder) {
         this.ArchiveType = archiveType;
@@ -45,14 +53,15 @@ public class ArchiveCodeParameter {
     }
 
     /**
-     * @description Constructor for the ArchiveCodeParameter class with all fields as parameters.
+     * @description Constructor for the `ArchiveCodeParameter` class with all fields as parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
-     * @param archiveType
-     * @param sortOrder
-     * @param archiveCode
-     * @param isManualText
+     * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
+     * @param archiveType The type of the archive code - See Public 360 API documentation for details.
+     * @param sortOrder The sort order of the archive code - See Public 360 API documentation for details.
+     * @param archiveCode The archive code - See Public 360 API documentation for details.
+     * @param isManualText Whether the archive code is manual text - See Public 360 API documentation for details.
      */
     @SuppressWarnings('PMD.ExcessiveParameterList')
     public ArchiveCodeParameter(
@@ -95,12 +104,12 @@ public class ArchiveCodeParameter {
     }
 
     /**
-     * @description Deserializes a JSON string into an `ArchiveCodeParameter` instance.
+     * @description Deserializes a JSON string into an `ArchiveCodeParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
      * @param jsonString JSON string to deserialize.
-     * @return `ArchiveCodeParameter` instance.
+     * @return `ArchiveCodeParameter` The deserialized object instance from the JSON string.
      */
     public static ArchiveCodeParameter fromJson(String jsonString) {
         ArchiveCodeParameter instance = new ArchiveCodeParameter();
@@ -154,6 +163,14 @@ public class ArchiveCodeParameter {
         }
     }
 
+    /**
+     * @description Custom exception class for the `ArchiveCodeParameter` class.
+     * Thrown when mandatory fields are missing.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @since 0.1.0, December 2024
+     * @group Public 360 Integration
+     */
     public class ArchiveCodeParameterException extends Exception {
     }
 }
