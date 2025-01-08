@@ -1,6 +1,6 @@
 public with sharing class HenvendelseMirroringCalloutService extends ApiController {
-    private final string CONFIG_NAME = 'HENVENDELSE_DB_API';
-    private final string SERVICE_AUTH_HEADER = 'HenvendelseDB';
+    private final string CONFIG_NAME = 'HENVENDELSE_MIRRORING_API';
+    private final string SERVICE_AUTH_HEADER = 'HenvendelseMirroring';
 
     public enum SERVICES {
         POST_HENVENDELSE_DB_API,
