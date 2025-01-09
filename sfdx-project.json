@@ -16,6 +16,17 @@
           "versionNumber": "0.1.0.LATEST"
         }
       ]
+    },
+    {
+      "path": "src/integration/henvendelse-caching",
+      "package": "henvendelse-caching",
+      "versionNumber": "0.1.0.NEXT",
+      "dependencies": [
+        {
+          "package": "shared-data-model",
+          "versionNumber": "0.1.0.LATEST"
+        }
+      ]
     }
   ],
   "packageAliases": {
