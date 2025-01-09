@@ -9,6 +9,12 @@ public without sharing class ConvNoteMirroringQueueable implements Queueable, Da
     }
 
     public void execute(QueueableContext context) {
+        getAndInitiatePostForAllRelatedConversationNotes();
+    }
+
+    @TestVisible
+    private Boolean getAndInitiatePostForAllRelatedConversationNotes() {
+        //Get other converation notes with the same behandlingskjedeIds
         List<String> behandlingKjedeIds = ConvNoteSelector.getBehandlingskjedeIds(
             convNoteIds
         );
@@ -22,7 +28,7 @@ public without sharing class ConvNoteMirroringQueueable implements Queueable, Da
         );
 
         if (henvendelseList.size() > 0) {
-            HenvendelseMirroringService.postHenvendelser(
+            return HenvendelseMirroringService.postHenvendelser(
                 henvendelseList,
                 convNoteIds
             );
@@ -34,6 +40,7 @@ public without sharing class ConvNoteMirroringQueueable implements Queueable, Da
             );
             logger.publish();
         }
+        return false;
     }
 
     private List<CRM_Henvendelse> convertToHenvendelseList(
