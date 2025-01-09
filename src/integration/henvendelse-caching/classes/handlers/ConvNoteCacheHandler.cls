@@ -1,4 +1,6 @@
 global class ConvNoteCacheHandler extends MyTriggers {
+    LoggerUtility logger = new LoggerUtility('HenvendelseCaching');
+
     global override void onAfterInsert() {
         publishPlatformEventWithActorId((List<Conversation_Note__c>) records);
     }
@@ -9,16 +11,21 @@ global class ConvNoteCacheHandler extends MyTriggers {
     private void publishPlatformEventWithActorId(
         List<Conversation_Note__c> convNoteList
     ) {
-        List<ClearHenvendelseCache__e> platformEvents = new List<ClearHenvendelseCache__e>();
-        Set<String> actorIds = getActorIds(getRecordIds(convNoteList));
-        for (String actorId : actorIds) {
-            platformEvents.add(
-                new ClearHenvendelseCache__e(ActorId__c = actorId)
-            );
-        }
+        try {
+            List<ClearHenvendelseCache__e> platformEvents = new List<ClearHenvendelseCache__e>();
+            Set<String> actorIds = getActorIds(getRecordIds(convNoteList));
+            for (String actorId : actorIds) {
+                platformEvents.add(
+                    new ClearHenvendelseCache__e(ActorId__c = actorId)
+                );
+            }
 
-        if (platformEvents.size() > 0) {
-            insert platformEvents;
+            if (platformEvents.size() > 0) {
+                EventBus.publish(platformEvents);
+            }
+        } catch (exception e) {
+            logger.exception(e);
+            logger.publish();
         }
     }
 
