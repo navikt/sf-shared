@@ -1,4 +1,4 @@
-public without sharing class ConvNoteMirroringQueueable implements Queueable {
+public without sharing class ConvNoteMirroringQueueable implements Queueable, Database.AllowsCallouts {
     private static LoggerUtility logger = new LoggerUtility(
         'Henvendelse Mirroring'
     );
@@ -9,12 +9,15 @@ public without sharing class ConvNoteMirroringQueueable implements Queueable {
     }
 
     public void execute(QueueableContext context) {
+        system.debug(convNoteIds);
         List<String> behandlingKjedeIds = ConvNoteRepository.getBehandlingskjedeIds(
             convNoteIds
         );
+        system.debug(behandlingKjedeIds);
         List<Conversation_Note__c> convNotesBybehandlingKjedeIds = ConvNoteRepository.getConversationNotes(
             behandlingKjedeIds
         );
+        system.debug(convNotesBybehandlingKjedeIds);
         List<CRM_Henvendelse> henvendelseList = convertToHenvendelseList(
             convNotesBybehandlingKjedeIds
         );

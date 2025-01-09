@@ -47,7 +47,6 @@ public with sharing class ConvNoteRepository {
             WHERE
                 CRM_Henvendelse_BehandlingskjedeId__c IN :behandlingskjedeIds
                 AND CRM_Account__c != NULL
-                AND CRM_Account__r.CRM_Person__c != NULL
             ORDER BY CRM_Date_Time_Registered__c DESC
         ];
     }
