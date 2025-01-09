@@ -1,4 +1,4 @@
-public with sharing class ConvNoteRepository {
+public with sharing class ConvNoteSelector {
     public static List<Conversation_Note__c> getConversationNotes(
         List<String> behandlingskjedeIds
     ) {

@@ -9,15 +9,14 @@ public without sharing class ConvNoteMirroringQueueable implements Queueable, Da
     }
 
     public void execute(QueueableContext context) {
-        system.debug(convNoteIds);
-        List<String> behandlingKjedeIds = ConvNoteRepository.getBehandlingskjedeIds(
+        List<String> behandlingKjedeIds = ConvNoteSelector.getBehandlingskjedeIds(
             convNoteIds
         );
-        system.debug(behandlingKjedeIds);
-        List<Conversation_Note__c> convNotesBybehandlingKjedeIds = ConvNoteRepository.getConversationNotes(
+
+        List<Conversation_Note__c> convNotesBybehandlingKjedeIds = ConvNoteSelector.getConversationNotes(
             behandlingKjedeIds
         );
-        system.debug(convNotesBybehandlingKjedeIds);
+
         List<CRM_Henvendelse> henvendelseList = convertToHenvendelseList(
             convNotesBybehandlingKjedeIds
         );
