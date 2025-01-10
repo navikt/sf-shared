@@ -12,13 +12,13 @@ global class ConvNoteCacheHandler extends MyTriggers {
         List<Conversation_Note__c> convNoteList
     ) {
         try {
-            List<ClearHenvendelseCache__e> platformEvents = new List<ClearHenvendelseCache__e>();
+            List<CacheHenvendelse__e> platformEvents = new List<CacheHenvendelse__e>();
             Set<String> actorIds = ConvNoteCacheFilterHelper.getActorIdsWithDirtyCache(
                 getRecordIds(convNoteList)
             );
             for (String actorId : actorIds) {
                 platformEvents.add(
-                    new ClearHenvendelseCache__e(ActorId__c = actorId)
+                    new CacheHenvendelse__e(ActorId__c = actorId)
                 );
             }
 

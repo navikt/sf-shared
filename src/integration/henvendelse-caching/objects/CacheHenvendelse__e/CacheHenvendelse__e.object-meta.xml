@@ -2,7 +2,7 @@
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
     <eventType>HighVolume</eventType>
-    <label>Clear Henvendelse Cache</label>
-    <pluralLabel>Clear Henvendelse Cache Evebts</pluralLabel>
+    <label>Cache Henvendelse</label>
+    <pluralLabel>Cache Henvendelse Events</pluralLabel>
     <publishBehavior>PublishAfterCommit</publishBehavior>
 </CustomObject>
