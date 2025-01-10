@@ -12,15 +12,9 @@ global class ConvNoteCacheHandler extends MyTriggers {
         List<Conversation_Note__c> convNoteList
     ) {
         try {
-            List<CacheHenvendelse__e> platformEvents = new List<CacheHenvendelse__e>();
-            Set<String> actorIds = ConvNoteCacheFilterHelper.getActorIdsWithDirtyCache(
-                getRecordIds(convNoteList)
+            List<CacheHenvendelse__e> platformEvents = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
+                convNoteList
             );
-            for (String actorId : actorIds) {
-                platformEvents.add(
-                    new CacheHenvendelse__e(ActorId__c = actorId)
-                );
-            }
 
             if (platformEvents.size() > 0) {
                 EventBus.publish(platformEvents);
@@ -29,13 +23,5 @@ global class ConvNoteCacheHandler extends MyTriggers {
             logger.exception(e);
             logger.publish();
         }
-    }
-
-    private Set<Id> getRecordIds(List<Conversation_Note__c> convNoteList) {
-        Set<Id> recordIds = new Set<Id>();
-        for (Conversation_Note__c convNote : convNoteList) {
-            recordIds.add(convNote.Id);
-        }
-        return recordIds;
     }
 }
