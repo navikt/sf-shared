@@ -12,20 +12,28 @@ public class SharedTestDataFactory {
             LIMIT 1
         ]
         .Id;
-        User accountOwner = (User) createRecord(new User(UserRoleId = roleId));
+        Id profileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'System Administrator'
+        ]
+        .Id;
+        User accountOwner = (User) createRecord(
+            new User(UserRoleId = roleId, ProfileId = profileId)
+        );
 
         Account personAccount;
         System.runAs(accountOwner) {
-            personAccount = (Account) createRecord(
-                new Account(
-                    RecordTypeId = recordTypeId,
-                    FirstName = 'Person',
-                    LastName = 'Account'
-                )
+            personAccount = new Account(
+                RecordTypeId = recordTypeId,
+                FirstName = 'Person',
+                LastName = 'Account'
             );
+            insert personAccount;
         }
         return personAccount;
     }
+
     public static User createExperienceCloudUser() {
         Id accountId = createPersonAccount().Id;
         Id contactId = [SELECT Id FROM Contact WHERE AccountId = :accountId].Id;
@@ -43,11 +51,6 @@ public class SharedTestDataFactory {
         );
     }
 
-    /* This method is used for creating a record. The record is inserted before it's returned,
-     * and default fields are populated.
-     * @param record [sObject: the record]
-     * @return       [sObject: the record, inserted and with defualt fields populated]
-     */
     public static sObject createRecord(sObject record) {
         return createRecord(record, true);
     }
@@ -341,6 +344,291 @@ public class SharedTestDataFactory {
         }
     }
 
+    public class ContactDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'FirstName' => 'Test',
+                'LastName' => 'Testesen'
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class CampaignDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Name' => 'Test',
+                'Status' => 'Active',
+                'isActive' => true
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class AccountDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{ 'Name' => 'Test Testesen' };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class LeadDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'LastName' => 'Test Testesen',
+                'Company' => 'Test Company'
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class TaskDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Priority' => 'High',
+                'Status' => 'In Progress'
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class OrderDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Name' => 'Test Testesen',
+                'AccountId' => bulkify
+                    ? 'Account'
+                    : createRecord('Account', null),
+                'EffectiveDate' => Date.today(),
+                'Status' => 'Draft',
+                'PriceBook2Id' => Test.getStandardPricebookId()
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{ 'AccountId' => 'Account' };
+        }
+    }
+
+    public class OrderItemDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'PriceBookEntryId' => bulkify
+                    ? 'PriceBookEntry'
+                    : createRecord('PricebookEntry', null),
+                'OrderId' => bulkify ? 'Order' : createRecord('Order', null),
+                'Quantity' => 1,
+                'UnitPrice' => 100
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{
+                'OrderId' => 'Order',
+                'PriceBookEntryId' => 'PriceBookEntry'
+            };
+        }
+    }
+
+    public class PriceBookEntryDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'PriceBook2Id' => Test.getStandardPricebookId(),
+                'Product2Id' => bulkify
+                    ? 'Product2'
+                    : createRecord('Product2', null),
+                'isActive' => true,
+                'UnitPrice' => 100
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{ 'Product2Id' => 'Product2' };
+        }
+    }
+
+    public class Product2Defaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Name' => 'SF Merch',
+                'ProductCode' => '1234',
+                'isActive' => true
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class OpportunityDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Name' => 'Test Opportunity',
+                'CloseDate' => Date.today(),
+                'StageName' => 'Closed Won',
+                'Amount' => 100,
+                'CampaignId' => bulkify
+                    ? 'Campaign'
+                    : createRecord('Campaign', null)
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{ 'CampaignId' => 'Campaign' };
+        }
+    }
+
+    public class LiveChatTranscriptDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'LiveChatVisitorId' => bulkify
+                    ? 'LiveChatVisitor'
+                    : createRecord('LiveChatVisitor', null)
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{
+                'LiveChatVisitorId' => 'LiveChatVisitor'
+            };
+        }
+    }
+
+    public class LiveChatVisitorDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{};
+            //No defaults
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+    public static List<QuickText> createQuickTexts(Integer amount) {
+        List<QuickText> quickTexts = new List<QuickText>();
+        for (Integer i = 0; i < amount; i++) {
+            QuickText qt = new QuickText(
+                Name = 'Test ' + i,
+                Message = 'Dette er en melding'
+            );
+            quickTexts.add(qt);
+        }
+        insert quickTexts;
+        return quickTexts;
+    }
+
+    public class QuickTextDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Message' => 'Dette er en melding'
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class PersonDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'Name' => generateRandomNumberString(11)
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class AsyncRequestDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'CRM_Params__c' => generateRandomString(18),
+                'CRM_Status__c' => AsyncRequestService.STATUS_PENDING,
+                'CRM_AsyncType__c' => 'TEST_TYPE'
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
+        }
+    }
+
+    public class NavTaskDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{
+                'CRM_DueDate__c' => Date.today(),
+                'CRM_NoPersonInformation__c' => true,
+                'CRM_Account__c' => bulkify
+                    ? 'Account'
+                    : createRecord('Account', null)
+            };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{ 'CRM_Account__c' => 'Account' };
+        }
+    }
+
     public class ConversationNoteDefaults implements FieldDefaults {
         public Map<String, Object> getFieldDefaults() {
             return getFieldDefaults(false);
@@ -400,6 +688,19 @@ public class SharedTestDataFactory {
                 'CRM_Thread__c' => 'Thread__c',
                 'CRM_From_Contact__c' => 'Contact'
             };
+        }
+    }
+
+    public class NavUnitDefaults implements FieldDefaults {
+        public Map<String, Object> getFieldDefaults() {
+            return getFieldDefaults(false);
+        }
+        public Map<String, Object> getFieldDefaults(Boolean bulkify) {
+            return new Map<String, Object>{ 'Name' => 'NAV test unit' };
+        }
+        public Map<String, String> getDmlFields() {
+            return new Map<String, String>{};
+            //No dml fields
         }
     }
 
