@@ -6,7 +6,7 @@
  * @group Public 360 Integration
  * @see ExternalIdParameter
  */
-@isTest
+@isTest(IsParallel=true)
 private class ExternalIdParameterTest {
     /**
      * @description Test `constructor` with no parameters.
@@ -20,9 +20,7 @@ private class ExternalIdParameterTest {
         ExternalIdParameter externalIdParameterDataType;
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            externalIdParameterDataType = new ExternalIdParameter();
-        }
+        externalIdParameterDataType = new ExternalIdParameter();
         System.Test.stopTest();
 
         System.Assert.isNull(
@@ -48,9 +46,7 @@ private class ExternalIdParameterTest {
         String id = 'External-ID-123';
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            externalIdParameterDataType = new ExternalIdParameter(id);
-        }
+        externalIdParameterDataType = new ExternalIdParameter(id);
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -73,17 +69,15 @@ private class ExternalIdParameterTest {
         ExternalIdParameter externalIdParameterDataType;
         String id = null;
 
-        String expectedExceptionMessage = 'The Id field is mandatory.';
+        String expectedExceptionMessage = ExternalIdParameter.ID_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                externalIdParameterDataType = new ExternalIdParameter(id);
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            externalIdParameterDataType = new ExternalIdParameter(id);
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -112,9 +106,7 @@ private class ExternalIdParameterTest {
         String type = 'Salesforce';
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            externalIdParameterDataType = new ExternalIdParameter(id, type);
-        }
+        externalIdParameterDataType = new ExternalIdParameter(id, type);
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -143,17 +135,15 @@ private class ExternalIdParameterTest {
         String id = null;
         String type = 'Salesforce';
 
-        String expectedExceptionMessage = 'The Id field is mandatory.';
+        String expectedExceptionMessage = ExternalIdParameter.ID_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                externalIdParameterDataType = new ExternalIdParameter(id, type);
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            externalIdParameterDataType = new ExternalIdParameter(id, type);
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -177,15 +167,22 @@ private class ExternalIdParameterTest {
      */
     @isTest
     static void toJson() {
-        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter();
-        externalIdParameterDataType.Id = '123';
-        externalIdParameterDataType.Type = 'Salesforce';
+        String id = '123';
+        String type = 'Salesforce';
 
-        String jsonString = '{"Id":"123","Type":"Salesforce"}';
+        String expectedJsonString = '{"Id":"123","Type":"Salesforce"}';
+        String actualJsonString;
+        System.Test.startTest();
+        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
+            id,
+            type
+        );
+        actualJsonString = externalIdParameterDataType.toJson();
+        System.Test.stopTest();
 
         System.Assert.areEqual(
-            jsonString,
-            externalIdParameterDataType.toJson(),
+            expectedJsonString,
+            actualJsonString,
             'toJson should return a JSON string representation of the object.'
         );
     }
@@ -199,14 +196,22 @@ private class ExternalIdParameterTest {
      */
     @isTest
     static void fromJson() {
-        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter();
-        externalIdParameterDataType.Id = '123';
-        externalIdParameterDataType.Type = 'Salesforce';
+        ExternalIdParameter deserializedExternalIdParameterDataType;
+        String id = '123';
+        String type = 'Salesforce';
+
+        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
+            id,
+            type
+        );
 
         String jsonString = '{"Id":"123","Type":"Salesforce"}';
-        ExternalIdParameter deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
+
+        System.Test.startTest();
+        deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
             jsonString
         );
+        System.Test.stopTest();
 
         System.assertEquals(
             externalIdParameterDataType.Id,
@@ -229,14 +234,22 @@ private class ExternalIdParameterTest {
      */
     @isTest
     static void fromJsonWithExtraChild() {
-        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter();
-        externalIdParameterDataType.Id = '123';
-        externalIdParameterDataType.Type = 'Salesforce';
+        ExternalIdParameter deserializedExternalIdParameterDataType;
+        String id = '123';
+        String type = 'Salesforce';
+
+        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
+            id,
+            type
+        );
 
         String jsonString = '{"Id":"123","Type":"Salesforce", "ExtraChild": "Extra"}';
-        ExternalIdParameter deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
+
+        System.Test.startTest();
+        deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
             jsonString
         );
+        System.Test.stopTest();
 
         System.assertEquals(
             externalIdParameterDataType.Id,
@@ -251,6 +264,39 @@ private class ExternalIdParameterTest {
     }
 
     /**
+     * @description Test `fromJson` method with malformed JSON and expect an exception to be thrown.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @since 0.1.0, January 2025
+     * @see ExternalIdParameter.fromJson
+     */
+    @isTest
+    static void fromJsonAndThrowExceptionOnMalformedJson() {
+        String jsonString = '{"Id":"123","Type":"Salesforce", "MalformedJson"}';
+
+        String actualExceptionType = '';
+        Boolean isExceptionThrown = false;
+        System.Test.startTest();
+        try {
+            ExternalIdParameter.fromJson(jsonString);
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionType = ex.getTypeName();
+        }
+        System.Test.stopTest();
+
+        System.Assert.isTrue(
+            isExceptionThrown,
+            'Expected to have an exception thrown.'
+        );
+        System.Assert.areEqual(
+            'System.JSONException',
+            actualExceptionType,
+            'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
      * @description Test `validate` method.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
@@ -259,20 +305,15 @@ private class ExternalIdParameterTest {
      */
     @IsTest
     static void validate() {
-        String id = 'External-ID-123';
-
-        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
-            id
-        );
+        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter();
+        externalIdParameterDataType.Id = 'External-ID-123';
 
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                externalIdParameterDataType.validate();
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-            }
+        try {
+            externalIdParameterDataType.validate();
+        } catch (Exception ex) {
+            isExceptionThrown = true;
         }
         System.Test.stopTest();
 
@@ -294,18 +335,17 @@ private class ExternalIdParameterTest {
         ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter();
         externalIdParameterDataType.Id = null;
 
-        String expectedExceptionMessage = 'The Id field is mandatory.';
+        String expectedExceptionMessage = ExternalIdParameter.ID_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                externalIdParameterDataType.validate();
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            externalIdParameterDataType.validate();
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
+
         System.Test.stopTest();
 
         System.Assert.isTrue(

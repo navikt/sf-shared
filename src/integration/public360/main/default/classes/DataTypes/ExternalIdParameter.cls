@@ -20,7 +20,29 @@
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
 public class ExternalIdParameter {
+    /**
+     * @description Error message for the `ExternalIdParameter` class and the `Id` field.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
+    public static final String ID_BLANK_ERROR_MESSAGE = 'The Id field is mandatory.';
+
+    /**
+     * @description The `Id` field of the external id.
+     * See Public 360 API documentation for details.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
     public String Id;
+    /**
+     * @description The `Type` field of the external id.
+     * See Public 360 API documentation for details.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
     public String Type;
 
     /**

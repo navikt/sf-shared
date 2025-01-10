@@ -8,7 +8,7 @@
  * - The class has a private `constructor` for use with the `fromJson` method.
  * - The class has a custom exception class for use with the `validation` method.
  *
- * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+ * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
  * @since 0.1.0, December 2024
  * @group Public 360 Integration
  * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
@@ -21,9 +21,59 @@
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
 public class ArchiveCodeParameter {
+    /**
+     * @description Error messages for the `ArchiveCodeParameter` class and the `ArchiveType` field.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
+    public static final String ARCHIVE_TYPE_BLANK_ERROR_MESSAGE = 'The ArchiveType field is mandatory.';
+    /**
+     * @description Error messages for the `ArchiveCodeParameter` class and the `SortOrder` field.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
+    public static final String SORT_ORDER_NULL_ERROR_MESSAGE = 'The SortOrder field is mandatory.';
+    /**
+     * @description Error messages for the `ArchiveCodeParameter` class and the `ArchiveType` and `SortOrder` fields.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
+    public static final String ARCHIVE_TYPE_AND_SORT_ORDER_BLANK_ERROR_MESSAGE = 'Both ArchiveType and SortOrder fields are mandatory.';
+
+    /**
+     * @description The `ArchiveCode` field of the archive code.
+     * See Public 360 API documentation for details.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
     public String ArchiveCode;
+    /**
+     * @description The `ArchiveType` field of the archive code.
+     * See Public 360 API documentation for details.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
     public String ArchiveType;
+    /**
+     * @description The `SortOrder` field of the archive code.
+     * See Public 360 API documentation for details.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
     public Integer SortOrder;
+    /**
+     * @description The `IsManualText` field of the archive code.
+     * See Public 360 API documentation for details.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     */
     public Boolean IsManualText;
 
     /**

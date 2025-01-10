@@ -6,7 +6,7 @@
  * @group Public 360 Integration
  * @see ArchiveCodeParameter
  */
-@IsTest
+@IsTest(IsParallel=true)
 private class ArchiveCodeParameterTest {
     /**
      * @description Test `constructor` with no parameters.
@@ -20,9 +20,7 @@ private class ArchiveCodeParameterTest {
         ArchiveCodeParameter archiveCodeParameterDataType;
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            archiveCodeParameterDataType = new ArchiveCodeParameter();
-        }
+        archiveCodeParameterDataType = new ArchiveCodeParameter();
         System.Test.stopTest();
 
         System.Assert.isNull(
@@ -57,12 +55,10 @@ private class ArchiveCodeParameterTest {
         Integer sortOrder = 1;
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
-                archiveType,
-                sortOrder
-            );
-        }
+        archiveCodeParameterDataType = new ArchiveCodeParameter(
+            archiveType,
+            sortOrder
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -91,20 +87,18 @@ private class ArchiveCodeParameterTest {
         String archiveType = null;
         Integer sortOrder = 1;
 
-        String expectedExceptionMessage = 'The ArchiveType field is mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.ARCHIVE_TYPE_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType = new ArchiveCodeParameter(
-                    archiveType,
-                    sortOrder
-                );
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType = new ArchiveCodeParameter(
+                archiveType,
+                sortOrder
+            );
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -133,20 +127,18 @@ private class ArchiveCodeParameterTest {
         String archiveType = 'Salesforce';
         Integer sortOrder = null;
 
-        String expectedExceptionMessage = 'The SortOrder field is mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.SORT_ORDER_NULL_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType = new ArchiveCodeParameter(
-                    archiveType,
-                    sortOrder
-                );
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType = new ArchiveCodeParameter(
+                archiveType,
+                sortOrder
+            );
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -176,20 +168,18 @@ private class ArchiveCodeParameterTest {
         String archiveType = null;
         Integer sortOrder = null;
 
-        String expectedExceptionMessage = 'Both ArchiveType and SortOrder fields are mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.ARCHIVE_TYPE_AND_SORT_ORDER_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType = new ArchiveCodeParameter(
-                    archiveType,
-                    sortOrder
-                );
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType = new ArchiveCodeParameter(
+                archiveType,
+                sortOrder
+            );
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -220,14 +210,12 @@ private class ArchiveCodeParameterTest {
         Boolean isManualText = true;
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
-                archiveType,
-                sortOrder,
-                archiveCode,
-                isManualText
-            );
-        }
+        archiveCodeParameterDataType = new ArchiveCodeParameter(
+            archiveType,
+            sortOrder,
+            archiveCode,
+            isManualText
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -268,22 +256,20 @@ private class ArchiveCodeParameterTest {
         String archiveCode = '123';
         Boolean isManualText = true;
 
-        String expectedExceptionMessage = 'The ArchiveType field is mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.ARCHIVE_TYPE_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType = new ArchiveCodeParameter(
-                    archiveType,
-                    sortOrder,
-                    archiveCode,
-                    isManualText
-                );
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType = new ArchiveCodeParameter(
+                archiveType,
+                sortOrder,
+                archiveCode,
+                isManualText
+            );
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -314,22 +300,20 @@ private class ArchiveCodeParameterTest {
         String archiveCode = '123';
         Boolean isManualText = true;
 
-        String expectedExceptionMessage = 'The SortOrder field is mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.SORT_ORDER_NULL_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType = new ArchiveCodeParameter(
-                    archiveType,
-                    sortOrder,
-                    archiveCode,
-                    isManualText
-                );
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType = new ArchiveCodeParameter(
+                archiveType,
+                sortOrder,
+                archiveCode,
+                isManualText
+            );
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -361,22 +345,20 @@ private class ArchiveCodeParameterTest {
         String archiveCode = '123';
         Boolean isManualText = true;
 
-        String expectedExceptionMessage = 'Both ArchiveType and SortOrder fields are mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.ARCHIVE_TYPE_AND_SORT_ORDER_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType = new ArchiveCodeParameter(
-                    archiveType,
-                    sortOrder,
-                    archiveCode,
-                    isManualText
-                );
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType = new ArchiveCodeParameter(
+                archiveType,
+                sortOrder,
+                archiveCode,
+                isManualText
+            );
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -408,15 +390,13 @@ private class ArchiveCodeParameterTest {
         String expectedJsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true}';
         String actualJsonString;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter(
-                archiveType,
-                sortOrder,
-                archiveCode,
-                isManualText
-            );
-            actualJsonString = archiveCodeParameterDataType.toJson();
-        }
+        ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter(
+            archiveType,
+            sortOrder,
+            archiveCode,
+            isManualText
+        );
+        actualJsonString = archiveCodeParameterDataType.toJson();
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -427,7 +407,7 @@ private class ArchiveCodeParameterTest {
     }
 
     /**
-     * @description Test `toJson` method.
+     * @description Test `fromJson` method.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -435,7 +415,7 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void fromJson() {
-        ArchiveCodeParameter deserializedArchiveCode;
+        ArchiveCodeParameter deserializedArchiveCodeDataType;
         String archiveCode = '123';
         String archiveType = 'Salesforce';
         Integer sortOrder = 1;
@@ -451,35 +431,35 @@ private class ArchiveCodeParameterTest {
         String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true}';
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            deserializedArchiveCode = ArchiveCodeParameter.fromJson(jsonString);
-        }
+        deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
+            jsonString
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
             archiveCodeParameterDataType.ArchiveCode,
-            deserializedArchiveCode.ArchiveCode,
+            deserializedArchiveCodeDataType.ArchiveCode,
             'ArchiveCode fields should be equal'
         );
         System.Assert.areEqual(
             archiveCodeParameterDataType.ArchiveType,
-            deserializedArchiveCode.ArchiveType,
+            deserializedArchiveCodeDataType.ArchiveType,
             'ArchiveType fields should be equal'
         );
         System.Assert.areEqual(
             archiveCodeParameterDataType.SortOrder,
-            deserializedArchiveCode.SortOrder,
+            deserializedArchiveCodeDataType.SortOrder,
             'SortOrder fields should be equal'
         );
         System.Assert.areEqual(
             archiveCodeParameterDataType.IsManualText,
-            deserializedArchiveCode.IsManualText,
+            deserializedArchiveCodeDataType.IsManualText,
             'IsManualText fields should be equal'
         );
     }
 
     /**
-     * @description Test `toJson` method with extra child.
+     * @description Test `fromJson` method with extra child.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
      * @since 0.1.0, December 2024
@@ -487,7 +467,7 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void fromJsonWithExtraChild() {
-        ArchiveCodeParameter deserializedArchiveCode;
+        ArchiveCodeParameter deserializedArchiveCodeDataType;
         String archiveCode = '123';
         String archiveType = 'Salesforce';
         Integer sortOrder = 1;
@@ -503,30 +483,63 @@ private class ArchiveCodeParameterTest {
         String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true, "ExtraChild": "Extra"}';
 
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            deserializedArchiveCode = ArchiveCodeParameter.fromJson(jsonString);
-        }
+        deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
+            jsonString
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
             archiveCodeParameterDataType.ArchiveCode,
-            deserializedArchiveCode.ArchiveCode,
+            deserializedArchiveCodeDataType.ArchiveCode,
             'ArchiveCode fields should be equal'
         );
         System.Assert.areEqual(
             archiveCodeParameterDataType.ArchiveType,
-            deserializedArchiveCode.ArchiveType,
+            deserializedArchiveCodeDataType.ArchiveType,
             'ArchiveType fields should be equal'
         );
         System.Assert.areEqual(
             archiveCodeParameterDataType.SortOrder,
-            deserializedArchiveCode.SortOrder,
+            deserializedArchiveCodeDataType.SortOrder,
             'SortOrder fields should be equal'
         );
         System.Assert.areEqual(
             archiveCodeParameterDataType.IsManualText,
-            deserializedArchiveCode.IsManualText,
+            deserializedArchiveCodeDataType.IsManualText,
             'IsManualText fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromJson` method with malformed JSON and expect an exception to be thrown.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @since 0.1.0, January 2025
+     * @see ArchiveCodeParameter.fromJson
+     */
+    @isTest
+    static void fromJsonAndThrowExceptionOnMalformedJson() {
+        String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true, "MalformedJson"}';
+
+        String actualExceptionType = '';
+        Boolean isExceptionThrown = false;
+        System.Test.startTest();
+        try {
+            ArchiveCodeParameter.fromJson(jsonString);
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionType = ex.getTypeName();
+        }
+        System.Test.stopTest();
+
+        System.Assert.isTrue(
+            isExceptionThrown,
+            'Expected to have an exception thrown.'
+        );
+        System.Assert.areEqual(
+            'System.JSONException',
+            actualExceptionType,
+            'Expected exception type should be equal to actual exception type.'
         );
     }
 
@@ -539,22 +552,16 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void validate() {
-        String archiveType = 'Salesforce';
-        Integer sortOrder = 1;
-
-        ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter(
-            archiveType,
-            sortOrder
-        );
+        ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter();
+        archiveCodeParameterDataType.ArchiveType = 'Salesforce';
+        archiveCodeParameterDataType.SortOrder = 1;
 
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType.validate();
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-            }
+        try {
+            archiveCodeParameterDataType.validate();
+        } catch (Exception ex) {
+            isExceptionThrown = true;
         }
         System.Test.stopTest();
 
@@ -577,17 +584,15 @@ private class ArchiveCodeParameterTest {
         archiveCodeParameterDataType.ArchiveType = null;
         archiveCodeParameterDataType.SortOrder = 1;
 
-        String expectedExceptionMessage = 'The ArchiveType field is mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.ARCHIVE_TYPE_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType.validate();
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType.validate();
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -615,17 +620,15 @@ private class ArchiveCodeParameterTest {
         archiveCodeParameterDataType.ArchiveType = 'salesforce';
         archiveCodeParameterDataType.SortOrder = null;
 
-        String expectedExceptionMessage = 'The SortOrder field is mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.SORT_ORDER_NULL_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType.validate();
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType.validate();
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
@@ -654,17 +657,15 @@ private class ArchiveCodeParameterTest {
         archiveCodeParameterDataType.ArchiveType = null;
         archiveCodeParameterDataType.SortOrder = null;
 
-        String expectedExceptionMessage = 'Both ArchiveType and SortOrder fields are mandatory.';
+        String expectedExceptionMessage = ArchiveCodeParameter.ARCHIVE_TYPE_AND_SORT_ORDER_BLANK_ERROR_MESSAGE;
         String actualExceptionMessage = '';
         Boolean isExceptionThrown = false;
         System.Test.startTest();
-        System.runAs(P360TestUtility.minimumAccessAPIOnlyIntegrations()) {
-            try {
-                archiveCodeParameterDataType.validate();
-            } catch (Exception ex) {
-                isExceptionThrown = true;
-                actualExceptionMessage = ex.getMessage();
-            }
+        try {
+            archiveCodeParameterDataType.validate();
+        } catch (Exception ex) {
+            isExceptionThrown = true;
+            actualExceptionMessage = ex.getMessage();
         }
         System.Test.stopTest();
 
