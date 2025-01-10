@@ -1,19 +1,21 @@
 global class ConvNoteCacheHandler extends MyTriggers {
-    LoggerUtility logger = new LoggerUtility('HenvendelseCaching');
+    private LoggerUtility logger = new LoggerUtility('HenvendelseCaching');
 
     global override void onAfterInsert() {
-        publishPlatformEventWithActorId((List<Conversation_Note__c>) records);
+        publishPlatformEventsWithActorId((List<Conversation_Note__c>) records);
     }
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
-        //TODO: Post bare for felter som er relevante for speilingen
-        publishPlatformEventWithActorId((List<Conversation_Note__c>) records);
+        //TODO: Post bare for felter som er relevante for cachingen
+        publishPlatformEventsWithActorId((List<Conversation_Note__c>) records);
     }
-    private void publishPlatformEventWithActorId(
+    private void publishPlatformEventsWithActorId(
         List<Conversation_Note__c> convNoteList
     ) {
         try {
             List<ClearHenvendelseCache__e> platformEvents = new List<ClearHenvendelseCache__e>();
-            Set<String> actorIds = getActorIds(getRecordIds(convNoteList));
+            Set<String> actorIds = ConvNoteCacheFilterHelper.getActorIdsWithDirtyCache(
+                getRecordIds(convNoteList)
+            );
             for (String actorId : actorIds) {
                 platformEvents.add(
                     new ClearHenvendelseCache__e(ActorId__c = actorId)
@@ -35,21 +37,5 @@ global class ConvNoteCacheHandler extends MyTriggers {
             recordIds.add(convNote.Id);
         }
         return recordIds;
-    }
-
-    private Set<String> getActorIds(Set<Id> recordIds) {
-        Set<String> actorIds = new Set<String>();
-        for (Conversation_Note__c convNote : [
-            SELECT CRM_Account__r.CRM_Person__r.INT_ActorId__c
-            FROM Conversation_Note__c
-            WHERE Id IN :recordIds
-        ]) {
-            if (convNote.CRM_Account__r.CRM_Person__r.INT_ActorId__c != null) {
-                actorIds.add(
-                    convNote.CRM_Account__r.CRM_Person__r.INT_ActorId__c
-                );
-            }
-        }
-        return actorIds;
     }
 }
