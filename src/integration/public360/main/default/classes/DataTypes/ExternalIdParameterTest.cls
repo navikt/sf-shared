@@ -1,7 +1,7 @@
 /**
  * @description Test class for `ExternalIdParameter` class.
  *
- * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+ * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
  * @since 0.1.0, December 2024
  * @group Public 360 Integration
  * @see ExternalIdParameter
@@ -11,7 +11,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `constructor` with no parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter
      */
@@ -36,7 +36,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `constructor` with one parameter.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter
      */
@@ -60,7 +60,7 @@ private class ExternalIdParameterTest {
      * @description Test `constructor` with one parameters and expect an exception to be
      * thrown on `Id` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter
      */
@@ -95,7 +95,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `constructor` with two parameter.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter
      */
@@ -125,7 +125,7 @@ private class ExternalIdParameterTest {
      * @description Test `constructor` with two parameters and expect an exception to be
      * thrown on `Id` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter
      */
@@ -161,7 +161,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `toJson` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter.toJson
      */
@@ -190,7 +190,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `fromJson` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter.fromJson
      */
@@ -228,7 +228,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `fromJson` method with extra child.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter.fromJson
      */
@@ -266,7 +266,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `fromJson` method with malformed JSON and expect an exception to be thrown.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see ExternalIdParameter.fromJson
      */
@@ -299,7 +299,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `validate` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter.validate
      */
@@ -326,7 +326,7 @@ private class ExternalIdParameterTest {
     /**
      * @description Test `validate` method with missing `Id` field and expect an exception to be thrown.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter.validate
      */

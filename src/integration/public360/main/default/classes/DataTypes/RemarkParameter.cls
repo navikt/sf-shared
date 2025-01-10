@@ -8,7 +8,7 @@
  * - The class has a private `constructor` for use with the `fromJson` method.
  * - The class has a custom exception class for use with the `validation` method.
  *
- * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+ * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
  * @since 0.1.0, January 2025
  * @group Public 360 Integration
  * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)

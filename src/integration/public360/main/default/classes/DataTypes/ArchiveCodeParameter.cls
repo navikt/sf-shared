@@ -79,7 +79,7 @@ public class ArchiveCodeParameter {
     /**
      * @description Private Constructor for the `ArchiveCodeParameter` class for use with the fromJson method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      */
     @SuppressWarnings('PMD.EmptyStatementBlock')
@@ -90,7 +90,7 @@ public class ArchiveCodeParameter {
     /**
      * @description Constructor for the `ArchiveCodeParameter` class with mandatory fields as parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param archiveType The type of the archive code - See Public 360 API documentation for details.
@@ -105,7 +105,7 @@ public class ArchiveCodeParameter {
     /**
      * @description Constructor for the `ArchiveCodeParameter` class with all fields as parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param archiveType The type of the archive code - See Public 360 API documentation for details.
@@ -128,7 +128,7 @@ public class ArchiveCodeParameter {
     /**
      * @description Returns a JSON representation of the object.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @return `String` JSON representation of the object.
      */
@@ -156,7 +156,7 @@ public class ArchiveCodeParameter {
     /**
      * @description Deserializes a JSON string into an `ArchiveCodeParameter` object instance.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @param jsonString JSON string to deserialize.
      * @return `ArchiveCodeParameter` The deserialized object instance from the JSON string.
@@ -187,7 +187,7 @@ public class ArchiveCodeParameter {
     /**
      * @description Validates the object to ensuring it has the mandatory fields set.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @exception ArchiveCodeParameterException
      */
@@ -217,7 +217,7 @@ public class ArchiveCodeParameter {
      * @description Custom exception class for the `ArchiveCodeParameter` class.
      * Thrown when mandatory fields are missing.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @group Public 360 Integration
      */

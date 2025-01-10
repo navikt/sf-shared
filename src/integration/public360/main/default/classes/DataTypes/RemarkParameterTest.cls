@@ -1,7 +1,7 @@
 /**
  * @description Test class for RemarkParameter class.
  *
- * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+ * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
  * @since 0.1.0, January 2025
  * @group Public 360 Integration
  * @see RemarkParameter
@@ -11,7 +11,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `constructor` with no parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -36,7 +36,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `constructor` with two parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -66,7 +66,7 @@ private class RemarkParameterTest {
      * @description Test `constructor` with two parameters and expect an exception to be
      * thrown on `Title` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -103,7 +103,7 @@ private class RemarkParameterTest {
      * @description Test `constructor` with two parameters and expect an exception to be
      * thrown on `RemarkType` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -141,7 +141,7 @@ private class RemarkParameterTest {
      * thrown on both `Title` and `RemarkType` fields because they are missing or set
      * to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -177,7 +177,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `constructor` with three parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -217,7 +217,7 @@ private class RemarkParameterTest {
      * @description Test `constructor` with three parameters and expect an exception to be
      * thrown on `Title` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -259,7 +259,7 @@ private class RemarkParameterTest {
      * @description Test `constructor` with three parameters and expect an exception to be
      * thrown on `RemarkType` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -301,7 +301,7 @@ private class RemarkParameterTest {
      * @description Test `constructor` with three parameters and expect an exception to be
      * thrown on `Title` and `RemarkType` field because it is missing or set to `null`.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter
      */
@@ -342,7 +342,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `toJson` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.toJson
      */
@@ -373,7 +373,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `fromJson` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.toJson
      */
@@ -416,7 +416,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `fromJson` method with extra child.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.toJson
      */
@@ -459,7 +459,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `fromJson` method with malformed JSON and expect an exception to be thrown.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.fromJson
      */
@@ -492,7 +492,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `validate` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.validate
      */
@@ -520,7 +520,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `validate` method with missing `Title` field and expect an exception to be thrown.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.validate
      */
@@ -556,7 +556,7 @@ private class RemarkParameterTest {
     /**
      * @description Test `validate` method with missing `RemarkType` field and expect an exception to be thrown.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.validate
      */
@@ -593,7 +593,7 @@ private class RemarkParameterTest {
      * @description Test `validate` method with missing `Title` and `RemarkType` field
      * and expect an exception to be thrown.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @see RemarkParameter.validate
      */

@@ -8,7 +8,7 @@
  * - The class has a private `constructor` for use with the `fromJson` method.
  * - The class has a custom exception class for use with the `validation` method.
  *
- * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
+ * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
  * @since 0.1.0, December 2024
  * @group Public 360 Integration
  * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
@@ -48,7 +48,7 @@ public class ExternalIdParameter {
     /**
      * @description Private Constructor for the `ExternalIdParameter` class for use with the `fromJson` method.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see ExternalIdParameter.fromJson
      */
@@ -60,7 +60,7 @@ public class ExternalIdParameter {
     /**
      * @description Constructor for the `ExternalIdParameter` class with mandatory fields as parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param id The external id - See Public 360 API documentation for details.
@@ -73,7 +73,7 @@ public class ExternalIdParameter {
     /**
      * @description Constructor for the `ExternalIdParameter` class with all fields as parameters.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param id The external id - See Public 360 API documentation for details.
@@ -88,7 +88,7 @@ public class ExternalIdParameter {
     /**
      * @description Returns a JSON representation of the `ExternalIdParameter` object.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @return `String` JSON representation of the object.
      */
@@ -110,7 +110,7 @@ public class ExternalIdParameter {
     /**
      *@description Deserializes a JSON string into an `ExternalIdParameter` object instance.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @param jsonString The JSON string to deserialize.
      * @return `ExternalIdParameter` The deserialized object instance from the JSON string.
@@ -125,7 +125,7 @@ public class ExternalIdParameter {
     /**
      * @description Validates the object to ensuring it has the mandatory fields set.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @exception ExternalIdParameterException
      */
@@ -142,7 +142,7 @@ public class ExternalIdParameter {
      * @description Custom exception for the `ExternalIdParameter` class.
      * Thrown when mandatory fields are missing.
      *
-     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, December 2024
      * @group Public 360 Integration
      */
