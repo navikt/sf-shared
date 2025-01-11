@@ -2,12 +2,25 @@
 public class ConvNoteCacheFilterHelperTest {
     @TestSetup
     private static void makeData() {
+        //Create conv Note for Person Account
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
                 CRM_Account__c = personAccount.Id,
                 CRM_Conversation_Note__c = 'DUMMY TEXT',
                 CRM_Henvendelse_BehandlingskjedeId__c = '123'
+            )
+        );
+
+        //Create ConvNote for Employer Account
+        Account employer = (Account) SharedTestDataFactory.createRecord(
+            new Account()
+        );
+        SharedTestDataFactory.createRecord(
+            new Conversation_Note__c(
+                CRM_Account__c = employer.Id,
+                CRM_Conversation_Note__c = 'DUMMY TEXT',
+                CRM_Henvendelse_BehandlingskjedeId__c = '456'
             )
         );
 
@@ -88,6 +101,28 @@ public class ConvNoteCacheFilterHelperTest {
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
         ];
+        Assert.areEqual(1, convNotes.size());
+
+        Test.startTest();
+        List<CacheHenvendelse__e> result = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
+            convNotes
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
+
+    @IsTest
+    private static void shouldNotRetrunPlatformEventsWhenAccountIsNotAPersonAccount() {
+        List<Conversation_Note__c> convNotes = [
+            SELECT
+                Id,
+                CRM_Account__r.CRM_Person__c,
+                CRM_Account__r.CRM_Person__r.INT_ActorId__c
+            FROM Conversation_Note__c
+            WHERE CRM_Henvendelse_BehandlingskjedeId__c = '456'
+        ];
+        Assert.areEqual(1, convNotes.size());
 
         Test.startTest();
         List<CacheHenvendelse__e> result = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
