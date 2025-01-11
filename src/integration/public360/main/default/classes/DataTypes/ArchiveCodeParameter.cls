@@ -198,17 +198,17 @@ public class ArchiveCodeParameter {
 
         if (isArchiveTypeBlank && isSortOrderNull) {
             throw new ArchiveCodeParameterException(
-                'Both ArchiveType and SortOrder fields are mandatory.'
+                ArchiveCodeParameter.ARCHIVE_TYPE_AND_SORT_ORDER_BLANK_ERROR_MESSAGE
             );
         }
         if (isArchiveTypeBlank) {
             throw new ArchiveCodeParameterException(
-                'The ArchiveType field is mandatory.'
+                ArchiveCodeParameter.ARCHIVE_TYPE_BLANK_ERROR_MESSAGE
             );
         }
         if (isSortOrderNull) {
             throw new ArchiveCodeParameterException(
-                'The SortOrder field is mandatory.'
+                ArchiveCodeParameter.SORT_ORDER_NULL_ERROR_MESSAGE
             );
         }
     }
