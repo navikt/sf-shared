@@ -18,9 +18,14 @@ public class SharedTestDataFactory {
             WHERE Name = 'System Administrator'
         ]
         .Id;
-        User accountOwner = (User) createRecord(
-            new User(UserRoleId = roleId, ProfileId = profileId)
-        );
+        User accountOwner;
+
+        //create account onwer in an another context to avoid mixed dml operations
+        System.runAs(new User(Id = UserInfo.getUserId())) {
+            accountOwner = (User) createRecord(
+                new User(UserRoleId = roleId, ProfileId = profileId)
+            );
+        }
 
         Account personAccount;
         System.runAs(accountOwner) {
@@ -30,6 +35,12 @@ public class SharedTestDataFactory {
                 LastName = 'Account'
             );
             insert personAccount;
+
+            Person__c person = (Person__c) createRecord(
+                new Person__c(INT_ActorId__c = '12345')
+            );
+            personAccount.CRM_Person__c = person.Id;
+            update personAccount;
         }
         return personAccount;
     }

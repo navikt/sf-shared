@@ -1,7 +1,7 @@
 @IsTest
 public class ConvNoteCacheHandlerTest {
     @IsTest
-    private static void shouldPublishPlatformEventAsAdminUser() {
+    private static void shouldPublishPlatformEventWhenConvNoteIsCreated() {
         Test.startTest();
         SharedTestDataFactory.createRecord(
             new Conversation_Note__c(CRM_Conversation_Note__c = 'DUMMY TEXT')
