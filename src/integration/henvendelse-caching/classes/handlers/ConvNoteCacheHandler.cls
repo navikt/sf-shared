@@ -15,7 +15,6 @@ global class ConvNoteCacheHandler extends MyTriggers {
             List<CacheHenvendelse__e> platformEvents = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
                 convNoteList
             );
-
             if (platformEvents.size() > 0) {
                 EventBus.publish(platformEvents);
             }
