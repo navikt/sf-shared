@@ -1,20 +1,16 @@
-global class ConvNoteCacheHandler extends MyTriggers {
+global class MessageCacheHandler extends MyTriggers {
     private LoggerUtility logger = new LoggerUtility('HenvendelseCaching');
 
     global override void onAfterInsert() {
-        publishPlatformEvents((List<Conversation_Note__c>) records);
+        publishPlatformEvents((List<Message__c>) records);
     }
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
         //TODO: Post bare for felter som er relevante for cachingen
-        publishPlatformEvents((List<Conversation_Note__c>) records);
+        publishPlatformEvents((List<Message__c>) records);
     }
-    private void publishPlatformEvents(
-        List<Conversation_Note__c> convNoteList
-    ) {
+    private void publishPlatformEvents(List<Message__c> messageList) {
         try {
-            List<CacheHenvendelse__e> platformEvents = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
-                convNoteList
-            );
+            List<CacheHenvendelse__e> platformEvents = new List<CacheHenvendelse__e>();
             if (platformEvents.size() > 0) {
                 EventBus.publish(platformEvents);
             }

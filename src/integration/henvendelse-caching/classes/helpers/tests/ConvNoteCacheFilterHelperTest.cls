@@ -2,6 +2,8 @@
 public class ConvNoteCacheFilterHelperTest {
     @TestSetup
     private static void makeData() {
+        myTriggers.disable(ConvNoteCacheHandler.class);
+
         //Create conv Note for Person Account
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         SharedTestDataFactory.createRecord(
