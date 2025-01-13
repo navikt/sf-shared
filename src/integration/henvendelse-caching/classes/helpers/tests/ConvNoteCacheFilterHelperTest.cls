@@ -26,6 +26,7 @@ public class ConvNoteCacheFilterHelperTest {
             )
         );
 
+        //Create record as Modia Integration User
         Id profileId = [
             SELECT Id
             FROM Profile
@@ -54,7 +55,7 @@ public class ConvNoteCacheFilterHelperTest {
     @IsTest
     private static void shouldReturnRecordIdForConvNoteWithBehandlingskjedeId123() {
         List<Conversation_Note__c> convNotes = [
-            SELECT Id
+            SELECT Id, LastModifiedById
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '123'
         ];
@@ -69,10 +70,26 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
+    private static void shouldNotReturnAnyRecordIdsForConvNoteCreatedByModiaIntegrationUser() {
+        List<Conversation_Note__c> convNotes = [
+            SELECT Id, LastModifiedById
+            FROM Conversation_Note__c
+            WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
+        ];
+
+        Test.startTest();
+        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIds(convNotes);
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
+
+    @IsTest
     private static void shouldReturnOnePlatformEventWhenConvNoteCreatedByInternalSalesforceUser() {
         List<Conversation_Note__c> convNotes = [
             SELECT
                 Id,
+                LastModifiedById,
                 CRM_Account__r.CRM_Person__c,
                 CRM_Account__r.CRM_Person__r.INT_ActorId__c
             FROM Conversation_Note__c
@@ -98,6 +115,7 @@ public class ConvNoteCacheFilterHelperTest {
         List<Conversation_Note__c> convNotes = [
             SELECT
                 Id,
+                LastModifiedById,
                 CRM_Account__r.CRM_Person__c,
                 CRM_Account__r.CRM_Person__r.INT_ActorId__c
             FROM Conversation_Note__c
@@ -119,6 +137,7 @@ public class ConvNoteCacheFilterHelperTest {
         List<Conversation_Note__c> convNotes = [
             SELECT
                 Id,
+                LastModifiedById,
                 CRM_Account__r.CRM_Person__c,
                 CRM_Account__r.CRM_Person__r.INT_ActorId__c
             FROM Conversation_Note__c

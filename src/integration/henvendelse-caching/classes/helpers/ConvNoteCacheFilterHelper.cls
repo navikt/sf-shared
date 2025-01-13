@@ -5,7 +5,6 @@ public without sharing class ConvNoteCacheFilterHelper {
         List<Conversation_Note__c> convNoteList
     ) {
         Set<Id> recordIds = getRecordIds(convNoteList);
-        ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
 
         List<CacheHenvendelse__e> convNotesToBeCached = new List<CacheHenvendelse__e>();
         for (Conversation_Note__c convNote : [
@@ -13,9 +12,7 @@ public without sharing class ConvNoteCacheFilterHelper {
                 CRM_Account__r.CRM_Person__r.INT_ActorId__c,
                 CRM_Henvendelse_BehandlingskjedeId__c
             FROM Conversation_Note__c
-            WHERE
-                Id IN :recordIds
-                AND LastModifiedById != :modiaIntegrationUser.UserId
+            WHERE Id IN :recordIds
         ]) {
             if (
                 convNote.CRM_Account__r.CRM_Person__r.INT_ActorId__c != null &&
@@ -35,9 +32,13 @@ public without sharing class ConvNoteCacheFilterHelper {
     public static Set<Id> getRecordIds(
         List<Conversation_Note__c> convNoteList
     ) {
+        ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
         Set<Id> recordIds = new Set<Id>();
         for (Conversation_Note__c convNote : convNoteList) {
-            recordIds.add(convNote.Id);
+            //Only cache records created by Salesforce internal users
+            if (convNote.LastModifiedById != modiaIntegrationUser.UserId) {
+                recordIds.add(convNote.Id);
+            }
         }
         return recordIds;
     }
