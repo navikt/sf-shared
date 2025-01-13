@@ -2,6 +2,7 @@
 public class ThreadCacheFilterHelperTest {
     @TestSetup
     static void makeData() {
+        myTriggers.disable(MessageCacheHandler.class);
         User experienceCloudUser = (User) SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
