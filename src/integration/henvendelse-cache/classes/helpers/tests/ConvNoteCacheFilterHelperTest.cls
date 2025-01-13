@@ -6,7 +6,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    private static void shouldReturnRecordIdForConvNoteWithBehandlingskjedeId123() {
+    static void shouldReturnRecordIdForConvNoteWithBehandlingskjedeId123() {
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
@@ -32,7 +32,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    private static void shouldNotReturnAnyRecordIdsForConvNoteCreatedByModiaIntegrationUser() {
+    static void shouldNotReturnAnyRecordIdsForConvNoteCreatedByModiaIntegrationUser() {
         Id profileId = [
             SELECT Id
             FROM Profile
@@ -73,7 +73,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    private static void shouldReturnOnePlatformEventWhenConvNoteCreatedByInternalSalesforceUser() {
+    static void shouldReturnOnePlatformEventWhenConvNoteCreatedByInternalSalesforceUser() {
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
@@ -108,7 +108,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    private static void shouldNotRetrunPlatformEventsWhenConvNoteIsCreatedByModiaIntegrationUser() {
+    static void shouldNotRetrunPlatformEventsWhenConvNoteIsCreatedByModiaIntegrationUser() {
         Id profileId = [
             SELECT Id
             FROM Profile
@@ -156,7 +156,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    private static void shouldNotRetrunPlatformEventsWhenAccountIsNotAPersonAccount() {
+    static void shouldNotRetrunPlatformEventsWhenAccountIsNotAPersonAccount() {
         Account employer = (Account) SharedTestDataFactory.createRecord(
             new Account()
         );

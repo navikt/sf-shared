@@ -15,7 +15,7 @@ public class MessageCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenMessageIsCreatedByInternalUser() {
+    static void shouldPublishPlatformEventWhenMessageIsCreatedByInternalUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Test.startTest();
@@ -35,7 +35,7 @@ public class MessageCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenMessageIsCreatedByExperienceCloudUser() {
+    static void shouldPublishPlatformEventWhenMessageIsCreatedByExperienceCloudUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [
@@ -61,7 +61,7 @@ public class MessageCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenMessageIsUpdatedByInternalUser() {
+    static void shouldPublishPlatformEventWhenMessageIsUpdatedByInternalUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
@@ -84,7 +84,7 @@ public class MessageCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenMessageIsUpdatedByExperienceCloudUser() {
+    static void shouldPublishPlatformEventWhenMessageIsUpdatedByExperienceCloudUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(

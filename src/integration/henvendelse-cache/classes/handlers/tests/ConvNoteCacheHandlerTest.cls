@@ -6,7 +6,7 @@ public class ConvNoteCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenConvNoteIsCreated() {
+    static void shouldPublishPlatformEventWhenConvNoteIsCreated() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Test.startTest();
@@ -27,7 +27,7 @@ public class ConvNoteCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenConvNoteIsUpdatedByExperienceCloudUser() {
+    static void shouldPublishPlatformEventWhenConvNoteIsUpdatedByExperienceCloudUser() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [
             SELECT Id
@@ -58,7 +58,7 @@ public class ConvNoteCacheHandlerTest {
     }
 
     @IsTest
-    private static void shouldPublishPlatformEventWhenConvNoteIsUpdatedByInternalUser() {
+    static void shouldPublishPlatformEventWhenConvNoteIsUpdatedByInternalUser() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Conversation_Note__c convNote = (Conversation_Note__c) SharedTestDataFactory.createRecord(
             new Conversation_Note__c(

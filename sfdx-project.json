@@ -18,8 +18,8 @@
       ]
     },
     {
-      "path": "src/integration/henvendelse-caching",
-      "package": "henvendelse-caching",
+      "path": "src/integration/henvendelse-cache",
+      "package": "henvendelse-cache",
       "versionNumber": "0.1.0.NEXT",
       "dependencies": [
         {
