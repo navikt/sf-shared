@@ -80,7 +80,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnReferenceNumber() {
-        ContactParameter contactParameterDataType;
         String referenceNumber = null;
         String role = 'Sakspart';
 
@@ -89,10 +88,7 @@ private class ContactParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            contactParameterDataType = new ContactParameter(
-                referenceNumber,
-                role
-            );
+            new ContactParameter(referenceNumber, role);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -120,7 +116,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnRole() {
-        ContactParameter contactParameterDataType;
         String referenceNumber = '12345678900';
         String role = null;
 
@@ -129,10 +124,7 @@ private class ContactParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            contactParameterDataType = new ContactParameter(
-                referenceNumber,
-                role
-            );
+            new ContactParameter(referenceNumber, role);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -160,7 +152,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnReferenceNumberAndRole() {
-        ContactParameter contactParameterDataType;
         String referenceNumber = null;
         String role = null;
 
@@ -169,10 +160,7 @@ private class ContactParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            contactParameterDataType = new ContactParameter(
-                referenceNumber,
-                role
-            );
+            new ContactParameter(referenceNumber, role);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -239,7 +227,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void constructorWithThreeParametersAndThrowExceptionOnReferenceNumber() {
-        ContactParameter contactParameterDataType;
         String referenceNumber = null;
         String role = 'Sakspart';
         Boolean isUnofficial = true;
@@ -249,11 +236,7 @@ private class ContactParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            contactParameterDataType = new ContactParameter(
-                referenceNumber,
-                role,
-                isUnofficial
-            );
+            new ContactParameter(referenceNumber, role, isUnofficial);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -281,7 +264,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void constructorWithThreeParametersAndThrowExceptionOnRole() {
-        ContactParameter contactParameterDataType;
         String referenceNumber = '12345678900';
         String role = null;
         Boolean isUnofficial = true;
@@ -291,11 +273,7 @@ private class ContactParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            contactParameterDataType = new ContactParameter(
-                referenceNumber,
-                role,
-                isUnofficial
-            );
+            new ContactParameter(referenceNumber, role, isUnofficial);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -323,7 +301,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void constructorWithThreeParametersAndThrowExceptionOnReferenceNumberAndRole() {
-        ContactParameter contactParameterDataType;
         String referenceNumber = null;
         String role = null;
         Boolean isUnofficial = true;
@@ -333,11 +310,7 @@ private class ContactParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            contactParameterDataType = new ContactParameter(
-                referenceNumber,
-                role,
-                isUnofficial
-            );
+            new ContactParameter(referenceNumber, role, isUnofficial);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -512,7 +485,7 @@ private class ContactParameterTest {
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
-     * @see ArchiveCodeParameter.validate
+     * @see ContactParameter.validate
      */
     @IsTest
     static void validate() {

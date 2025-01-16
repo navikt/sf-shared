@@ -83,7 +83,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnArchiveType() {
-        ArchiveCodeParameter archiveCodeParameterDataType;
         String archiveType = null;
         Integer sortOrder = 1;
 
@@ -92,10 +91,7 @@ private class ArchiveCodeParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
-                archiveType,
-                sortOrder
-            );
+            new ArchiveCodeParameter(archiveType, sortOrder);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -123,7 +119,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnSortOrder() {
-        ArchiveCodeParameter archiveCodeParameterDataType;
         String archiveType = 'Salesforce';
         Integer sortOrder = null;
 
@@ -132,10 +127,7 @@ private class ArchiveCodeParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
-                archiveType,
-                sortOrder
-            );
+            new ArchiveCodeParameter(archiveType, sortOrder);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -164,7 +156,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnBothArchiveTypeAndSortOrder() {
-        ArchiveCodeParameter archiveCodeParameterDataType;
         String archiveType = null;
         Integer sortOrder = null;
 
@@ -173,10 +164,7 @@ private class ArchiveCodeParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
-                archiveType,
-                sortOrder
-            );
+            new ArchiveCodeParameter(archiveType, sortOrder);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -250,7 +238,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void constructorWithFourParametersAndThrowExceptionOnArchiveType() {
-        ArchiveCodeParameter archiveCodeParameterDataType;
         String archiveType = null;
         Integer sortOrder = 1;
         String archiveCode = '123';
@@ -261,7 +248,7 @@ private class ArchiveCodeParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
+            new ArchiveCodeParameter(
                 archiveType,
                 sortOrder,
                 archiveCode,
@@ -294,7 +281,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void constructorWithFourParametersAndThrowExceptionOnSortOrder() {
-        ArchiveCodeParameter archiveCodeParameterDataType;
         String archiveType = 'Salesforce';
         Integer sortOrder = null;
         String archiveCode = '123';
@@ -305,7 +291,7 @@ private class ArchiveCodeParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
+            new ArchiveCodeParameter(
                 archiveType,
                 sortOrder,
                 archiveCode,
@@ -339,7 +325,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void constructorWithFourParametersAndThrowExceptionOnBothArchiveTypeAndSortOrder() {
-        ArchiveCodeParameter archiveCodeParameterDataType;
         String archiveType = null;
         Integer sortOrder = null;
         String archiveCode = '123';
@@ -350,7 +335,7 @@ private class ArchiveCodeParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            archiveCodeParameterDataType = new ArchiveCodeParameter(
+            new ArchiveCodeParameter(
                 archiveType,
                 sortOrder,
                 archiveCode,

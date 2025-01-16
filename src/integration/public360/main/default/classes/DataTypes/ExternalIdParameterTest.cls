@@ -66,7 +66,6 @@ private class ExternalIdParameterTest {
      */
     @IsTest
     static void constructorWithOneParametersAndThrowExceptionOnId() {
-        ExternalIdParameter externalIdParameterDataType;
         String id = null;
 
         String expectedExceptionMessage = ExternalIdParameter.ID_BLANK_ERROR_MESSAGE;
@@ -74,7 +73,7 @@ private class ExternalIdParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            externalIdParameterDataType = new ExternalIdParameter(id);
+            new ExternalIdParameter(id);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -131,7 +130,6 @@ private class ExternalIdParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnId() {
-        ExternalIdParameter externalIdParameterDataType;
         String id = null;
         String type = 'Salesforce';
 
@@ -140,7 +138,7 @@ private class ExternalIdParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            externalIdParameterDataType = new ExternalIdParameter(id, type);
+            new ExternalIdParameter(id, type);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
