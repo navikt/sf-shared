@@ -23,7 +23,7 @@
     },
     {
       "path": "src/integration/public360",
-      "package": "shared-integration-public360",
+      "package": "public360",
       "versionName": "ver 0.1",
       "versionNumber": "0.1.0.NEXT",
       "default": false,

@@ -149,7 +149,7 @@ public class P360CaseService {
      * - CaseService - 4.0.0
      * - [ Base URL: /Biz/v2/api/call/SI.Data.RPC/SI.Data.RPC/CaseService ]
      *
-     * @author Kenneth Soerensen ((kenneth.sorensen@nav.com), NAV
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, NAV
      * @since 0.1.0, November 2024
      * @group Public 360 Integration
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
@@ -197,23 +197,6 @@ public class P360CaseService {
         public List<AdditionalFieldParameter> AdditionalListFields;
         public String eArchiveXMLFragment;
         public String ImportedCaseNumber;
-    }
-
-    /**
-     * @description This class is used to represent an archive code parameter in the Public 360 API.
-     *
-     * @author Kenneth Soerensen ((kenneth.sorensen@nav.com), NAV
-     * @since 0.1.0, November 2024
-     * @group Public 360 Integration
-     * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
-     *
-     */
-    @SuppressWarnings('PMD.FieldNamingConventions')
-    public class ArchiveCodeParameter {
-        public String ArchiveCode;
-        public String ArchiveType;
-        public Integer SortOrder; // TODO: Should be name: Sort, but this is a reserved keyword in Apex - Need to convert correctly in the JSON payload we generate  from the data structure.
-        public Boolean IsManualText;
     }
 
     /**

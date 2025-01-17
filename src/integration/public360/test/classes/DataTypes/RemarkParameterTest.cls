@@ -72,7 +72,6 @@ private class RemarkParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnTitle() {
-        RemarkParameter remarkParameterDataType;
         String title = null;
         String remarkType = 'RemarkType';
 
@@ -81,7 +80,7 @@ private class RemarkParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            remarkParameterDataType = new RemarkParameter(title, remarkType);
+            new RemarkParameter(title, remarkType);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -109,7 +108,6 @@ private class RemarkParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnRemarkType() {
-        RemarkParameter remarkParameterDataType;
         String title = 'Remark Title';
         String remarkType = null;
 
@@ -118,7 +116,7 @@ private class RemarkParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            remarkParameterDataType = new RemarkParameter(title, remarkType);
+            new RemarkParameter(title, remarkType);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -147,7 +145,6 @@ private class RemarkParameterTest {
      */
     @IsTest
     static void constructorWithTwoParametersAndThrowExceptionOnBothTitleAndRemarkType() {
-        RemarkParameter remarkParameterDataType;
         String title = null;
         String remarkType = null;
 
@@ -156,7 +153,7 @@ private class RemarkParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            remarkParameterDataType = new RemarkParameter(title, remarkType);
+            new RemarkParameter(title, remarkType);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -223,7 +220,6 @@ private class RemarkParameterTest {
      */
     @IsTest
     static void constructorWithThreeParametersAndThrowExceptionOnTitle() {
-        RemarkParameter remarkParameterDataType;
         String title = null;
         String remarkType = 'RemarkType';
         String content = 'Remark Content';
@@ -233,11 +229,7 @@ private class RemarkParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            remarkParameterDataType = new RemarkParameter(
-                title,
-                remarkType,
-                content
-            );
+            new RemarkParameter(title, remarkType, content);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -265,7 +257,6 @@ private class RemarkParameterTest {
      */
     @IsTest
     static void constructorWithThreeParametersAndThrowExceptionOnRemarkType() {
-        RemarkParameter remarkParameterDataType;
         String title = 'Remark Title';
         String remarkType = null;
         String content = 'Remark Content';
@@ -275,11 +266,7 @@ private class RemarkParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            remarkParameterDataType = new RemarkParameter(
-                title,
-                remarkType,
-                content
-            );
+            new RemarkParameter(title, remarkType, content);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
@@ -307,7 +294,6 @@ private class RemarkParameterTest {
      */
     @IsTest
     static void constructorWithThreeParametersAndThrowExceptionOnTitleAndRemarkType() {
-        RemarkParameter remarkParameterDataType;
         String title = null;
         String remarkType = null;
         String content = 'Remark Content';
@@ -317,11 +303,7 @@ private class RemarkParameterTest {
         Boolean isExceptionThrown = false;
         System.Test.startTest();
         try {
-            remarkParameterDataType = new RemarkParameter(
-                title,
-                remarkType,
-                content
-            );
+            new RemarkParameter(title, remarkType, content);
         } catch (Exception ex) {
             isExceptionThrown = true;
             actualExceptionMessage = ex.getMessage();
