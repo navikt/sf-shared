@@ -509,7 +509,8 @@ private class ContactParameterTest {
     }
 
     /**
-     * @description Test `validate` method with missing `ReferenceNumber` field and expect an exception to be thrown.
+     * @description Test `validate` method with missing `ReferenceNumber` field and expect an
+     * exception to be thrown.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
@@ -545,7 +546,8 @@ private class ContactParameterTest {
     }
 
     /**
-     * @description Test `validate` method with missing `Role` field and expect an exception to be thrown.
+     * @description Test `validate` method with missing `Role` field and expect an exception to be
+     * thrown.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025

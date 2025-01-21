@@ -6,6 +6,7 @@
  * @group Public 360 Integration
  * @see UnregisteredContactsParameterTest
  */
+@SuppressWarnings('PMD.CognitiveComplexity')
 @IsTest(IsParallel=true)
 private class UnregisteredContactsParameterTest {
     /**
@@ -17,62 +18,62 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void constructorEmpty() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType;
+        UnregisteredContactsParameter unregisteredContactsParameterDataType;
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter();
+        unregisteredContactsParameterDataType = new UnregisteredContactsParameter();
         System.Test.stopTest();
 
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.Role,
+            unregisteredContactsParameterDataType.Role,
             'Role should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.IsUnofficial,
+            unregisteredContactsParameterDataType.IsUnofficial,
             'IsUnofficial should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.ContactName,
+            unregisteredContactsParameterDataType.ContactName,
             'ContactName should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.ContactCompanyName,
+            unregisteredContactsParameterDataType.ContactCompanyName,
             'ContactCompanyName should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.ReferenceNumber,
+            unregisteredContactsParameterDataType.ReferenceNumber,
             'ReferenceNumber should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.Address,
+            unregisteredContactsParameterDataType.Address,
             'Address should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.Country,
+            unregisteredContactsParameterDataType.Country,
             'Country should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.MobilePhone,
+            unregisteredContactsParameterDataType.MobilePhone,
             'MobilePhone should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.Phone,
+            unregisteredContactsParameterDataType.Phone,
             'Phone should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.Email,
+            unregisteredContactsParameterDataType.Email,
             'Email should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.State,
+            unregisteredContactsParameterDataType.State,
             'State should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.ZipCode,
+            unregisteredContactsParameterDataType.ZipCode,
             'ZipCode should be null'
         );
         System.Assert.isNull(
-            unregisteredContactsParameterTestDataType.ZipPlace,
+            unregisteredContactsParameterDataType.ZipPlace,
             'ZipPlace should be null'
         );
     }
@@ -86,12 +87,12 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void constructorWithMandatoryFieldsAsParameters() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType;
+        UnregisteredContactsParameter unregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter(
+        unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
             contactName,
             role
         );
@@ -99,12 +100,12 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             contactName,
-            unregisteredContactsParameterTestDataType.ContactName,
+            unregisteredContactsParameterDataType.ContactName,
             'ContactName fields should be equal'
         );
         System.Assert.areEqual(
             role,
-            unregisteredContactsParameterTestDataType.Role,
+            unregisteredContactsParameterDataType.Role,
             'Role fields should be equal'
         );
     }
@@ -226,7 +227,7 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void constructorWithMainFieldsAsParameters() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType;
+        UnregisteredContactsParameter unregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
         String contactCompanyName = 'Contact Company Name';
@@ -234,7 +235,7 @@ private class UnregisteredContactsParameterTest {
         Boolean isUnofficial = true;
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter(
+        unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
             contactName,
             role,
             contactCompanyName,
@@ -245,27 +246,27 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             contactName,
-            unregisteredContactsParameterTestDataType.ContactName,
+            unregisteredContactsParameterDataType.ContactName,
             'ContactName fields should be equal'
         );
         System.Assert.areEqual(
             role,
-            unregisteredContactsParameterTestDataType.Role,
+            unregisteredContactsParameterDataType.Role,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             contactCompanyName,
-            unregisteredContactsParameterTestDataType.ContactCompanyName,
+            unregisteredContactsParameterDataType.ContactCompanyName,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             referenceNumber,
-            unregisteredContactsParameterTestDataType.ReferenceNumber,
+            unregisteredContactsParameterDataType.ReferenceNumber,
             'ReferenceNumber fields should be equal'
         );
         System.Assert.areEqual(
             isUnofficial,
-            unregisteredContactsParameterTestDataType.IsUnofficial,
+            unregisteredContactsParameterDataType.IsUnofficial,
             'IsUnofficial fields should be equal'
         );
     }
@@ -414,7 +415,7 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void constructorWithMainFieldsAndAddressFieldsAsParameters() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType;
+        UnregisteredContactsParameter unregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
         String contactCompanyName = 'Contact Company Name';
@@ -427,7 +428,7 @@ private class UnregisteredContactsParameterTest {
         String zipPlace = 'Oslo';
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter(
+        unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
             contactName,
             role,
             contactCompanyName,
@@ -443,52 +444,52 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             contactName,
-            unregisteredContactsParameterTestDataType.ContactName,
+            unregisteredContactsParameterDataType.ContactName,
             'ContactName fields should be equal'
         );
         System.Assert.areEqual(
             role,
-            unregisteredContactsParameterTestDataType.Role,
+            unregisteredContactsParameterDataType.Role,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             contactCompanyName,
-            unregisteredContactsParameterTestDataType.ContactCompanyName,
+            unregisteredContactsParameterDataType.ContactCompanyName,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             referenceNumber,
-            unregisteredContactsParameterTestDataType.ReferenceNumber,
+            unregisteredContactsParameterDataType.ReferenceNumber,
             'ReferenceNumber fields should be equal'
         );
         System.Assert.areEqual(
             isUnofficial,
-            unregisteredContactsParameterTestDataType.IsUnofficial,
+            unregisteredContactsParameterDataType.IsUnofficial,
             'IsUnofficial fields should be equal'
         );
         System.Assert.areEqual(
             country,
-            unregisteredContactsParameterTestDataType.Country,
+            unregisteredContactsParameterDataType.Country,
             'Country fields should be equal'
         );
         System.Assert.areEqual(
             address,
-            unregisteredContactsParameterTestDataType.Address,
+            unregisteredContactsParameterDataType.Address,
             'Address fields should be equal'
         );
         System.Assert.areEqual(
             state,
-            unregisteredContactsParameterTestDataType.State,
+            unregisteredContactsParameterDataType.State,
             'State fields should be equal'
         );
         System.Assert.areEqual(
             zipCode,
-            unregisteredContactsParameterTestDataType.ZipCode,
+            unregisteredContactsParameterDataType.ZipCode,
             'ZipCode fields should be equal'
         );
         System.Assert.areEqual(
             zipPlace,
-            unregisteredContactsParameterTestDataType.ZipPlace,
+            unregisteredContactsParameterDataType.ZipPlace,
             'ZipPlace fields should be equal'
         );
     }
@@ -667,7 +668,7 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void constructorWithMainFieldsAndContactInfoFieldsAsParameters() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType;
+        UnregisteredContactsParameter unregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
         String contactCompanyName = 'Contact Company Name';
@@ -678,7 +679,7 @@ private class UnregisteredContactsParameterTest {
         String email = 'test@test.nav.no';
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter(
+        unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
             contactName,
             role,
             contactCompanyName,
@@ -692,42 +693,42 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             contactName,
-            unregisteredContactsParameterTestDataType.ContactName,
+            unregisteredContactsParameterDataType.ContactName,
             'ContactName fields should be equal'
         );
         System.Assert.areEqual(
             role,
-            unregisteredContactsParameterTestDataType.Role,
+            unregisteredContactsParameterDataType.Role,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             contactCompanyName,
-            unregisteredContactsParameterTestDataType.ContactCompanyName,
+            unregisteredContactsParameterDataType.ContactCompanyName,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             referenceNumber,
-            unregisteredContactsParameterTestDataType.ReferenceNumber,
+            unregisteredContactsParameterDataType.ReferenceNumber,
             'ReferenceNumber fields should be equal'
         );
         System.Assert.areEqual(
             isUnofficial,
-            unregisteredContactsParameterTestDataType.IsUnofficial,
+            unregisteredContactsParameterDataType.IsUnofficial,
             'IsUnofficial fields should be equal'
         );
         System.Assert.areEqual(
             mobilePhone,
-            unregisteredContactsParameterTestDataType.MobilePhone,
+            unregisteredContactsParameterDataType.MobilePhone,
             'MobilePhone fields should be equal'
         );
         System.Assert.areEqual(
             phone,
-            unregisteredContactsParameterTestDataType.Phone,
+            unregisteredContactsParameterDataType.Phone,
             'Phone fields should be equal'
         );
         System.Assert.areEqual(
             email,
-            unregisteredContactsParameterTestDataType.Email,
+            unregisteredContactsParameterDataType.Email,
             'Email fields should be equal'
         );
     }
@@ -895,7 +896,7 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void constructorWithAllFieldsAsParameters() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType;
+        UnregisteredContactsParameter unregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
         String contactCompanyName = 'Contact Company Name';
@@ -911,7 +912,7 @@ private class UnregisteredContactsParameterTest {
         String email = 'test@test.nav.no';
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter(
+        unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
             contactName,
             role,
             contactCompanyName,
@@ -930,67 +931,67 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             contactName,
-            unregisteredContactsParameterTestDataType.ContactName,
+            unregisteredContactsParameterDataType.ContactName,
             'ContactName fields should be equal'
         );
         System.Assert.areEqual(
             role,
-            unregisteredContactsParameterTestDataType.Role,
+            unregisteredContactsParameterDataType.Role,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             contactCompanyName,
-            unregisteredContactsParameterTestDataType.ContactCompanyName,
+            unregisteredContactsParameterDataType.ContactCompanyName,
             'Role fields should be equal'
         );
         System.Assert.areEqual(
             referenceNumber,
-            unregisteredContactsParameterTestDataType.ReferenceNumber,
+            unregisteredContactsParameterDataType.ReferenceNumber,
             'ReferenceNumber fields should be equal'
         );
         System.Assert.areEqual(
             isUnofficial,
-            unregisteredContactsParameterTestDataType.IsUnofficial,
+            unregisteredContactsParameterDataType.IsUnofficial,
             'IsUnofficial fields should be equal'
         );
         System.Assert.areEqual(
             country,
-            unregisteredContactsParameterTestDataType.Country,
+            unregisteredContactsParameterDataType.Country,
             'Country fields should be equal'
         );
         System.Assert.areEqual(
             address,
-            unregisteredContactsParameterTestDataType.Address,
+            unregisteredContactsParameterDataType.Address,
             'Address fields should be equal'
         );
         System.Assert.areEqual(
             state,
-            unregisteredContactsParameterTestDataType.State,
+            unregisteredContactsParameterDataType.State,
             'State fields should be equal'
         );
         System.Assert.areEqual(
             zipCode,
-            unregisteredContactsParameterTestDataType.ZipCode,
+            unregisteredContactsParameterDataType.ZipCode,
             'ZipCode fields should be equal'
         );
         System.Assert.areEqual(
             zipPlace,
-            unregisteredContactsParameterTestDataType.ZipPlace,
+            unregisteredContactsParameterDataType.ZipPlace,
             'ZipPlace fields should be equal'
         );
         System.Assert.areEqual(
             mobilePhone,
-            unregisteredContactsParameterTestDataType.MobilePhone,
+            unregisteredContactsParameterDataType.MobilePhone,
             'MobilePhone fields should be equal'
         );
         System.Assert.areEqual(
             phone,
-            unregisteredContactsParameterTestDataType.Phone,
+            unregisteredContactsParameterDataType.Phone,
             'Phone fields should be equal'
         );
         System.Assert.areEqual(
             email,
-            unregisteredContactsParameterTestDataType.Email,
+            unregisteredContactsParameterDataType.Email,
             'Email fields should be equal'
         );
     }
@@ -1187,7 +1188,7 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void setAddress() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter();
+        UnregisteredContactsParameter unregisteredContactsParameterDataType = new UnregisteredContactsParameter();
         String country = 'Norway';
         String address = 'Address 30';
         String state = 'Oslo';
@@ -1195,7 +1196,7 @@ private class UnregisteredContactsParameterTest {
         String zipPlace = 'Oslo';
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType.setAddress(
+        unregisteredContactsParameterDataType.setAddress(
             country,
             address,
             state,
@@ -1206,27 +1207,27 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             country,
-            unregisteredContactsParameterTestDataType.Country,
+            unregisteredContactsParameterDataType.Country,
             'Country fields should be equal'
         );
         System.Assert.areEqual(
             address,
-            unregisteredContactsParameterTestDataType.Address,
+            unregisteredContactsParameterDataType.Address,
             'Address fields should be equal'
         );
         System.Assert.areEqual(
             state,
-            unregisteredContactsParameterTestDataType.State,
+            unregisteredContactsParameterDataType.State,
             'State fields should be equal'
         );
         System.Assert.areEqual(
             zipCode,
-            unregisteredContactsParameterTestDataType.ZipCode,
+            unregisteredContactsParameterDataType.ZipCode,
             'ZipCode fields should be equal'
         );
         System.Assert.areEqual(
             zipPlace,
-            unregisteredContactsParameterTestDataType.ZipPlace,
+            unregisteredContactsParameterDataType.ZipPlace,
             'ZipPlace fields should be equal'
         );
     }
@@ -1240,13 +1241,13 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void setContactInfo() {
-        UnregisteredContactsParameter unregisteredContactsParameterTestDataType = new UnregisteredContactsParameter();
+        UnregisteredContactsParameter unregisteredContactsParameterDataType = new UnregisteredContactsParameter();
         String mobilePhone = '12345678';
         String phone = '12345678';
         String email = 'test@test.nav.no';
 
         System.Test.startTest();
-        unregisteredContactsParameterTestDataType.setContactInfo(
+        unregisteredContactsParameterDataType.setContactInfo(
             mobilePhone,
             phone,
             email
@@ -1255,17 +1256,17 @@ private class UnregisteredContactsParameterTest {
 
         System.Assert.areEqual(
             mobilePhone,
-            unregisteredContactsParameterTestDataType.MobilePhone,
+            unregisteredContactsParameterDataType.MobilePhone,
             'MobilePhone fields should be equal'
         );
         System.Assert.areEqual(
             phone,
-            unregisteredContactsParameterTestDataType.Phone,
+            unregisteredContactsParameterDataType.Phone,
             'Phone fields should be equal'
         );
         System.Assert.areEqual(
             email,
-            unregisteredContactsParameterTestDataType.Email,
+            unregisteredContactsParameterDataType.Email,
             'Email fields should be equal'
         );
     }

@@ -9,15 +9,15 @@
  * - The class has a custom exception class for use with the `validation` method.
  *
  * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
- * @since 0.1.0, December 2024
+ * @since 0.1.0, January 2025
  * @group Public 360 Integration
  * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
  * @example
- * ArchiveCodeParameter archiveCode = new ArchiveCodeParameter('recno:60001', 1);
- * archiveCode.ArchiveCode = 'B32';
- * archiveCode.IsManualText = false;
- * String json = archiveCode.toJson();
- * ArchiveCodeParameter deserializedArchiveCode = ArchiveCodeParameter.fromJson(json);
+ * UnregisteredContactsParameter unregisteredContacts = new UnregisteredContactsParameter('Contact Name', 'Role');
+ * unregisteredContacts.ContactCompanyName = 'Contact Company Name';
+ * unregisteredContacts.IsUnofficial = true;
+ * String json = unregisteredContacts.toJson();
+ * UnregisteredContactsParameter deserializedUnregisteredContacts = UnregisteredContactsParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
 public class UnregisteredContactsParameter {
@@ -156,14 +156,14 @@ public class UnregisteredContactsParameter {
      */
     @SuppressWarnings('PMD.EmptyStatementBlock')
     @TestVisible
-    public UnregisteredContactsParameter() {
+    private UnregisteredContactsParameter() {
     }
 
     /**
      * @description Constructor for the `UnregisteredContactsParameter` class with mandatory fields as parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
-     * @since 0.1.0, December 2024
+     * @since 0.1.0, January 2025
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param contactName The contact name of the unregistered contact - See Public 360 API documentation for details.
      * @param role The role of the unregistered contact - See Public 360 API documentation for details.
@@ -178,7 +178,7 @@ public class UnregisteredContactsParameter {
      * @description Constructor for the `UnregisteredContactsParameter` class with main fields as parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
-     * @since 0.1.0, December 2024
+     * @since 0.1.0, January 2025
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param contactName The contact name of the unregistered contact - See Public 360 API documentation for details.
      * @param role The role of the unregistered contact - See Public 360 API documentation for details.
@@ -250,7 +250,7 @@ public class UnregisteredContactsParameter {
      * contact info fields as parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
-     * @since 0.1.0, December 2024
+     * @since 0.1.0, January 2025
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param contactName The contact name of the unregistered contact - See Public 360 API documentation for details.
      * @param role The role of the unregistered contact - See Public 360 API documentation for details.
@@ -288,7 +288,7 @@ public class UnregisteredContactsParameter {
      * @description Constructor for the `UnregisteredContactsParameter` class with all fields as parameters.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
-     * @since 0.1.0, December 2024
+     * @since 0.1.0, January 2025
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param contactName The contact name of the unregistered contact - See Public 360 API documentation for details.
      * @param role The role of the unregistered contact - See Public 360 API documentation for details.
@@ -337,7 +337,7 @@ public class UnregisteredContactsParameter {
      * @description Sets the address fields of the unregistered contact.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
-     * @since 0.1.0, December 2024
+     * @since 0.1.0, January 2025
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param country The country of the unregistered contact - See Public 360 API documentation for details.
      * @param address The address of the unregistered contact - See Public 360 API documentation for details.
@@ -367,7 +367,7 @@ public class UnregisteredContactsParameter {
      * @description Sets the contact info fields of the unregistered contact.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
-     * @since 0.1.0, December 2024
+     * @since 0.1.0, January 2025
      * @see [Public 360 SIF API Documentation](https://help.360online.com/ReleaseInformation/SIF%20APIs%20-%20Documentation.pdf)
      * @param mobilePhone The mobile phone number of the unregistered contact - See Public 360 API documentation for details.
      * @param phone The phone number of the unregistered contact - See Public 360 API documentation for details.
