@@ -1,48 +1,49 @@
 @IsTest
-public class ThreadCacheFilterHelperTest {
+public class MessageCacheFilterHelperTest {
     @TestSetup
     static void makeData() {
         myTriggers.disable(MessageCacheHandler.class);
         myTriggers.disable(ThreadCacheHandler.class);
         User experienceCloudUser = (User) SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
-    }
-
-    @IsTest
-    static void shouldReturnOneThreadIFromOneMessage() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
-        Id createExperienceCloudUserId = [
-            SELECT Id
-            FROM User
-            WHERE AccountId = :accountId
-        ];
-        Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
+
+        SharedTestDataFactory.createRecord(
             new Thread__c(
                 CRM_Account__c = accountId,
                 CRM_Type__c = 'STO',
                 OwnerId = experienceCloudUser.Id
             )
         );
+    }
+
+    @IsTest
+    static void shouldReturnOneThreadIFromOneMessage() {
+        Id expectedThreadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
+        SharedTestDataFactory.createRecord(
+            new Message__c(
+                CRM_Thread__c = expectedThreadId,
+                CRM_Message_Text__c = 'Test'
+            )
+        );
+        List<Message__c> messages = [
+            SELECT CRM_Thread__c, LastModifiedById
+            FROM Message__c
+        ];
 
         Test.startTest();
-        Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            new List<Thread__c>{ thread }
+        Set<Id> result = MessageCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            messages
         );
         Test.stopTest();
 
         Assert.areEqual(1, result.size());
         Id actualThreadIdId = new List<Id>(result)[0];
-        Assert.areEqual(thread.Id, actualThreadIdId);
+        Assert.areEqual(expectedThreadId, actualThreadIdId);
     }
 
     @IsTest
     static void shouldNotReturnThreadIdForMessageCreatedByModiaIntegrationUser() {
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
-        Id createExperienceCloudUserId = [
-            SELECT Id
-            FROM User
-            WHERE AccountId = :accountId
-        ];
-
+        Id expectedThreadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         //Create record as Modia Integration User
         Id profileId = [
             SELECT Id
@@ -57,20 +58,24 @@ public class ThreadCacheFilterHelperTest {
                 ProfileId = profileId
             )
         );
-        Thread__c thread;
+
         System.runAs(modiaIntegrationUser) {
-            thread = (Thread__c) SharedTestDataFactory.createRecord(
-                new Thread__c(
-                    CRM_Account__c = accountId,
-                    CRM_Type__c = 'STO',
-                    OwnerId = experienceCloudUser.Id
+            SharedTestDataFactory.createRecord(
+                new Message__c(
+                    CRM_Thread__c = expectedThreadId,
+                    CRM_Message_Text__c = 'Test'
                 )
             );
         }
 
+        List<Message__c> messages = [
+            SELECT CRM_Thread__c, LastModifiedById
+            FROM Message__c
+        ];
+
         Test.startTest();
-        Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            new List<Thread__c>{ thread }
+        Set<Id> result = MessageCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            messages
         );
         Test.stopTest();
 

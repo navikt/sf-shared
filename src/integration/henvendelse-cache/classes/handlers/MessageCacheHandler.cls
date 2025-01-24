@@ -8,8 +8,12 @@ global class MessageCacheHandler extends MyTriggers {
         createHenvendelseCacheQueueable((List<Message__c>) records);
     }
 
-    private void createHenvendelseCacheQueueable(List<Message__c> messageList){
-        Set<Id> recordIds = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClearByMessages(messageList);
-        System.enqueueJob(new ClearHenvendelseCacheQueueable(recordIds, 'Thread__c'));
+    private void createHenvendelseCacheQueueable(List<Message__c> messageList) {
+        Set<Id> recordIds = MessageCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            messageList
+        );
+        System.enqueueJob(
+            new ClearHenvendelseCacheQueueable(recordIds, 'Thread__c')
+        );
     }
 }

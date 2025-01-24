@@ -3,7 +3,6 @@ public class ConvNoteCacheHandlerTest {
     @TestSetup
     private static void makeData() {
         SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
-        
     }
 
     @IsTest

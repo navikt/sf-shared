@@ -7,8 +7,17 @@ global class ConvNoteCacheHandler extends MyTriggers {
         createHenvendelseCacheQueueable((List<Conversation_Note__c>) records);
     }
 
-    private void createHenvendelseCacheQueueable(List<Conversation_Note__c> convNoteList){
-        Set<Id> recordIds = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(convNoteList);
-        System.enqueueJob(new ClearHenvendelseCacheQueueable(recordIds, 'Conversation_Note__c'));
+    private void createHenvendelseCacheQueueable(
+        List<Conversation_Note__c> convNoteList
+    ) {
+        Set<Id> recordIds = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            convNoteList
+        );
+        System.enqueueJob(
+            new ClearHenvendelseCacheQueueable(
+                recordIds,
+                'Conversation_Note__c'
+            )
+        );
     }
 }

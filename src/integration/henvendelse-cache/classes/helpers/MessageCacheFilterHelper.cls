@@ -1,14 +1,14 @@
-public without sharing class ThreadCacheFilterHelper {
+public without sharing class MessageCacheFilterHelper {
     public static Set<Id> getRecordIdsRequiringCacheClear(
-        List<Thread__c> threadList
+        List<Message__c> messages
     ) {
         ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
         Set<Id> threadIds = new Set<Id>();
 
-        for (Thread__c thread : threadList) {
+        for (Message__c msg : messages) {
             //Only cache records created by Salesforce internal users
-            if (thread.LastModifiedById != modiaIntegrationUser.UserId) {
-                threadIds.add(thread.Id);
+            if (msg.LastModifiedById != modiaIntegrationUser.UserId) {
+                threadIds.add(msg.CRM_Thread__c);
             }
         }
 

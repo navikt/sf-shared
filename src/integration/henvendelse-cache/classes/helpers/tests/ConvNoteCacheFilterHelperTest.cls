@@ -23,7 +23,9 @@ public class ConvNoteCacheFilterHelperTest {
         ];
 
         Test.startTest();
-        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(convNotes);
+        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            convNotes
+        );
         Test.stopTest();
 
         Assert.areEqual(1, result.size());
@@ -66,7 +68,9 @@ public class ConvNoteCacheFilterHelperTest {
         ];
 
         Test.startTest();
-        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(convNotes);
+        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            convNotes
+        );
         Test.stopTest();
 
         Assert.areEqual(0, result.size());
