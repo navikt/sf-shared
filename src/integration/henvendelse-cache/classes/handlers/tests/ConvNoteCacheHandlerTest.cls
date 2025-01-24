@@ -3,10 +3,11 @@ public class ConvNoteCacheHandlerTest {
     @TestSetup
     private static void makeData() {
         SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
+        
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenConvNoteIsCreated() {
+    static void shouldCreateQueuableJobWhenConvNoteIsCreatedByInternalSalesforceUser() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Test.startTest();
@@ -18,16 +19,11 @@ public class ConvNoteCacheHandlerTest {
             )
         );
         Test.stopTest();
-
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenConvNoteIsUpdatedByExperienceCloudUser() {
+    static void shouldCreateQueuableJobWhenConvNoteIsUpdatedByExperienceClodUser() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [
             SELECT Id
@@ -50,15 +46,11 @@ public class ConvNoteCacheHandlerTest {
         }
         Test.stopTest();
 
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenConvNoteIsUpdatedByInternalUser() {
+    static void shouldNotCreateQueuableJobWhenConvNoteIsUpdatedByInternalUser() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Conversation_Note__c convNote = (Conversation_Note__c) SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
@@ -73,10 +65,6 @@ public class ConvNoteCacheHandlerTest {
         update convNote;
         Test.stopTest();
 
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
     }
 }

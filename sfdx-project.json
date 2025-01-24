@@ -23,8 +23,8 @@
       "versionNumber": "0.1.0.NEXT",
       "dependencies": [
         {
-          "package": "shared-data-model",
-          "versionNumber": "0.1.0.LATEST"
+          "package": "crm-henvendelse",
+          "versionNumber": "0.156.0.LATEST"
         }
       ]
     }

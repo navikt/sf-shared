@@ -6,7 +6,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnRecordIdForConvNoteWithBehandlingskjedeId123() {
+    static void shouldReturnRecordIdForConvNote() {
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
@@ -23,7 +23,7 @@ public class ConvNoteCacheFilterHelperTest {
         ];
 
         Test.startTest();
-        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIds(convNotes);
+        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(convNotes);
         Test.stopTest();
 
         Assert.areEqual(1, result.size());
@@ -66,123 +66,7 @@ public class ConvNoteCacheFilterHelperTest {
         ];
 
         Test.startTest();
-        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIds(convNotes);
-        Test.stopTest();
-
-        Assert.areEqual(0, result.size());
-    }
-
-    @IsTest
-    static void shouldReturnOnePlatformEventWhenConvNoteCreatedByInternalSalesforceUser() {
-        Account personAccount = SharedTestDataFactory.createPersonAccount();
-        SharedTestDataFactory.createRecord(
-            new Conversation_Note__c(
-                CRM_Account__c = personAccount.Id,
-                CRM_Conversation_Note__c = 'DUMMY TEXT',
-                CRM_Henvendelse_BehandlingskjedeId__c = '123'
-            )
-        );
-
-        List<Conversation_Note__c> convNotes = [
-            SELECT
-                Id,
-                LastModifiedById,
-                CRM_Account__r.CRM_Person__c,
-                CRM_Account__r.CRM_Person__r.INT_ActorId__c
-            FROM Conversation_Note__c
-            WHERE CRM_Henvendelse_BehandlingskjedeId__c = '123'
-        ];
-        String expectedActorId = convNotes[0]
-            .CRM_Account__r.CRM_Person__r.INT_ActorId__c;
-        Assert.isNotNull(expectedActorId);
-
-        Test.startTest();
-        List<CacheHenvendelse__e> result = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
-            convNotes
-        );
-        Test.stopTest();
-
-        Assert.areEqual(1, result.size());
-        Assert.areEqual('123', result[0].BehandlingskjedeId__c);
-        Assert.areEqual(expectedActorId, result[0].ActorId__c);
-    }
-
-    @IsTest
-    static void shouldNotRetrunPlatformEventsWhenConvNoteIsCreatedByModiaIntegrationUser() {
-        Id profileId = [
-            SELECT Id
-            FROM Profile
-            WHERE Name = 'System Administrator'
-            LIMIT 1
-        ]
-        .Id;
-        User modiaIntegrationUser = (User) SharedTestDataFactory.createRecord(
-            new User(
-                username = 'modia.integrasjon@nav.no.test',
-                ProfileId = profileId
-            )
-        );
-
-        Account personAccount = SharedTestDataFactory.createPersonAccount();
-
-        System.runAs(modiaIntegrationUser) {
-            SharedTestDataFactory.createRecord(
-                new Conversation_Note__c(
-                    CRM_Account__c = personAccount.Id,
-                    CRM_Conversation_Note__c = 'DUMMY TEXT',
-                    CRM_Henvendelse_BehandlingskjedeId__c = '789'
-                )
-            );
-        }
-
-        List<Conversation_Note__c> convNotes = [
-            SELECT
-                Id,
-                LastModifiedById,
-                CRM_Account__r.CRM_Person__c,
-                CRM_Account__r.CRM_Person__r.INT_ActorId__c
-            FROM Conversation_Note__c
-            WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
-        ];
-        Assert.areEqual(1, convNotes.size());
-
-        Test.startTest();
-        List<CacheHenvendelse__e> result = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
-            convNotes
-        );
-        Test.stopTest();
-
-        Assert.areEqual(0, result.size());
-    }
-
-    @IsTest
-    static void shouldNotRetrunPlatformEventsWhenAccountIsNotAPersonAccount() {
-        Account employer = (Account) SharedTestDataFactory.createRecord(
-            new Account()
-        );
-        SharedTestDataFactory.createRecord(
-            new Conversation_Note__c(
-                CRM_Account__c = employer.Id,
-                CRM_Conversation_Note__c = 'DUMMY TEXT',
-                CRM_Henvendelse_BehandlingskjedeId__c = '456'
-            )
-        );
-
-        List<Conversation_Note__c> convNotes = [
-            SELECT
-                Id,
-                LastModifiedById,
-                CRM_Account__r.CRM_Person__c,
-                CRM_Account__r.CRM_Person__r.INT_ActorId__c
-            FROM Conversation_Note__c
-            WHERE CRM_Henvendelse_BehandlingskjedeId__c = '456'
-        ];
-        Assert.areEqual(1, convNotes.size());
-
-        Test.startTest();
-        List<CacheHenvendelse__e> result = ConvNoteCacheFilterHelper.getConvNotesToBeCached(
-            convNotes
-        );
+        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(convNotes);
         Test.stopTest();
 
         Assert.areEqual(0, result.size());
