@@ -3,6 +3,7 @@ public class ThreadCacheFilterHelperTest {
     @TestSetup
     static void makeData() {
         myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
         User experienceCloudUser = (User) SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
@@ -30,7 +31,7 @@ public class ThreadCacheFilterHelperTest {
         ];
 
         Test.startTest();
-        Set<Id> result = ThreadCacheFilterHelper.getThreadIds(messages);
+        Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClearByMessages(messages);
         Test.stopTest();
 
         Assert.areEqual(1, result.size());
@@ -71,7 +72,7 @@ public class ThreadCacheFilterHelperTest {
         ];
 
         Test.startTest();
-        Set<Id> result = ThreadCacheFilterHelper.getThreadIds(messages);
+        Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClearByMessages(messages);
         Test.stopTest();
 
         Assert.areEqual(0, result.size());

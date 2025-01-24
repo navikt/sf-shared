@@ -8,14 +8,14 @@ public class MessageCacheHandlerTest {
         SharedTestDataFactory.createRecord(
             new Thread__c(
                 CRM_Account__c = accountId,
-                CRM_Type__c = 'STO',
+                CRM_Thread_Type__c = 'STO',
                 OwnerId = experienceCloudUser.Id
             )
         );
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenMessageIsCreatedByInternalUser() {
+    static void shouldCreateQueuableJobWhenMessageIsCreatedByInternalUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Test.startTest();
@@ -27,15 +27,11 @@ public class MessageCacheHandlerTest {
         );
         Test.stopTest();
 
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenMessageIsCreatedByExperienceCloudUser() {
+    static void sshouldCreateQueuableJobWhenMessageIsCreatedByExperienceCloudUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [
@@ -53,15 +49,11 @@ public class MessageCacheHandlerTest {
         }
         Test.stopTest();
 
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenMessageIsUpdatedByInternalUser() {
+    static void shouldCreateQueuableJobWhenMessageIsUpdatedByInternalUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
@@ -76,15 +68,11 @@ public class MessageCacheHandlerTest {
         update msg;
         Test.stopTest();
 
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest
-    static void shouldPublishPlatformEventWhenMessageIsUpdatedByExperienceCloudUser() {
+    static void shouldCreateQueuableJobWhenMessageIsUpdatedByExperienceCloudUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
@@ -107,10 +95,6 @@ public class MessageCacheHandlerTest {
 
         Test.stopTest();
 
-        Assert.areEqual(
-            0,
-            [SELECT COUNT() FROM Application_Log__c],
-            'Expect no error logs'
-        );
+        Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
     }
 }
