@@ -14,4 +14,20 @@ public without sharing class ThreadCacheFilterHelper {
 
         return threadIds;
     }
+
+    public static Set<String> getActorIds(Set<Id> threadIds) {
+        Set<String> actorIds = new Set<String>();
+        for (Thread__c thread : [
+            SELECT Id, CRM_Account__r.CRM_Person__r.INT_ActorId__c
+            FROM Thread__c
+            WHERE Id IN :threadIds
+        ]) {
+            if (thread.CRM_Account__r.CRM_Person__r.INT_ActorId__c != null) {
+                actorIds.add(
+                    thread.CRM_Account__r.CRM_Person__r.INT_ActorId__c
+                );
+            }
+        }
+        return actorIds;
+    }
 }

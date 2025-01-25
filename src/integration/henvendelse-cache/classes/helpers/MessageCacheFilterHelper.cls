@@ -14,4 +14,23 @@ public without sharing class MessageCacheFilterHelper {
 
         return threadIds;
     }
+
+    public static Set<String> getActorIds(Set<Id> messageIds) {
+        Set<String> actorIds = new Set<String>();
+        for (Message__c msg : [
+            SELECT Id, CRM_Thread__r.CRM_Account__r.CRM_Person__r.INT_ActorId__c
+            FROM Message__c
+            WHERE Id IN :messageIds
+        ]) {
+            if (
+                msg.CRM_Thread__r.CRM_Account__r.CRM_Person__r.INT_ActorId__c !=
+                null
+            ) {
+                actorIds.add(
+                    msg.CRM_Thread__r.CRM_Account__r.CRM_Person__r.INT_ActorId__c
+                );
+            }
+        }
+        return actorIds;
+    }
 }

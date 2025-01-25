@@ -79,4 +79,40 @@ public class ThreadCacheFilterHelperTest {
 
         Assert.areEqual(0, result.size());
     }
+
+    @IsTest
+    static void shouldReturnOneActorIdWhenOneThread() {
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
+        Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
+            new Thread__c(CRM_Account__c = accountId, CRM_Type__c = 'STO')
+        );
+
+        Test.startTest();
+        Set<String> result = ThreadCacheFilterHelper.getActorIds(
+            new Set<Id>{ thread.Id }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(1, result.size());
+    }
+
+    @IsTest
+    static void shouldNotReturnOneActorIdWhenRelatedAccountIsBusinessAccount() {
+        Account account = (Account) SharedTestDataFactory.createRecord(
+            new Account(Name = 'DUMMY ACCOUNT')
+        );
+
+        Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
+            new Thread__c(CRM_Account__c = account.Id, CRM_Type__c = 'STO')
+        );
+
+        Test.startTest();
+        Set<String> result = MessageCacheFilterHelper.getActorIds(
+            new Set<Id>{ thread.Id }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
 }
