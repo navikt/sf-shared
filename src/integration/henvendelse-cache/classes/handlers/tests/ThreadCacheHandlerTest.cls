@@ -1,5 +1,5 @@
 @IsTest
-public class MessageCacheHandlerTest {
+public class ThreadCacheHandlerTest {
     @TestSetup
     private static void makeData() {
         User experienceCloudUser = (User) SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
@@ -31,7 +31,7 @@ public class MessageCacheHandlerTest {
     }
 
     @IsTest
-    static void shouldCreateQueuableJobWhenMessageIsCreatedByExperienceCloudUser() {
+    static void sshouldCreateQueuableJobWhenMessageIsCreatedByExperienceCloudUser() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [

@@ -8,40 +8,42 @@ public class ThreadCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnOneThreadIFromOneMessage() {
+    static void shouldReturnOneThreadWhenOneThreadIsCreated() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
-        Id createExperienceCloudUserId = [
+        Id experienceCloudUserId = [
             SELECT Id
             FROM User
             WHERE AccountId = :accountId
-        ];
-        Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
+        ]
+        .Id;
+        SharedTestDataFactory.createRecord(
             new Thread__c(
                 CRM_Account__c = accountId,
                 CRM_Type__c = 'STO',
-                OwnerId = experienceCloudUser.Id
+                OwnerId = experienceCloudUserId
             )
         );
-
+        List<Thread__c> threads = [SELECT Id, LastModifiedById FROM Thread__c];
         Test.startTest();
         Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            new List<Thread__c>{ thread }
+            threads
         );
         Test.stopTest();
 
         Assert.areEqual(1, result.size());
         Id actualThreadIdId = new List<Id>(result)[0];
-        Assert.areEqual(thread.Id, actualThreadIdId);
+        Assert.areEqual(threads[0].Id, actualThreadIdId);
     }
 
     @IsTest
-    static void shouldNotReturnThreadIdForMessageCreatedByModiaIntegrationUser() {
+    static void shouldNotReturnThreadIdForThreadCreatedByModiaIntegrationUser() {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
-        Id createExperienceCloudUserId = [
+        Id experienceCloudUserId = [
             SELECT Id
             FROM User
             WHERE AccountId = :accountId
-        ];
+        ]
+        .Id;
 
         //Create record as Modia Integration User
         Id profileId = [
@@ -57,20 +59,21 @@ public class ThreadCacheFilterHelperTest {
                 ProfileId = profileId
             )
         );
-        Thread__c thread;
+
         System.runAs(modiaIntegrationUser) {
-            thread = (Thread__c) SharedTestDataFactory.createRecord(
+            SharedTestDataFactory.createRecord(
                 new Thread__c(
                     CRM_Account__c = accountId,
                     CRM_Type__c = 'STO',
-                    OwnerId = experienceCloudUser.Id
+                    OwnerId = experienceCloudUserId
                 )
             );
         }
 
+        List<Thread__c> threads = [SELECT Id, LastModifiedById FROM Thread__c];
         Test.startTest();
         Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            new List<Thread__c>{ thread }
+            threads
         );
         Test.stopTest();
 
