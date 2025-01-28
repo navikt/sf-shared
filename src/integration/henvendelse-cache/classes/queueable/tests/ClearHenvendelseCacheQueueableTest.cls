@@ -33,6 +33,12 @@ private class ClearHenvendelseCacheQueueableTest {
 
     @IsTest
     static void shouldCreateQueueableJob() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Test.startTest();
         ClearHenvendelseCacheQueueable queueable = new ClearHenvendelseCacheQueueable(
             new Set<Id>{ 'a1P1I0000001a1aUAA' },
@@ -55,14 +61,50 @@ private class ClearHenvendelseCacheQueueableTest {
         );
 
         Test.startTest();
-        Integer result = new ClearHenvendelseCacheQueueable(
+        new ClearHenvendelseCacheQueueable(
                 new Set<Id>{ convNoteId },
                 'Conversation_Note__c'
             )
-            .postActorIdsToHenvendelseDbApi();
+            .sendActorIdsToHenvendelseDbApi();
 
         Test.stopTest();
 
-        Assert.areEqual(1, result);
+        System.assertEquals(
+            0,
+            [
+                SELECT COUNT()
+                FROM Application_Log__c
+                WHERE Log_Level__c = 'Error'
+            ]
+        );
+    }
+
+    @isTest
+    static void shouldLogErrorMessageWhenStatusCodeFromTheApiIs500() {
+        Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
+
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            500,
+            'Error'
+        );
+
+        Test.startTest();
+        new ClearHenvendelseCacheQueueable(
+                new Set<Id>{ convNoteId },
+                'Conversation_Note__c'
+            )
+            .sendActorIdsToHenvendelseDbApi();
+
+        Test.stopTest();
+
+        System.assertEquals(
+            1,
+            [
+                SELECT COUNT()
+                FROM Application_Log__c
+                WHERE Log_Level__c = 'Error'
+            ]
+        );
     }
 }
