@@ -10,8 +10,9 @@ public class HenvendelseCacheCalloutServiceTest {
             'OK'
         );
 
+        Set<String> actorIds = new Set<String>{ 'a92121', 'b3432432' };
         Test.startTest();
-        HttpResponse result = service.deleteHenvendelseCache('a92121');
+        HttpResponse result = service.deleteHenvendelseCache(actorIds);
         Test.stopTest();
 
         Assert.areEqual(200, result.getStatusCode());

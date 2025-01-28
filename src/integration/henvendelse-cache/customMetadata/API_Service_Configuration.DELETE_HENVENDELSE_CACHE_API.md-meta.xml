@@ -36,6 +36,6 @@
     </values>
     <values>
         <field>Service_Path__c</field>
-        <value xsi:type="xsd:string">/cache/{actorId}</value>
+        <value xsi:type="xsd:string">/cache/henvendelseliste/{actorIds}</value>
     </values>
 </CustomMetadata>

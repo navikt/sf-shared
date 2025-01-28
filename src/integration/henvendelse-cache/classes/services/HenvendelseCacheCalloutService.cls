@@ -6,9 +6,12 @@ public with sharing class HenvendelseCacheCalloutService extends ApiController {
         DELETE_HENVENDELSE_CACHE_API
     }
 
-    public HttpResponse deleteHenvendelseCache(String actorId) {
+    public HttpResponse deleteHenvendelseCache(Set<String> actorIds) {
         Map<String, String> pathParamMap = new Map<String, String>();
-        pathParamMap.put('actorId', actorId);
+        pathParamMap.put(
+            'actorIds',
+            ConvertStringUtil.convertSetToCommaSeparatedString(actorIds)
+        );
 
         initRequest(
             CONFIG_NAME,
