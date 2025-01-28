@@ -7,17 +7,14 @@ public with sharing class HenvendelseCacheCalloutService extends ApiController {
     }
 
     public HttpResponse deleteHenvendelseCache(Set<String> actorIds) {
-        Map<String, String> pathParamMap = new Map<String, String>();
-        pathParamMap.put(
-            'actorIds',
+        Map<String, String> urlParamMap = new Map<String, String>();
+        urlParamMap.put(
+            'AKTOR_ID',
             ConvertStringUtil.convertSetToCommaSeparatedString(actorIds)
         );
 
-        initRequest(
-            CONFIG_NAME,
-            SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
-            pathParamMap
-        );
+        initRequest(CONFIG_NAME, SERVICES.DELETE_HENVENDELSE_CACHE_API.name());
+        setUrlParams(urlParamMap);
         setSystemContext();
         addServiceAuthHeader(SERVICE_AUTH_HEADER);
 
