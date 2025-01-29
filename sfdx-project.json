@@ -18,19 +18,17 @@
       ]
     },
     {
-      "path": "src/integration/henvendelse-cache",
-      "package": "henvendelse-cache",
+      "versionName": "ver 0.1",
       "versionNumber": "0.1.0.NEXT",
-      "dependencies": [
-        {
-          "package": "crm-henvendelse",
-          "versionNumber": "0.156.0.LATEST"
-        }
-      ]
+      "path": "src/integration/henvendelse-cache",
+      "default": false,
+      "package": "henvendelse-cache",
+      "versionDescription": "Cache henvendelser i NAIS"
     }
   ],
   "packageAliases": {
     "shared-data-model": "0HoKB00000000060AA",
-    "platform-data-model": "0HoKB00000000010AA"
+    "platform-data-model": "0HoKB00000000010AA",
+    "henvendelse-cache": "0HoKB000000000G0AQ"
   }
 }
