@@ -30,8 +30,8 @@
     "eslint-plugin-jest": "^28.8.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.1.0",
-    "prettier": "^3.1.0",
-    "prettier-plugin-apex": "^2.0.1"
+    "prettier": "^3.4.2",
+    "prettier-plugin-apex": "^2.2.2"
   },
   "lint-staged": {
     "**/{aura,lwc}/**/*.js": [
