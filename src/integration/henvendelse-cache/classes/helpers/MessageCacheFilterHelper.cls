@@ -20,7 +20,9 @@ public without sharing class MessageCacheFilterHelper {
         for (Message__c msg : [
             SELECT Id, CRM_Thread__r.CRM_Account__r.CRM_Person__r.INT_ActorId__c
             FROM Message__c
-            WHERE Id IN :messageIds
+            WHERE
+                Id IN :messageIds
+                AND CRM_Thread__r.CRM_Thread_Type__c IN :HenvendelseConstants.henvendelseTypes
         ]) {
             if (
                 msg.CRM_Thread__r.CRM_Account__r.CRM_Person__r.INT_ActorId__c !=

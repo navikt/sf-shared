@@ -12,8 +12,11 @@ global class MessageCacheHandler extends MyTriggers {
         Set<Id> recordIds = MessageCacheFilterHelper.getRecordIdsRequiringCacheClear(
             messageList
         );
+        if (recordIds.isEmpty()) {
+            return;
+        }
         System.enqueueJob(
-            new ClearHenvendelseCacheQueueable(recordIds, 'Thread__c')
+            new ClearHenvendelseCacheQueueable(recordIds, 'Message__c')
         );
     }
 }

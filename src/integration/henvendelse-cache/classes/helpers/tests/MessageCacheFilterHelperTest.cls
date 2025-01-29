@@ -10,7 +10,7 @@ public class MessageCacheFilterHelperTest {
         SharedTestDataFactory.createRecord(
             new Thread__c(
                 CRM_Account__c = accountId,
-                CRM_Type__c = 'STO',
+                CRM_Thread_Type__c = 'STO',
                 OwnerId = experienceCloudUser.Id
             )
         );
@@ -89,7 +89,7 @@ public class MessageCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnOneActorIdWhenOneMessage() {
+    static void shouldReturnOneActorIdWhenThreadTypeIsSto() {
         myTriggers.disable(MessageCacheHandler.class);
         myTriggers.disable(ThreadCacheHandler.class);
 
@@ -112,7 +112,7 @@ public class MessageCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldNotReturnOneActorIdWhenRelatedAccountIsBusinessAccount() {
+    static void shouldNotReturnActorIdWhenRelatedAccountIsBusinessAccount() {
         myTriggers.disable(MessageCacheHandler.class);
         myTriggers.disable(ThreadCacheHandler.class);
 
@@ -122,6 +122,36 @@ public class MessageCacheFilterHelperTest {
 
         Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
             new Thread__c(CRM_Account__c = account.Id, CRM_Type__c = 'STO')
+        );
+
+        Message__c message = (Message__c) SharedTestDataFactory.createRecord(
+            new Message__c(
+                CRM_Thread__c = thread.Id,
+                CRM_Message_Text__c = 'Test'
+            )
+        );
+
+        Test.startTest();
+        Set<String> result = MessageCacheFilterHelper.getActorIds(
+            new Set<Id>{ message.Id }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
+
+    @IsTest
+    static void shouldNotReturnActorIdWhenMessageIsAgMlonn() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
+        Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
+            new Thread__c(
+                CRM_Account__c = accountId,
+                CRM_Thread_Type__c = 'AG_MLØNN'
+            )
         );
 
         Message__c message = (Message__c) SharedTestDataFactory.createRecord(
