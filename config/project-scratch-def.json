@@ -21,7 +21,8 @@
     "ServiceCloud",
     "ServiceUser",
     "Sites",
-    "SurveyAdvancedFeatures"
+    "SurveyAdvancedFeatures",
+    "LiveMessage"
   ],
   "country": "NO",
   "language": "en_US",
@@ -107,6 +108,9 @@
       "permsetsInFieldCreation": true,
       "psaExpirationUIEnabled": true,
       "restrictedProfileCloning": false
+    },
+    "liveMessageSettings": {
+      "enableLiveMessage": true
     }
   }
 }
