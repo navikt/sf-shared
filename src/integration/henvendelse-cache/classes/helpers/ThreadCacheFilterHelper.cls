@@ -20,7 +20,9 @@ public without sharing class ThreadCacheFilterHelper {
         for (Thread__c thread : [
             SELECT Id, CRM_Account__r.CRM_Person__r.INT_ActorId__c
             FROM Thread__c
-            WHERE Id IN :threadIds
+            WHERE
+                Id IN :threadIds
+                AND CRM_Thread_Type__c IN :HenvendelseConstants.henvendelseTypes
         ]) {
             if (thread.CRM_Account__r.CRM_Person__r.INT_ActorId__c != null) {
                 actorIds.add(

@@ -20,7 +20,7 @@ public class ThreadCacheFilterHelperTest {
         SharedTestDataFactory.createRecord(
             new Thread__c(
                 CRM_Account__c = accountId,
-                CRM_Type__c = 'STO',
+                CRM_Thread_Type__c = 'STO',
                 OwnerId = experienceCloudUserId
             )
         );
@@ -68,7 +68,7 @@ public class ThreadCacheFilterHelperTest {
             SharedTestDataFactory.createRecord(
                 new Thread__c(
                     CRM_Account__c = accountId,
-                    CRM_Type__c = 'STO',
+                    CRM_Thread_Type__c = 'STO',
                     OwnerId = experienceCloudUserId
                 )
             );
@@ -92,7 +92,10 @@ public class ThreadCacheFilterHelperTest {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
-            new Thread__c(CRM_Account__c = accountId, CRM_Type__c = 'STO')
+            new Thread__c(
+                CRM_Account__c = accountId,
+                CRM_Thread_Type__c = 'STO'
+            )
         );
 
         Test.startTest();
@@ -114,11 +117,37 @@ public class ThreadCacheFilterHelperTest {
         );
 
         Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
-            new Thread__c(CRM_Account__c = account.Id, CRM_Type__c = 'STO')
+            new Thread__c(
+                CRM_Account__c = account.Id,
+                CRM_Thread_Type__c = 'STO'
+            )
         );
 
         Test.startTest();
-        Set<String> result = MessageCacheFilterHelper.getActorIds(
+        Set<String> result = ThreadCacheFilterHelper.getActorIds(
+            new Set<Id>{ thread.Id }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
+
+    @IsTest
+    static void shouldNotReturnActorIdWhenThreadIsAgMlonn() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
+        Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
+            new Thread__c(
+                CRM_Account__c = accountId,
+                CRM_Thread_Type__c = 'AG_MLØNN'
+            )
+        );
+
+        Test.startTest();
+        Set<String> result = ThreadCacheFilterHelper.getActorIds(
             new Set<Id>{ thread.Id }
         );
         Test.stopTest();
