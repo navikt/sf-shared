@@ -13,6 +13,9 @@ global class ConvNoteCacheHandler extends MyTriggers {
         Set<Id> recordIds = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
             convNoteList
         );
+        if (recordIds.isEmpty()) {
+            return;
+        }
         System.enqueueJob(
             new ClearHenvendelseCacheQueueable(
                 recordIds,
