@@ -2,13 +2,14 @@
 public class ThreadCacheFilterHelperTest {
     @TestSetup
     static void makeData() {
-        myTriggers.disable(MessageCacheHandler.class);
-        myTriggers.disable(ThreadCacheHandler.class);
         User experienceCloudUser = (User) SharedTestDataFactory.createExperienceCloudUser(); //New Person Account is also created
     }
 
     @IsTest
     static void shouldReturnOneThreadWhenOneThreadIsCreated() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Id experienceCloudUserId = [
             SELECT Id
@@ -37,6 +38,9 @@ public class ThreadCacheFilterHelperTest {
 
     @IsTest
     static void shouldNotReturnThreadIdForThreadCreatedByModiaIntegrationUser() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Id experienceCloudUserId = [
             SELECT Id
@@ -82,6 +86,9 @@ public class ThreadCacheFilterHelperTest {
 
     @IsTest
     static void shouldReturnOneActorIdWhenOneThread() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Thread__c thread = (Thread__c) SharedTestDataFactory.createRecord(
@@ -99,6 +106,9 @@ public class ThreadCacheFilterHelperTest {
 
     @IsTest
     static void shouldNotReturnOneActorIdWhenRelatedAccountIsBusinessAccount() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Account account = (Account) SharedTestDataFactory.createRecord(
             new Account(Name = 'DUMMY ACCOUNT')
         );

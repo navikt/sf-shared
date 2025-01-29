@@ -18,6 +18,9 @@ public class MessageCacheFilterHelperTest {
 
     @IsTest
     static void shouldReturnOneThreadIFromOneMessage() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Id expectedThreadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         SharedTestDataFactory.createRecord(
             new Message__c(
@@ -43,6 +46,9 @@ public class MessageCacheFilterHelperTest {
 
     @IsTest
     static void shouldNotReturnThreadIdForMessageCreatedByModiaIntegrationUser() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Id expectedThreadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         //Create record as Modia Integration User
         Id profileId = [
@@ -84,6 +90,9 @@ public class MessageCacheFilterHelperTest {
 
     @IsTest
     static void shouldReturnOneActorIdWhenOneMessage() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
 
         Message__c message = (Message__c) SharedTestDataFactory.createRecord(
@@ -104,6 +113,9 @@ public class MessageCacheFilterHelperTest {
 
     @IsTest
     static void shouldNotReturnOneActorIdWhenRelatedAccountIsBusinessAccount() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
         Account account = (Account) SharedTestDataFactory.createRecord(
             new Account(Name = 'DUMMY ACCOUNT')
         );

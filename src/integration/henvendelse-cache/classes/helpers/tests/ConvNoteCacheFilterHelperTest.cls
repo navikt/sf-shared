@@ -1,12 +1,9 @@
 @IsTest
 public class ConvNoteCacheFilterHelperTest {
-    @TestSetup
-    private static void makeData() {
-        myTriggers.disable(ConvNoteCacheHandler.class);
-    }
-
     @IsTest
     static void shouldReturnRecordIdForConvNote() {
+        myTriggers.disable(ConvNoteCacheHandler.class);
+
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
@@ -35,6 +32,8 @@ public class ConvNoteCacheFilterHelperTest {
 
     @IsTest
     static void shouldNotReturnAnyRecordIdsForConvNoteCreatedByModiaIntegrationUser() {
+        myTriggers.disable(ConvNoteCacheHandler.class);
+
         Id profileId = [
             SELECT Id
             FROM Profile
@@ -78,6 +77,8 @@ public class ConvNoteCacheFilterHelperTest {
 
     @IsTest
     static void shouldReturnOneActorIdWhenOneConversationNoteId() {
+        myTriggers.disable(ConvNoteCacheHandler.class);
+
         Account personAccount = SharedTestDataFactory.createPersonAccount();
         Conversation_Note__c convNote = (Conversation_Note__c) SharedTestDataFactory.createRecord(
             new Conversation_Note__c(
@@ -98,6 +99,8 @@ public class ConvNoteCacheFilterHelperTest {
 
     @IsTest
     static void shouldNotReturnOneActorIdWhenRelatedAccountIsBusinessAccount() {
+        myTriggers.disable(ConvNoteCacheHandler.class);
+
         Account account = (Account) SharedTestDataFactory.createRecord(
             new Account(Name = 'DUMMY ACCOUNT')
         );
