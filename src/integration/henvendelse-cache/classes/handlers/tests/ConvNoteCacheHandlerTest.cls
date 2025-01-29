@@ -7,6 +7,12 @@ public class ConvNoteCacheHandlerTest {
 
     @IsTest
     static void shouldCreateQueuableJobWhenConvNoteIsCreatedByInternalSalesforceUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Test.startTest();
@@ -23,6 +29,12 @@ public class ConvNoteCacheHandlerTest {
 
     @IsTest
     static void shouldCreateQueuableJobWhenConvNoteIsUpdatedByExperienceClodUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [
             SELECT Id
@@ -50,6 +62,12 @@ public class ConvNoteCacheHandlerTest {
 
     @IsTest
     static void shouldNotCreateQueuableJobWhenConvNoteIsUpdatedByInternalUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Conversation_Note__c convNote = (Conversation_Note__c) SharedTestDataFactory.createRecord(
             new Conversation_Note__c(

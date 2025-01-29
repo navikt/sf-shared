@@ -16,6 +16,12 @@ public class ThreadCacheHandlerTest {
 
     @IsTest
     static void shouldCreateQueuableJobWhenMessageIsCreatedByInternalUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Test.startTest();
@@ -32,6 +38,12 @@ public class ThreadCacheHandlerTest {
 
     @IsTest
     static void sshouldCreateQueuableJobWhenMessageIsCreatedByExperienceCloudUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         User experienceCloudUser = [
@@ -54,6 +66,12 @@ public class ThreadCacheHandlerTest {
 
     @IsTest
     static void shouldCreateQueuableJobWhenMessageIsUpdatedByInternalUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
@@ -73,6 +91,12 @@ public class ThreadCacheHandlerTest {
 
     @IsTest
     static void shouldCreateQueuableJobWhenMessageIsUpdatedByExperienceCloudUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
