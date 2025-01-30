@@ -1,6 +1,6 @@
 public with sharing class HenvendelseCacheCalloutService extends ApiController {
     private final string CONFIG_NAME = 'HENVENDELSE_CACHE_API';
-    private final string SERVICE_AUTH_HEADER = 'HenvendelseMCache';
+    private final string SERVICE_AUTH_HEADER = 'HenvendelseCache';
 
     public enum SERVICES {
         DELETE_HENVENDELSE_CACHE_API
@@ -9,7 +9,7 @@ public with sharing class HenvendelseCacheCalloutService extends ApiController {
     public HttpResponse deleteHenvendelseCache(Set<String> actorIds) {
         Map<String, String> urlParamMap = new Map<String, String>();
         urlParamMap.put(
-            'AKTOR_ID',
+            'aktorId',
             ConvertStringUtil.convertSetToCommaSeparatedString(actorIds)
         );
 
