@@ -21,13 +21,19 @@ public with sharing class ClearHenvendelseCacheQueueable implements Queueable, D
             conversationNoteIds
         );
 
+        if (actorIds.isEmpty()) {
+            return;
+        }
+
         HenvendelseCacheCalloutService calloutService = new HenvendelseCacheCalloutService();
         HttpResponse response = calloutService.deleteHenvendelseCache(actorIds);
 
         if (response.getStatusCode() != 200) {
             logger.error(
                 'Failed to clear henvendelse cache for acotorIds ' +
-                actorIds.toString(),
+                    actorIds.toString() +
+                    ' ' +
+                    response.getBody(),
                 null,
                 CRM_ApplicationDomain.Domain.NKS
             );
