@@ -400,7 +400,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void fromJson() {
-        ArchiveCodeParameter deserializedArchiveCodeDataType;
         String archiveCode = '123';
         String archiveType = 'Salesforce';
         Integer sortOrder = 1;
@@ -416,7 +415,7 @@ private class ArchiveCodeParameterTest {
         String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true}';
 
         System.Test.startTest();
-        deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
+        ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
@@ -452,7 +451,6 @@ private class ArchiveCodeParameterTest {
      */
     @IsTest
     static void fromJsonWithExtraChild() {
-        ArchiveCodeParameter deserializedArchiveCodeDataType;
         String archiveCode = '123';
         String archiveType = 'Salesforce';
         Integer sortOrder = 1;
@@ -468,11 +466,16 @@ private class ArchiveCodeParameterTest {
         String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true, "ExtraChild": "Extra"}';
 
         System.Test.startTest();
-        deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
+        ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
 
+        System.Assert.areNotEqual(
+            null,
+            deserializedArchiveCodeDataType,
+            'Deserialized object should not be null and should still get a valid ArchiveCodeParameter object even with extra fields.'
+        );
         System.Assert.areEqual(
             archiveCodeParameterDataType.ArchiveCode,
             deserializedArchiveCodeDataType.ArchiveCode,
@@ -525,6 +528,122 @@ private class ArchiveCodeParameterTest {
             'System.JSONException',
             actualExceptionType,
             'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see ArchiveCodeParameter.fromMap
+     */
+    @IsTest
+    static void fromMap() {
+        String archiveCode = '123';
+        String archiveType = 'Salesforce';
+        Integer sortOrder = 1;
+        Boolean isManualText = true;
+
+        ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter(
+            archiveType,
+            sortOrder,
+            archiveCode,
+            isManualText
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('ArchiveCode', archiveCode);
+        mapData.put('ArchiveType', archiveType);
+        mapData.put('Sort', sortOrder);
+        mapData.put('IsManualText', isManualText);
+
+        System.Test.startTest();
+        ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.ArchiveCode,
+            deserializedArchiveCodeDataType.ArchiveCode,
+            'ArchiveCode fields should be equal'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.ArchiveType,
+            deserializedArchiveCodeDataType.ArchiveType,
+            'ArchiveType fields should be equal'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.SortOrder,
+            deserializedArchiveCodeDataType.SortOrder,
+            'SortOrder fields should be equal'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.IsManualText,
+            deserializedArchiveCodeDataType.IsManualText,
+            'IsManualText fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method with extra child.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see ArchiveCodeParameter.fromMap
+     */
+    @IsTest
+    static void fromMapWithExtraChild() {
+        String archiveCode = '123';
+        String archiveType = 'Salesforce';
+        Integer sortOrder = 1;
+        Boolean isManualText = true;
+
+        ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter(
+            archiveType,
+            sortOrder,
+            archiveCode,
+            isManualText
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('ArchiveCode', archiveCode);
+        mapData.put('ArchiveType', archiveType);
+        mapData.put('Sort', sortOrder);
+        mapData.put('IsManualText', isManualText);
+        mapData.put('Extra', 'Extra');
+
+        System.Test.startTest();
+        ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areNotEqual(
+            null,
+            deserializedArchiveCodeDataType,
+            'Deserialized object should not be null and should still get a valid ArchiveCodeParameter object even with extra fields.'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.ArchiveCode,
+            deserializedArchiveCodeDataType.ArchiveCode,
+            'ArchiveCode fields should be equal'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.ArchiveType,
+            deserializedArchiveCodeDataType.ArchiveType,
+            'ArchiveType fields should be equal'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.SortOrder,
+            deserializedArchiveCodeDataType.SortOrder,
+            'SortOrder fields should be equal'
+        );
+        System.Assert.areEqual(
+            archiveCodeParameterDataType.IsManualText,
+            deserializedArchiveCodeDataType.IsManualText,
+            'IsManualText fields should be equal'
         );
     }
 

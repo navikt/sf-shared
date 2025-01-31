@@ -20,7 +20,7 @@
  * ArchiveCodeParameter deserializedArchiveCode = ArchiveCodeParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class ArchiveCodeParameter {
+public class ArchiveCodeParameter implements IJsonSerializable {
     /**
      * @description Error messages for the `ArchiveCodeParameter` class and the `ArchiveType` field.
      *
@@ -182,6 +182,24 @@ public class ArchiveCodeParameter {
             }
         }
         return instance;
+    }
+
+    /**
+     * @description Deserializes a map into an `ArchiveCodeParameter` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @param mapData The map to deserialize.
+     * @return `ArchiveCodeParameter` The deserialized object instance from the map.
+     */
+    public static ArchiveCodeParameter fromMap(Map<String, Object> mapData) {
+        ArchiveCodeParameter archiveCode = new ArchiveCodeParameter();
+        archiveCode.ArchiveCode = (String) mapData.get('ArchiveCode');
+        archiveCode.ArchiveType = (String) mapData.get('ArchiveType');
+        archiveCode.SortOrder = (Integer) mapData.get('Sort');
+        archiveCode.IsManualText = (Boolean) mapData.get('IsManualText');
+
+        return archiveCode;
     }
 
     /**
