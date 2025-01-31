@@ -20,7 +20,7 @@
  * ContactParameter deserializedContact = ContactParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class ContactParameter {
+public class ContactParameter implements IJsonSerializable {
     /**
      * @description Error messages for the `ContactParameter` class and the `ReferenceNumber` field.
      *
@@ -165,6 +165,24 @@ public class ContactParameter {
             jsonString,
             ContactParameter.class
         );
+    }
+
+    /**
+     * @description Deserializes a map into an `ContactParameter` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @param mapData The map to deserialize.
+     * @return `ContactParameter` The deserialized object instance from the map.
+     */
+    public static ContactParameter fromMap(Map<String, Object> mapData) {
+        ContactParameter contact = new ContactParameter();
+        contact.ReferenceNumber = (String) mapData.get('ReferenceNumber');
+        contact.ExternalId = (String) mapData.get('ExternalId');
+        contact.Role = (String) mapData.get('Role');
+        contact.IsUnofficial = (Boolean) mapData.get('IsUnofficial');
+
+        return contact;
     }
 
     /**

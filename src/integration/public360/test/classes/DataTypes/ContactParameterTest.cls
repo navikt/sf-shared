@@ -370,8 +370,8 @@ private class ContactParameterTest {
      */
     @IsTest
     static void fromJson() {
-        ContactParameter deserializedContactDataType;
         String referenceNumber = '12345678900';
+        String externalId = '12345678900';
         String role = 'Sakspart';
         Boolean isUnofficial = true;
 
@@ -380,17 +380,25 @@ private class ContactParameterTest {
             role,
             isUnofficial
         );
+        contactParameterDataType.ExternalId = externalId;
 
-        String jsonString = '{"ReferenceNumber":"12345678900","Role":"Sakspart","IsUnofficial":true}';
+        String jsonString = '{"ReferenceNumber":"12345678900","ExternalId":"12345678900","Role":"Sakspart","IsUnofficial":true}';
 
         System.Test.startTest();
-        deserializedContactDataType = ContactParameter.fromJson(jsonString);
+        ContactParameter deserializedContactDataType = ContactParameter.fromJson(
+            jsonString
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
             contactParameterDataType.ReferenceNumber,
             deserializedContactDataType.ReferenceNumber,
             'ReferenceNumber fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.ExternalId,
+            deserializedContactDataType.ExternalId,
+            'ExternalId fields should be equal'
         );
         System.Assert.areEqual(
             contactParameterDataType.Role,
@@ -413,7 +421,6 @@ private class ContactParameterTest {
      */
     @IsTest
     static void fromJsonWithExtraChild() {
-        ContactParameter deserializedContactDataType;
         String referenceNumber = '12345678900';
         String role = 'Sakspart';
         Boolean isUnofficial = true;
@@ -427,9 +434,16 @@ private class ContactParameterTest {
         String jsonString = '{"ReferenceNumber":"12345678900","Role":"Sakspart","IsUnofficial":true, "ExtraChild": "Extra"}';
 
         System.Test.startTest();
-        deserializedContactDataType = ContactParameter.fromJson(jsonString);
+        ContactParameter deserializedContactDataType = ContactParameter.fromJson(
+            jsonString
+        );
         System.Test.stopTest();
 
+        System.Assert.areNotEqual(
+            null,
+            deserializedContactDataType,
+            'Deserialized object should not be null and should still get a valid ContactParameter object even with extra fields.'
+        );
         System.Assert.areEqual(
             contactParameterDataType.ReferenceNumber,
             deserializedContactDataType.ReferenceNumber,
@@ -477,6 +491,122 @@ private class ContactParameterTest {
             'System.JSONException',
             actualExceptionType,
             'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see ContactParameter.fromMap
+     */
+    @IsTest
+    static void fromMap() {
+        String referenceNumber = '12345678900';
+        String externalId = '12345678900';
+        String role = 'Sakspart';
+        Boolean isUnofficial = true;
+
+        ContactParameter contactParameterDataType = new ContactParameter(
+            referenceNumber,
+            role,
+            isUnofficial
+        );
+        contactParameterDataType.ExternalId = externalId;
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('ReferenceNumber', referenceNumber);
+        mapData.put('ExternalId', externalId);
+        mapData.put('Role', role);
+        mapData.put('IsUnofficial', isUnofficial);
+
+        System.Test.startTest();
+        ContactParameter deserializedContactDataType = ContactParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areEqual(
+            contactParameterDataType.ReferenceNumber,
+            deserializedContactDataType.ReferenceNumber,
+            'ReferenceNumber fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.ExternalId,
+            deserializedContactDataType.ExternalId,
+            'ExternalId fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.Role,
+            deserializedContactDataType.Role,
+            'Role fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.IsUnofficial,
+            deserializedContactDataType.IsUnofficial,
+            'IsUnofficial fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method with extra child.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see ContactParameter.fromMap
+     */
+    @IsTest
+    static void fromMapWithExtraChild() {
+        String referenceNumber = '12345678900';
+        String externalId = '12345678900';
+        String role = 'Sakspart';
+        Boolean isUnofficial = true;
+
+        ContactParameter contactParameterDataType = new ContactParameter(
+            referenceNumber,
+            role,
+            isUnofficial
+        );
+        contactParameterDataType.ExternalId = externalId;
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('ReferenceNumber', referenceNumber);
+        mapData.put('ExternalId', externalId);
+        mapData.put('Role', role);
+        mapData.put('IsUnofficial', isUnofficial);
+        mapData.put('ExtraChild', 'Extra');
+
+        System.Test.startTest();
+        ContactParameter deserializedContactDataType = ContactParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areNotEqual(
+            null,
+            deserializedContactDataType,
+            'Deserialized object should not be null and should still get a valid ContactParameter object even with extra fields.'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.ReferenceNumber,
+            deserializedContactDataType.ReferenceNumber,
+            'ReferenceNumber fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.ExternalId,
+            deserializedContactDataType.ExternalId,
+            'ExternalId fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.Role,
+            deserializedContactDataType.Role,
+            'Role fields should be equal'
+        );
+        System.Assert.areEqual(
+            contactParameterDataType.IsUnofficial,
+            deserializedContactDataType.IsUnofficial,
+            'IsUnofficial fields should be equal'
         );
     }
 
