@@ -37,7 +37,7 @@ public class ThreadCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldNotReturnThreadIdForThreadCreatedByModiaIntegrationUser() {
+    static void shouldReturnOndThreadIdForThreadUpdatedByModiaIntegrationUser() {
         myTriggers.disable(MessageCacheHandler.class);
         myTriggers.disable(ThreadCacheHandler.class);
 
@@ -81,7 +81,7 @@ public class ThreadCacheFilterHelperTest {
         );
         Test.stopTest();
 
-        Assert.areEqual(0, result.size());
+        Assert.areEqual(1, result.size());
     }
 
     @IsTest

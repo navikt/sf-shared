@@ -1,12 +1,16 @@
 public with sharing class ConvNoteCacheFilterHelper {
     public static Set<Id> getRecordIdsRequiringCacheClear(
-        List<Conversation_Note__c> convNoteList
+        List<Conversation_Note__c> convNoteList,
+        Boolean isUpdate
     ) {
         ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
         Set<Id> recordIds = new Set<Id>();
         for (Conversation_Note__c convNote : convNoteList) {
-            //Only cache records modified in Salesforce
-            if (convNote.LastModifiedById != modiaIntegrationUser.UserId) {
+            //Only cache records created in Salesforce
+            if (
+                convNote.LastModifiedById != modiaIntegrationUser.UserId ||
+                isUpdate
+            ) {
                 recordIds.add(convNote.Id);
             }
         }

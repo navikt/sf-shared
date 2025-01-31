@@ -6,12 +6,8 @@ public without sharing class ThreadCacheFilterHelper {
         Set<Id> threadIds = new Set<Id>();
 
         for (Thread__c thread : threadList) {
-            //Only cache records created by Salesforce internal users
-            if (thread.LastModifiedById != modiaIntegrationUser.UserId) {
-                threadIds.add(thread.Id);
-            }
+            threadIds.add(thread.Id);
         }
-
         return threadIds;
     }
 
