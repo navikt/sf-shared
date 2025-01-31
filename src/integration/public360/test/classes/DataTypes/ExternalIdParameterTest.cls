@@ -168,7 +168,7 @@ private class ExternalIdParameterTest {
         String id = '123';
         String type = 'Salesforce';
 
-        String expectedJsonString = '{"Id":"123","Type":"Salesforce"}';
+        String expectedJsonString = '{"Id":"' + id + '","Type":"' + type + '"}';
         String actualJsonString;
         System.Test.startTest();
         ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
@@ -194,7 +194,6 @@ private class ExternalIdParameterTest {
      */
     @isTest
     static void fromJson() {
-        ExternalIdParameter deserializedExternalIdParameterDataType;
         String id = '123';
         String type = 'Salesforce';
 
@@ -203,10 +202,10 @@ private class ExternalIdParameterTest {
             type
         );
 
-        String jsonString = '{"Id":"123","Type":"Salesforce"}';
+        String jsonString = '{"Id":' + id + ',"Type":"' + type + '"}';
 
         System.Test.startTest();
-        deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
+        ExternalIdParameter deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
@@ -232,7 +231,6 @@ private class ExternalIdParameterTest {
      */
     @isTest
     static void fromJsonWithExtraChild() {
-        ExternalIdParameter deserializedExternalIdParameterDataType;
         String id = '123';
         String type = 'Salesforce';
 
@@ -241,14 +239,24 @@ private class ExternalIdParameterTest {
             type
         );
 
-        String jsonString = '{"Id":"123","Type":"Salesforce", "ExtraChild": "Extra"}';
+        String jsonString =
+            '{"Id":' +
+            id +
+            ',"Type":"' +
+            type +
+            '", "ExtraChild": "Extra"}';
 
         System.Test.startTest();
-        deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
+        ExternalIdParameter deserializedExternalIdParameterDataType = ExternalIdParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
 
+        System.Assert.areNotEqual(
+            null,
+            deserializedExternalIdParameterDataType,
+            'Deserialized object should not be null and should still get a valid ExternalIdParameter object even with extra fields.'
+        );
         System.assertEquals(
             externalIdParameterDataType.Id,
             deserializedExternalIdParameterDataType.Id,
@@ -291,6 +299,92 @@ private class ExternalIdParameterTest {
             'System.JSONException',
             actualExceptionType,
             'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see ExternalIdParameter.fromMap
+     */
+    @isTest
+    static void fromMap() {
+        String id = '123';
+        String type = 'Salesforce';
+
+        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
+            id,
+            type
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Id' => id,
+            'Type' => type
+        };
+
+        System.Test.startTest();
+        ExternalIdParameter deserializedExternalIdParameterDataType = ExternalIdParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.assertEquals(
+            externalIdParameterDataType.Id,
+            deserializedExternalIdParameterDataType.Id,
+            'Id fields should be equal'
+        );
+        System.assertEquals(
+            externalIdParameterDataType.Type,
+            deserializedExternalIdParameterDataType.Type,
+            'Type fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method with extra child.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see ExternalIdParameter.fromMap
+     */
+    @isTest
+    static void fromMapWithExtraChild() {
+        String id = '123';
+        String type = 'Salesforce';
+
+        ExternalIdParameter externalIdParameterDataType = new ExternalIdParameter(
+            id,
+            type
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Id' => id,
+            'Type' => type,
+            'ExtraChild' => 'Extra'
+        };
+
+        System.Test.startTest();
+        ExternalIdParameter deserializedExternalIdParameterDataType = ExternalIdParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areNotEqual(
+            null,
+            deserializedExternalIdParameterDataType,
+            'Deserialized object should not be null and should still get a valid ExternalIdParameter object even with extra fields.'
+        );
+        System.assertEquals(
+            externalIdParameterDataType.Id,
+            deserializedExternalIdParameterDataType.Id,
+            'Id fields should be equal'
+        );
+        System.assertEquals(
+            externalIdParameterDataType.Type,
+            deserializedExternalIdParameterDataType.Type,
+            'Type fields should be equal'
         );
     }
 

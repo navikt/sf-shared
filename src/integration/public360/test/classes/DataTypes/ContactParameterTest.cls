@@ -342,7 +342,16 @@ private class ContactParameterTest {
         String role = 'Sakspart';
         Boolean isUnofficial = true;
 
-        String expectedJsonString = '{"ReferenceNumber":"12345678900","ExternalId":"12345678900","Role":"Sakspart","IsUnofficial":true}';
+        String expectedJsonString =
+            '{"ReferenceNumber":"' +
+            referenceNumber +
+            '","ExternalId":"' +
+            externalId +
+            '","Role":"' +
+            role +
+            '","IsUnofficial":' +
+            isUnofficial +
+            '}';
         String actualJsonString;
         System.Test.startTest();
         ContactParameter contactParameterDataType = new ContactParameter(
@@ -382,7 +391,16 @@ private class ContactParameterTest {
         );
         contactParameterDataType.ExternalId = externalId;
 
-        String jsonString = '{"ReferenceNumber":"12345678900","ExternalId":"12345678900","Role":"Sakspart","IsUnofficial":true}';
+        String jsonString =
+            '{"ReferenceNumber":"' +
+            referenceNumber +
+            '","ExternalId":"' +
+            externalId +
+            '","Role":"' +
+            role +
+            '","IsUnofficial":' +
+            isUnofficial +
+            '}';
 
         System.Test.startTest();
         ContactParameter deserializedContactDataType = ContactParameter.fromJson(
@@ -422,6 +440,7 @@ private class ContactParameterTest {
     @IsTest
     static void fromJsonWithExtraChild() {
         String referenceNumber = '12345678900';
+        String externalId = '12345678900';
         String role = 'Sakspart';
         Boolean isUnofficial = true;
 
@@ -430,8 +449,18 @@ private class ContactParameterTest {
             role,
             isUnofficial
         );
+        contactParameterDataType.ExternalId = externalId;
 
-        String jsonString = '{"ReferenceNumber":"12345678900","Role":"Sakspart","IsUnofficial":true, "ExtraChild": "Extra"}';
+        String jsonString =
+            '{"ReferenceNumber":"' +
+            referenceNumber +
+            '","ExternalId":"' +
+            externalId +
+            '","Role":"' +
+            role +
+            '","IsUnofficial":' +
+            isUnofficial +
+            ', "ExtraChild": "Extra"}';
 
         System.Test.startTest();
         ContactParameter deserializedContactDataType = ContactParameter.fromJson(
@@ -515,11 +544,12 @@ private class ContactParameterTest {
         );
         contactParameterDataType.ExternalId = externalId;
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('ReferenceNumber', referenceNumber);
-        mapData.put('ExternalId', externalId);
-        mapData.put('Role', role);
-        mapData.put('IsUnofficial', isUnofficial);
+        Map<String, Object> mapData = new Map<String, Object>{
+            'ReferenceNumber' => referenceNumber,
+            'ExternalId' => externalId,
+            'Role' => role,
+            'IsUnofficial' => isUnofficial
+        };
 
         System.Test.startTest();
         ContactParameter deserializedContactDataType = ContactParameter.fromMap(
@@ -570,12 +600,13 @@ private class ContactParameterTest {
         );
         contactParameterDataType.ExternalId = externalId;
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('ReferenceNumber', referenceNumber);
-        mapData.put('ExternalId', externalId);
-        mapData.put('Role', role);
-        mapData.put('IsUnofficial', isUnofficial);
-        mapData.put('ExtraChild', 'Extra');
+        Map<String, Object> mapData = new Map<String, Object>{
+            'ReferenceNumber' => referenceNumber,
+            'ExternalId' => externalId,
+            'Role' => role,
+            'IsUnofficial' => isUnofficial,
+            'ExtraChild' => 'Extra'
+        };
 
         System.Test.startTest();
         ContactParameter deserializedContactDataType = ContactParameter.fromMap(

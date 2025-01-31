@@ -372,7 +372,16 @@ private class ArchiveCodeParameterTest {
         Integer sortOrder = 1;
         Boolean isManualText = true;
 
-        String expectedJsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true}';
+        String expectedJsonString =
+            '{"ArchiveCode":"' +
+            archiveCode +
+            '","ArchiveType":"' +
+            archiveType +
+            '","Sort":' +
+            sortOrder +
+            ',"IsManualText":' +
+            isManualText +
+            '}';
         String actualJsonString;
         System.Test.startTest();
         ArchiveCodeParameter archiveCodeParameterDataType = new ArchiveCodeParameter(
@@ -412,7 +421,16 @@ private class ArchiveCodeParameterTest {
             isManualText
         );
 
-        String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true}';
+        String jsonString =
+            '{"ArchiveCode":"' +
+            archiveCode +
+            '","ArchiveType":"' +
+            archiveType +
+            '","Sort":' +
+            sortOrder +
+            ',"IsManualText":' +
+            isManualText +
+            '}';
 
         System.Test.startTest();
         ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
@@ -463,7 +481,16 @@ private class ArchiveCodeParameterTest {
             isManualText
         );
 
-        String jsonString = '{"ArchiveCode":"123","ArchiveType":"Salesforce","Sort":1,"IsManualText":true, "ExtraChild": "Extra"}';
+        String jsonString =
+            '{"ArchiveCode":"' +
+            archiveCode +
+            '","ArchiveType":"' +
+            archiveType +
+            '","Sort":' +
+            sortOrder +
+            ',"IsManualText":' +
+            isManualText +
+            ', "ExtraChild": "Extra"}';
 
         System.Test.startTest();
         ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromJson(
@@ -552,11 +579,12 @@ private class ArchiveCodeParameterTest {
             isManualText
         );
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('ArchiveCode', archiveCode);
-        mapData.put('ArchiveType', archiveType);
-        mapData.put('Sort', sortOrder);
-        mapData.put('IsManualText', isManualText);
+        Map<String, Object> mapData = new Map<String, Object>{
+            'ArchiveCode' => archiveCode,
+            'ArchiveType' => archiveType,
+            'Sort' => sortOrder,
+            'IsManualText' => isManualText
+        };
 
         System.Test.startTest();
         ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromMap(
@@ -607,12 +635,13 @@ private class ArchiveCodeParameterTest {
             isManualText
         );
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('ArchiveCode', archiveCode);
-        mapData.put('ArchiveType', archiveType);
-        mapData.put('Sort', sortOrder);
-        mapData.put('IsManualText', isManualText);
-        mapData.put('Extra', 'Extra');
+        Map<String, Object> mapData = new Map<String, Object>{
+            'ArchiveCode' => archiveCode,
+            'ArchiveType' => archiveType,
+            'Sort' => sortOrder,
+            'IsManualText' => isManualText,
+            'ExtraChild' => 'Extra'
+        };
 
         System.Test.startTest();
         ArchiveCodeParameter deserializedArchiveCodeDataType = ArchiveCodeParameter.fromMap(

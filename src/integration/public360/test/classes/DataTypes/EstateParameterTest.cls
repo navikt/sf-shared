@@ -202,7 +202,12 @@ private class EstateParameterTest {
         String recno = 'recno:1234';
         String externalId = '';
 
-        String expectedJsonString = '{"Recno":"recno:1234","ExternalId":""}';
+        String expectedJsonString =
+            '{"Recno":"' +
+            recno +
+            '","ExternalId":"' +
+            externalId +
+            '"}';
         String actualJsonString;
         System.Test.startTest();
         EstateParameter estateParameterDataType = new EstateParameter(
@@ -233,7 +238,12 @@ private class EstateParameterTest {
         String recno = '';
         String externalId = 'externalId1234';
 
-        String expectedJsonString = '{"Recno":"","ExternalId":"externalId1234"}';
+        String expectedJsonString =
+            '{"Recno":"' +
+            recno +
+            '","ExternalId":"' +
+            externalId +
+            '"}';
         String actualJsonString;
         System.Test.startTest();
         EstateParameter estateParameterDataType = new EstateParameter(
@@ -435,9 +445,10 @@ private class EstateParameterTest {
             externalId
         );
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('Recno', recno);
-        mapData.put('ExternalId', externalId);
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Recno' => recno,
+            'ExternalId' => externalId
+        };
 
         System.Test.startTest();
         EstateParameter deserializedEstateParameterDataType = EstateParameter.fromMap(
@@ -475,9 +486,10 @@ private class EstateParameterTest {
             externalId
         );
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('Recno', recno);
-        mapData.put('ExternalId', externalId);
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Recno' => recno,
+            'ExternalId' => externalId
+        };
 
         System.Test.startTest();
         EstateParameter deserializedEstateParameterDataType = EstateParameter.fromMap(
@@ -514,10 +526,11 @@ private class EstateParameterTest {
             externalId
         );
 
-        Map<String, Object> mapData = new Map<String, Object>();
-        mapData.put('Recno', recno);
-        mapData.put('ExternalId', externalId);
-        mapData.put('Extra', 'Extra');
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Recno' => recno,
+            'ExternalId' => externalId,
+            'ExtraChild' => 'Extra'
+        };
 
         System.Test.startTest();
         EstateParameter deserializedEstateParameterDataType = EstateParameter.fromMap(

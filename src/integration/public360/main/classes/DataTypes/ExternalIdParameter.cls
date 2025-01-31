@@ -19,7 +19,7 @@
  * ExternalIdParameter deserializedExternalId = ExternalIdParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class ExternalIdParameter {
+public class ExternalIdParameter implements IJsonSerializable {
     /**
      * @description Error message for the `ExternalIdParameter` class and the `Id` field.
      *
@@ -120,6 +120,21 @@ public class ExternalIdParameter {
             jsonString,
             ExternalIdParameter.class
         );
+    }
+
+    /**
+     * @description Deserializes a map into an `ExternalIdParameter` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, JAnuary 2025
+     * @param mapData The map to deserialize.
+     * @return `ExternalIdParameter` The deserialized object instance from the map.
+     */
+    public static ExternalIdParameter fromMap(Map<String, Object> mapData) {
+        ExternalIdParameter externalId = new ExternalIdParameter();
+        externalId.Id = (String) mapData.get('Id');
+        externalId.Type = (String) mapData.get('Type');
+        return externalId;
     }
 
     /**
