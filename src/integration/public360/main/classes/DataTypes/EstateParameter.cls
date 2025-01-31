@@ -18,7 +18,7 @@
  * EstateParameter deserializedEstateParameter = EstateParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class EstateParameter {
+public class EstateParameter implements IJsonSerializable {
     /**
      * @description Error messages for the `EstateParameter` class and the `Recno` and `ExternalId`
      * fields. Either the `Recno` or `ExternalId` field need to have a valid value.
@@ -104,7 +104,7 @@ public class EstateParameter {
     }
 
     /**
-     *@description Deserializes a JSON string into an `EstateParameter` object instance.
+     * @description Deserializes a JSON string into an `EstateParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
@@ -116,6 +116,22 @@ public class EstateParameter {
             jsonString,
             EstateParameter.class
         );
+    }
+
+    /**
+     * @description Deserializes a Map into an `EstateParameter` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @param mapData The Map to deserialize.
+     * @return `EstateParameter` The deserialized object instance from the Map.
+     */
+    public static EstateParameter fromMap(Map<String, Object> mapData) {
+        EstateParameter estateParameter = new EstateParameter();
+        estateParameter.Recno = (String) mapData.get('Recno');
+        estateParameter.ExternalId = (String) mapData.get('ExternalId');
+
+        return estateParameter;
     }
 
     /**

@@ -261,7 +261,6 @@ private class EstateParameterTest {
      */
     @IsTest
     static void fromJsonWithRecnoSetAndExternalIdNotSet() {
-        EstateParameter deserializedEstateParameterDataType;
         String recno = 'recno:1234';
         String externalId = '';
 
@@ -270,10 +269,15 @@ private class EstateParameterTest {
             externalId
         );
 
-        String jsonString = '{"Recno":"recno:1234","ExternalId":""}';
+        String jsonString =
+            '{"Recno":"' +
+            recno +
+            '","ExternalId":"' +
+            externalId +
+            '"}';
 
         System.Test.startTest();
-        deserializedEstateParameterDataType = EstateParameter.fromJson(
+        EstateParameter deserializedEstateParameterDataType = EstateParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
@@ -300,7 +304,6 @@ private class EstateParameterTest {
      */
     @IsTest
     static void fromJsonWithExternalIdSetAndRecnoNotSet() {
-        EstateParameter deserializedEstateParameterDataType;
         String recno = '';
         String externalId = 'externalId1234';
 
@@ -309,10 +312,15 @@ private class EstateParameterTest {
             externalId
         );
 
-        String jsonString = '{"Recno":"","ExternalId":"externalId1234"}';
+        String jsonString =
+            '{"Recno":"' +
+            recno +
+            '","ExternalId":"' +
+            externalId +
+            '"}';
 
         System.Test.startTest();
-        deserializedEstateParameterDataType = EstateParameter.fromJson(
+        EstateParameter deserializedEstateParameterDataType = EstateParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
@@ -338,7 +346,6 @@ private class EstateParameterTest {
      */
     @IsTest
     static void fromJsonWithExtraChild() {
-        EstateParameter deserializedEstateParameterDataType;
         String recno = '';
         String externalId = 'externalId1234';
 
@@ -347,14 +354,24 @@ private class EstateParameterTest {
             externalId
         );
 
-        String jsonString = '{"Recno":"","ExternalId":"externalId1234","ExtraChild": "Extra"}';
+        String jsonString =
+            '{"Recno":"' +
+            recno +
+            '","ExternalId":"' +
+            externalId +
+            '","ExtraChild": "Extra"}';
 
         System.Test.startTest();
-        deserializedEstateParameterDataType = EstateParameter.fromJson(
+        EstateParameter deserializedEstateParameterDataType = EstateParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
 
+        System.Assert.areNotEqual(
+            null,
+            deserializedEstateParameterDataType,
+            'Deserialized object should not be null and should still get a valid EstateParameter object even with extra fields.'
+        );
         System.Assert.areEqual(
             estateParameterDataType.Recno,
             deserializedEstateParameterDataType.Recno,
@@ -397,6 +414,131 @@ private class EstateParameterTest {
             'System.JSONException',
             actualExceptionType,
             'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method. The `Recno` field is set and the `ExternalId` field is
+     * not set.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see EstateParameter.fromMap
+     */
+    @IsTest
+    static void fromMapWithRecnoSetAndExternalIdNotSet() {
+        String recno = 'recno:1234';
+        String externalId = '';
+
+        EstateParameter estateParameterDataType = new EstateParameter(
+            recno,
+            externalId
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('Recno', recno);
+        mapData.put('ExternalId', externalId);
+
+        System.Test.startTest();
+        EstateParameter deserializedEstateParameterDataType = EstateParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areEqual(
+            estateParameterDataType.Recno,
+            deserializedEstateParameterDataType.Recno,
+            'Recno fields should be equal'
+        );
+        System.Assert.areEqual(
+            estateParameterDataType.ExternalId,
+            deserializedEstateParameterDataType.ExternalId,
+            'ExternalId fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method. The `ExternalId` field is set and the `Recno` field is
+     * not set.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see EstateParameter.fromJson
+     */
+    @IsTest
+    static void fromMapWithExternalIdSetAndRecnoNotSet() {
+        String recno = '';
+        String externalId = 'externalId1234';
+
+        EstateParameter estateParameterDataType = new EstateParameter(
+            recno,
+            externalId
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('Recno', recno);
+        mapData.put('ExternalId', externalId);
+
+        System.Test.startTest();
+        EstateParameter deserializedEstateParameterDataType = EstateParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areEqual(
+            estateParameterDataType.Recno,
+            deserializedEstateParameterDataType.Recno,
+            'Recno fields should be equal'
+        );
+        System.Assert.areEqual(
+            estateParameterDataType.ExternalId,
+            deserializedEstateParameterDataType.ExternalId,
+            'ExternalId fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method with extra child.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @see EstateParameter.fromMap
+     */
+    @IsTest
+    static void fromMapWithExtraChild() {
+        String recno = 'recno:1234';
+        String externalId = '';
+
+        EstateParameter estateParameterDataType = new EstateParameter(
+            recno,
+            externalId
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>();
+        mapData.put('Recno', recno);
+        mapData.put('ExternalId', externalId);
+        mapData.put('Extra', 'Extra');
+
+        System.Test.startTest();
+        EstateParameter deserializedEstateParameterDataType = EstateParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areNotEqual(
+            null,
+            deserializedEstateParameterDataType,
+            'Deserialized object should not be null and should still get a valid EstateParameter object even with extra fields.'
+        );
+        System.Assert.areEqual(
+            estateParameterDataType.Recno,
+            deserializedEstateParameterDataType.Recno,
+            'Recno fields should be equal'
+        );
+        System.Assert.areEqual(
+            estateParameterDataType.ExternalId,
+            deserializedEstateParameterDataType.ExternalId,
+            'ExternalId fields should be equal'
         );
     }
 
