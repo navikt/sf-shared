@@ -14,8 +14,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
             'STO_Sensitive_Information__c',
             'CRM_Subtheme__c',
             'CRM_Theme__c',
-            'CRM_Is_Redacted__c',
-            'STO_Sensitive_Information__c'
+            'CRM_Is_Redacted__c'
         };
 
         List<Conversation_Note__c> convNotesWithRelevantChanges = new List<Conversation_Note__c>();
