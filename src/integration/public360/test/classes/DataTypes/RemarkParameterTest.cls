@@ -334,7 +334,14 @@ private class RemarkParameterTest {
         String content = 'Remark Content';
         String remarkType = 'RemarkType';
 
-        String expectedJsonString = '{"Title":"Remark Title","Content":"Remark Content","RemarkType":"RemarkType"}';
+        String expectedJsonString =
+            '{"Title":"' +
+            title +
+            '","Content":"' +
+            content +
+            '","RemarkType":"' +
+            remarkType +
+            '"}';
         String actualJsonString;
         System.Test.startTest();
         RemarkParameter remarkParameterDataType = new RemarkParameter(
@@ -361,7 +368,6 @@ private class RemarkParameterTest {
      */
     @isTest
     static void fromJson() {
-        RemarkParameter deserializedRemarkDataType;
         String title = 'Remark Title';
         String remarkType = 'RemarkType';
         String content = 'Remark Content';
@@ -372,10 +378,19 @@ private class RemarkParameterTest {
             content
         );
 
-        String jsonString = '{"Title":"Remark Title","Content":"Remark Content","RemarkType":"RemarkType"}';
+        String jsonString =
+            '{"Title":"' +
+            title +
+            '","Content":"' +
+            content +
+            '","RemarkType":"' +
+            remarkType +
+            '"}';
 
         System.Test.startTest();
-        deserializedRemarkDataType = RemarkParameter.fromJson(jsonString);
+        RemarkParameter deserializedRemarkDataType = RemarkParameter.fromJson(
+            jsonString
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -404,7 +419,6 @@ private class RemarkParameterTest {
      */
     @isTest
     static void fromJsonWithExtraChild() {
-        RemarkParameter deserializedRemarkDataType;
         String title = 'Remark Title';
         String remarkType = 'RemarkType';
         String content = 'Remark Content';
@@ -415,10 +429,19 @@ private class RemarkParameterTest {
             content
         );
 
-        String jsonString = '{"Title":"Remark Title","Content":"Remark Content","RemarkType":"RemarkType", "ExtraChild": "Extra"}';
+        String jsonString =
+            '{"Title":"' +
+            title +
+            '","Content":"' +
+            content +
+            '","RemarkType":"' +
+            remarkType +
+            '", "ExtraChild": "Extra"}';
 
         System.Test.startTest();
-        deserializedRemarkDataType = RemarkParameter.fromJson(jsonString);
+        RemarkParameter deserializedRemarkDataType = RemarkParameter.fromJson(
+            jsonString
+        );
         System.Test.stopTest();
 
         System.Assert.areEqual(
@@ -468,6 +491,106 @@ private class RemarkParameterTest {
             'System.JSONException',
             actualExceptionType,
             'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
+     * @since 0.1.0, February 2025
+     * @see RemarkParameter.fromMap
+     */
+    @isTest
+    static void fromMap() {
+        String title = 'Remark Title';
+        String content = 'Remark Content';
+        String remarkType = 'RemarkType';
+
+        RemarkParameter remarkParameterDataType = new RemarkParameter(
+            title,
+            remarkType,
+            content
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Title' => title,
+            'Content' => content,
+            'RemarkType' => remarkType
+        };
+        System.Test.startTest();
+        RemarkParameter deserializedRemarkParameterDataType = RemarkParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areEqual(
+            remarkParameterDataType.Title,
+            deserializedRemarkParameterDataType.Title,
+            'Title fields should be equal'
+        );
+        System.Assert.areEqual(
+            remarkParameterDataType.Content,
+            deserializedRemarkParameterDataType.Content,
+            'Content fields should be equal'
+        );
+        System.Assert.areEqual(
+            remarkParameterDataType.RemarkType,
+            deserializedRemarkParameterDataType.RemarkType,
+            'RemarkType fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method with extra child.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
+     * @since 0.1.0, February 2025
+     * @see RemarkParameter.fromMap
+     */
+    @isTest
+    static void fromMapWithExtraChild() {
+        String title = 'Remark Title';
+        String content = 'Remark Content';
+        String remarkType = 'RemarkType';
+
+        RemarkParameter remarkParameterDataType = new RemarkParameter(
+            title,
+            remarkType,
+            content
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>{
+            'Title' => title,
+            'Content' => content,
+            'RemarkType' => remarkType,
+            'ExtraChild' => 'Extra'
+        };
+        System.Test.startTest();
+        RemarkParameter deserializedRemarkParameterDataType = RemarkParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areNotEqual(
+            null,
+            deserializedRemarkParameterDataType,
+            'Deserialized object should not be null and should still get a valid RemarkParameter object even with extra fields.'
+        );
+        System.Assert.areEqual(
+            remarkParameterDataType.Title,
+            deserializedRemarkParameterDataType.Title,
+            'Title fields should be equal'
+        );
+        System.Assert.areEqual(
+            remarkParameterDataType.Content,
+            deserializedRemarkParameterDataType.Content,
+            'Content fields should be equal'
+        );
+        System.Assert.areEqual(
+            remarkParameterDataType.RemarkType,
+            deserializedRemarkParameterDataType.RemarkType,
+            'RemarkType fields should be equal'
         );
     }
 

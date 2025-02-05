@@ -19,7 +19,7 @@
  * RemarkParameter deserializedRemarkParameterDataType = RemarkParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class RemarkParameter {
+public class RemarkParameter implements IJsonSerializable {
     /**
      * @description Error messages for the `RemarkParameter` class and the `Title` field.
      *
@@ -149,6 +149,23 @@ public class RemarkParameter {
             jsonString,
             RemarkParameter.class
         );
+    }
+
+    /**
+     * @description Deserializes a Map into an `RemarkParameter` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @param mapData The map to deserialize.
+     * @return `RemarkParameter` The deserialized object instance from the map.
+     */
+    public static RemarkParameter fromMap(Map<String, Object> mapData) {
+        RemarkParameter remarkParameter = new RemarkParameter();
+        remarkParameter.Title = (String) mapData.get('Title');
+        remarkParameter.Content = (String) mapData.get('Content');
+        remarkParameter.RemarkType = (String) mapData.get('RemarkType');
+
+        return remarkParameter;
     }
 
     /**
