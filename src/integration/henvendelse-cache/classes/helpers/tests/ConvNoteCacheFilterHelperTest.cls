@@ -14,7 +14,7 @@ public class ConvNoteCacheFilterHelperTest {
         );
 
         List<Conversation_Note__c> convNotes = [
-            SELECT Id, LastModifiedById
+            SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '123'
         ];
@@ -62,7 +62,7 @@ public class ConvNoteCacheFilterHelperTest {
         }
 
         List<Conversation_Note__c> convNotes = [
-            SELECT Id, LastModifiedById
+            SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
         ];
@@ -78,7 +78,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnOneRecordIdForConvNoteUpdatedByModiaIntegrationUser() {
+    static void shoulNotForConvNoteUpdatedByModiaIntegrationUserAndSensitiveInformationIsFalse() {
         myTriggers.disable(ConvNoteCacheHandler.class);
 
         Id profileId = [
@@ -108,7 +108,54 @@ public class ConvNoteCacheFilterHelperTest {
         }
 
         List<Conversation_Note__c> convNotes = [
-            SELECT Id, LastModifiedById
+            SELECT Id, LastModifiedById, STO_Sensitive_Information__c
+            FROM Conversation_Note__c
+            WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
+        ];
+
+        Test.startTest();
+        Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            convNotes,
+            true //record is updated
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
+
+    @IsTest
+    static void shouldReturnOneRecordIdForConvNoteUpdatedByModiaIntegrationUserAndSensitiveInformationIsTrue() {
+        myTriggers.disable(ConvNoteCacheHandler.class);
+
+        Id profileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'System Administrator'
+            LIMIT 1
+        ]
+        .Id;
+        User modiaIntegrationUser = (User) SharedTestDataFactory.createRecord(
+            new User(
+                username = 'modia.integrasjon@nav.no.test',
+                ProfileId = profileId
+            )
+        );
+
+        Account personAccount = SharedTestDataFactory.createPersonAccount();
+
+        System.runAs(modiaIntegrationUser) {
+            SharedTestDataFactory.createRecord(
+                new Conversation_Note__c(
+                    CRM_Account__c = personAccount.Id,
+                    CRM_Conversation_Note__c = 'DUMMY TEXT',
+                    CRM_Henvendelse_BehandlingskjedeId__c = '789',
+                    STO_Sensitive_Information__c = true
+                )
+            );
+        }
+
+        List<Conversation_Note__c> convNotes = [
+            SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
         ];

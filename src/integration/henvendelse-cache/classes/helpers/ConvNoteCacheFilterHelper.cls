@@ -9,7 +9,7 @@ public with sharing class ConvNoteCacheFilterHelper {
             //Only cache records created in Salesforce
             if (
                 convNote.LastModifiedById != modiaIntegrationUser.UserId ||
-                isUpdate
+                (isUpdate && convNote.STO_Sensitive_Information__c == true) //Updates from Modia should be handled by the NAIS-app, except redaction requests
             ) {
                 recordIds.add(convNote.Id);
             }
