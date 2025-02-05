@@ -20,23 +20,26 @@
  * UnregisteredContactsParameter deserializedUnregisteredContacts = UnregisteredContactsParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class UnregisteredContactsParameter {
+public class UnregisteredContactsParameter implements IJsonSerializable {
     /**
-     * @description Error messages for the `UnregisteredContactsParameter` class and the `ContactName` field.
+     * @description Error messages for the `UnregisteredContactsParameter` class and the
+     * `ContactName` field.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      */
     public static final String CONTACT_NAME_BLANK_ERROR_MESSAGE = 'The ContactName field is mandatory.';
     /**
-     * @description Error messages for the `UnregisteredContactsParameter` class and the `Role` field.
+     * @description Error messages for the `UnregisteredContactsParameter` class and the `Role`
+     * field.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      */
     public static final String ROLE_BLANK_ERROR_MESSAGE = 'The Role field is mandatory.';
     /**
-     * @description Error messages for the `UnregisteredContactsParameter` class and the `ContactName` and `Role` fields.
+     * @description Error messages for the `UnregisteredContactsParameter` class and the
+     * `ContactName` and `Role` fields.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
@@ -458,11 +461,46 @@ public class UnregisteredContactsParameter {
     }
 
     /**
+     * @description Deserializes a map into an `UnregisteredContactsParameter` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, January 2025
+     * @param mapData The map to deserialize.
+     * @return `UnregisteredContactsParameter` The deserialized object instance from the map.
+     */
+    public static UnregisteredContactsParameter fromMap(
+        Map<String, Object> mapData
+    ) {
+        UnregisteredContactsParameter unregisteredContacts = new UnregisteredContactsParameter();
+        unregisteredContacts.Role = (String) mapData.get('Role');
+        unregisteredContacts.IsUnofficial = (Boolean) mapData.get(
+            'IsUnofficial'
+        );
+        unregisteredContacts.ContactName = (String) mapData.get('ContactName');
+        unregisteredContacts.ContactCompanyName = (String) mapData.get(
+            'ContactCompanyName'
+        );
+        unregisteredContacts.ReferenceNumber = (String) mapData.get(
+            'ReferenceNumber'
+        );
+        unregisteredContacts.Address = (String) mapData.get('Address');
+        unregisteredContacts.Country = (String) mapData.get('Country');
+        unregisteredContacts.MobilePhone = (String) mapData.get('MobilePhone');
+        unregisteredContacts.Phone = (String) mapData.get('Phone');
+        unregisteredContacts.Email = (String) mapData.get('Email');
+        unregisteredContacts.State = (String) mapData.get('State');
+        unregisteredContacts.ZipCode = (String) mapData.get('ZipCode');
+        unregisteredContacts.ZipPlace = (String) mapData.get('ZipPlace');
+
+        return unregisteredContacts;
+    }
+
+    /**
      * @description Validates the object to ensuring it has the mandatory fields set.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
-     * @exception ContactParameterException
+     * @exception UnregisteredContactsParameterException
      */
     @TestVisible
     private void validate() {

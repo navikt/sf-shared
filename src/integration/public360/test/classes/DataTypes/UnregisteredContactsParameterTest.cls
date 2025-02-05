@@ -1295,21 +1295,33 @@ private class UnregisteredContactsParameterTest {
         String email = 'test@test.nav.no';
 
         String expectedJsonString =
-            '{' +
-            '"Role":"Sakspart",' +
-            '"IsUnofficial":true,' +
-            '"ContactName":"Contact Name",' +
-            '"ContactCompanyName":"Contact Company Name",' +
-            '"ReferenceNumber":"12345678900",' +
-            '"Address":"Address 30",' +
-            '"Country":"Norway",' +
-            '"MobilePhone":"12345678",' +
-            '"Phone":"12345678",' +
-            '"Email":"test@test.nav.no",' +
-            '"State":"Oslo",' +
-            '"ZipCode":"1234",' +
-            '"ZipPlace":"Oslo"' +
-            '}';
+            '{"Role":"' +
+            role +
+            '","IsUnofficial":' +
+            isUnofficial +
+            ',"ContactName":"' +
+            contactName +
+            '","ContactCompanyName":"' +
+            contactCompanyName +
+            '","ReferenceNumber":"' +
+            referenceNumber +
+            '","Address":"' +
+            address +
+            '","Country":"' +
+            country +
+            '","MobilePhone":"' +
+            mobilePhone +
+            '","Phone":"' +
+            phone +
+            '","Email":"' +
+            email +
+            '","State":"' +
+            state +
+            '","ZipCode":"' +
+            zipCode +
+            '","ZipPlace":"' +
+            zipPlace +
+            '"}';
         String actualJsonString;
         System.Test.startTest();
         UnregisteredContactsParameter unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
@@ -1346,7 +1358,6 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void fromJson() {
-        UnregisteredContactsParameter deserializedUnregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
         String contactCompanyName = 'Contact Company Name';
@@ -1378,24 +1389,36 @@ private class UnregisteredContactsParameterTest {
         );
 
         String jsonString =
-            '{' +
-            '"Role":"Sakspart",' +
-            '"IsUnofficial":true,' +
-            '"ContactName":"Contact Name",' +
-            '"ContactCompanyName":"Contact Company Name",' +
-            '"ReferenceNumber":"12345678900",' +
-            '"Address":"Address 30",' +
-            '"Country":"Norway",' +
-            '"MobilePhone":"12345678",' +
-            '"Phone":"12345678",' +
-            '"Email":"test@test.nav.no",' +
-            '"State":"Oslo",' +
-            '"ZipCode":"1234",' +
-            '"ZipPlace":"Oslo"' +
-            '}';
+            '{"Role":"' +
+            role +
+            '","IsUnofficial":' +
+            isUnofficial +
+            ',"ContactName":"' +
+            contactName +
+            '","ContactCompanyName":"' +
+            contactCompanyName +
+            '","ReferenceNumber":"' +
+            referenceNumber +
+            '","Address":"' +
+            address +
+            '","Country":"' +
+            country +
+            '","MobilePhone":"' +
+            mobilePhone +
+            '","Phone":"' +
+            phone +
+            '","Email":"' +
+            email +
+            '","State":"' +
+            state +
+            '","ZipCode":"' +
+            zipCode +
+            '","ZipPlace":"' +
+            zipPlace +
+            '"}';
 
         System.Test.startTest();
-        deserializedUnregisteredContactsParameterDataType = UnregisteredContactsParameter.fromJson(
+        UnregisteredContactsParameter deserializedUnregisteredContactsParameterDataType = UnregisteredContactsParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
@@ -1476,7 +1499,6 @@ private class UnregisteredContactsParameterTest {
      */
     @IsTest
     static void fromJsonWithExtraChild() {
-        UnregisteredContactsParameter deserializedUnregisteredContactsParameterDataType;
         String contactName = 'Contact Name';
         String role = 'Sakspart';
         String contactCompanyName = 'Contact Company Name';
@@ -1508,25 +1530,37 @@ private class UnregisteredContactsParameterTest {
         );
 
         String jsonString =
-            '{' +
-            '"Role":"Sakspart",' +
-            '"IsUnofficial":true,' +
-            '"ContactName":"Contact Name",' +
-            '"ContactCompanyName":"Contact Company Name",' +
-            '"ReferenceNumber":"12345678900",' +
-            '"Address":"Address 30",' +
-            '"Country":"Norway",' +
-            '"MobilePhone":"12345678",' +
-            '"Phone":"12345678",' +
-            '"Email":"test@test.nav.no",' +
-            '"State":"Oslo",' +
-            '"ZipCode":"1234",' +
-            '"ZipPlace":"Oslo",' +
-            '"ExtraChild":"Extra Child"' +
+            '{"Role":"' +
+            role +
+            '","IsUnofficial":' +
+            isUnofficial +
+            ',"ContactName":"' +
+            contactName +
+            '","ContactCompanyName":"' +
+            contactCompanyName +
+            '","ReferenceNumber":"' +
+            referenceNumber +
+            '","Address":"' +
+            address +
+            '","Country":"' +
+            country +
+            '","MobilePhone":"' +
+            mobilePhone +
+            '","Phone":"' +
+            phone +
+            '","Email":"' +
+            email +
+            '","State":"' +
+            state +
+            '","ZipCode":"' +
+            zipCode +
+            '","ZipPlace":"' +
+            zipPlace +
+            '","ExtraChild":"Extra Child"' +
             '}';
 
         System.Test.startTest();
-        deserializedUnregisteredContactsParameterDataType = UnregisteredContactsParameter.fromJson(
+        UnregisteredContactsParameter deserializedUnregisteredContactsParameterDataType = UnregisteredContactsParameter.fromJson(
             jsonString
         );
         System.Test.stopTest();
@@ -1644,6 +1678,268 @@ private class UnregisteredContactsParameterTest {
             'System.JSONException',
             actualExceptionType,
             'Expected exception type should be equal to actual exception type.'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @see UnregisteredContactsParameter.fromMap
+     */
+    @IsTest
+    static void fromMap() {
+        String contactName = 'Contact Name';
+        String role = 'Sakspart';
+        String contactCompanyName = 'Contact Company Name';
+        String referenceNumber = '12345678900';
+        Boolean isUnofficial = true;
+        String country = 'Norway';
+        String address = 'Address 30';
+        String state = 'Oslo';
+        String zipCode = '1234';
+        String zipPlace = 'Oslo';
+        String mobilePhone = '12345678';
+        String phone = '12345678';
+        String email = 'test@test.nav.no';
+
+        UnregisteredContactsParameter unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
+            contactName,
+            role,
+            contactCompanyName,
+            referenceNumber,
+            isUnofficial,
+            country,
+            address,
+            state,
+            zipCode,
+            zipPlace,
+            mobilePhone,
+            phone,
+            email
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>{
+            'ContactName' => contactName,
+            'Role' => role,
+            'ContactCompanyName' => contactCompanyName,
+            'ReferenceNumber' => referenceNumber,
+            'IsUnofficial' => isUnofficial,
+            'Country' => country,
+            'Address' => address,
+            'State' => state,
+            'ZipCode' => zipCode,
+            'ZipPlace' => zipPlace,
+            'MobilePhone' => mobilePhone,
+            'Phone' => phone,
+            'Email' => email
+        };
+
+        System.Test.startTest();
+        UnregisteredContactsParameter deserializedUnregisteredContactsParameterDataType = UnregisteredContactsParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ContactName,
+            deserializedUnregisteredContactsParameterDataType.ContactName,
+            'ContactName fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Role,
+            deserializedUnregisteredContactsParameterDataType.Role,
+            'Role fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ContactCompanyName,
+            deserializedUnregisteredContactsParameterDataType.ContactCompanyName,
+            'ContactCompanyName fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ReferenceNumber,
+            deserializedUnregisteredContactsParameterDataType.ReferenceNumber,
+            'ReferenceNumber fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.IsUnofficial,
+            deserializedUnregisteredContactsParameterDataType.IsUnofficial,
+            'IsUnofficial fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Country,
+            deserializedUnregisteredContactsParameterDataType.Country,
+            'Country fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Address,
+            deserializedUnregisteredContactsParameterDataType.Address,
+            'Address fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.State,
+            deserializedUnregisteredContactsParameterDataType.State,
+            'State fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ZipCode,
+            deserializedUnregisteredContactsParameterDataType.ZipCode,
+            'ZipCode fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ZipPlace,
+            deserializedUnregisteredContactsParameterDataType.ZipPlace,
+            'ZipPlace fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.MobilePhone,
+            deserializedUnregisteredContactsParameterDataType.MobilePhone,
+            'MobilePhone fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Phone,
+            deserializedUnregisteredContactsParameterDataType.Phone,
+            'Phone fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Email,
+            deserializedUnregisteredContactsParameterDataType.Email,
+            'Email fields should be equal'
+        );
+    }
+
+    /**
+     * @description Test `fromMap` method with extra child.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @see UnregisteredContactsParameter.fromMap
+     */
+    @IsTest
+    static void fromMapWithExtraChild() {
+        String contactName = 'Contact Name';
+        String role = 'Sakspart';
+        String contactCompanyName = 'Contact Company Name';
+        String referenceNumber = '12345678900';
+        Boolean isUnofficial = true;
+        String country = 'Norway';
+        String address = 'Address 30';
+        String state = 'Oslo';
+        String zipCode = '1234';
+        String zipPlace = 'Oslo';
+        String mobilePhone = '12345678';
+        String phone = '12345678';
+        String email = 'test@test.nav.no';
+
+        UnregisteredContactsParameter unregisteredContactsParameterDataType = new UnregisteredContactsParameter(
+            contactName,
+            role,
+            contactCompanyName,
+            referenceNumber,
+            isUnofficial,
+            country,
+            address,
+            state,
+            zipCode,
+            zipPlace,
+            mobilePhone,
+            phone,
+            email
+        );
+
+        Map<String, Object> mapData = new Map<String, Object>{
+            'ContactName' => contactName,
+            'Role' => role,
+            'ContactCompanyName' => contactCompanyName,
+            'ReferenceNumber' => referenceNumber,
+            'IsUnofficial' => isUnofficial,
+            'Country' => country,
+            'Address' => address,
+            'State' => state,
+            'ZipCode' => zipCode,
+            'ZipPlace' => zipPlace,
+            'MobilePhone' => mobilePhone,
+            'Phone' => phone,
+            'Email' => email,
+            'ExtraChild' => 'Extra'
+        };
+
+        System.Test.startTest();
+        UnregisteredContactsParameter deserializedUnregisteredContactsParameterDataType = UnregisteredContactsParameter.fromMap(
+            mapData
+        );
+        System.Test.stopTest();
+
+        System.Assert.areNotEqual(
+            null,
+            deserializedUnregisteredContactsParameterDataType,
+            'Deserialized object should not be null and should still get a valid UnregisteredContactsParameter object even with extra fields.'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ContactName,
+            deserializedUnregisteredContactsParameterDataType.ContactName,
+            'ContactName fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Role,
+            deserializedUnregisteredContactsParameterDataType.Role,
+            'Role fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ContactCompanyName,
+            deserializedUnregisteredContactsParameterDataType.ContactCompanyName,
+            'ContactCompanyName fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ReferenceNumber,
+            deserializedUnregisteredContactsParameterDataType.ReferenceNumber,
+            'ReferenceNumber fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.IsUnofficial,
+            deserializedUnregisteredContactsParameterDataType.IsUnofficial,
+            'IsUnofficial fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Country,
+            deserializedUnregisteredContactsParameterDataType.Country,
+            'Country fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Address,
+            deserializedUnregisteredContactsParameterDataType.Address,
+            'Address fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.State,
+            deserializedUnregisteredContactsParameterDataType.State,
+            'State fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ZipCode,
+            deserializedUnregisteredContactsParameterDataType.ZipCode,
+            'ZipCode fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.ZipPlace,
+            deserializedUnregisteredContactsParameterDataType.ZipPlace,
+            'ZipPlace fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.MobilePhone,
+            deserializedUnregisteredContactsParameterDataType.MobilePhone,
+            'MobilePhone fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Phone,
+            deserializedUnregisteredContactsParameterDataType.Phone,
+            'Phone fields should be equal'
+        );
+        System.Assert.areEqual(
+            unregisteredContactsParameterDataType.Email,
+            deserializedUnregisteredContactsParameterDataType.Email,
+            'Email fields should be equal'
         );
     }
 
