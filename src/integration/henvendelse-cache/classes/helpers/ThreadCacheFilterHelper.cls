@@ -1,12 +1,12 @@
 public without sharing class ThreadCacheFilterHelper {
     public static Set<Id> getRecordIdsRequiringCacheClear(
-        List<Thread__c> threadList
+        List<HenvendelseUpdateWrapper> threadList
     ) {
         ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
         Set<Id> threadIds = new Set<Id>();
 
-        for (Thread__c thread : threadList) {
-            threadIds.add(thread.Id);
+        for (HenvendelseUpdateWrapper wrapper : threadList) {
+            threadIds.add(wrapper.thread.Id);
         }
         return threadIds;
     }

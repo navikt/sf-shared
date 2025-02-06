@@ -6,7 +6,7 @@ public class ThreadCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnOneThreadWhenOneThreadIsCreated() {
+    static void shouldReturnOneThreadWhenOneThreadIsUpdated() {
         myTriggers.disable(MessageCacheHandler.class);
         myTriggers.disable(ThreadCacheHandler.class);
 
@@ -20,14 +20,17 @@ public class ThreadCacheFilterHelperTest {
         SharedTestDataFactory.createRecord(
             new Thread__c(
                 CRM_Account__c = accountId,
-                CRM_Thread_Type__c = 'STO',
-                OwnerId = experienceCloudUserId
+                CRM_Thread_Type__c = 'STO'
             )
         );
         List<Thread__c> threads = [SELECT Id, LastModifiedById FROM Thread__c];
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.thread = threads[0];
+        wrapper.isGeneralUpdate = true;
+
         Test.startTest();
         Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            threads
+            new List<HenvendelseUpdateWrapper>{ wrapper }
         );
         Test.stopTest();
 
@@ -75,9 +78,13 @@ public class ThreadCacheFilterHelperTest {
         }
 
         List<Thread__c> threads = [SELECT Id, LastModifiedById FROM Thread__c];
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.thread = threads[0];
+        wrapper.isGeneralUpdate = true;
+
         Test.startTest();
         Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            threads
+            new List<HenvendelseUpdateWrapper>{ wrapper }
         );
         Test.stopTest();
 

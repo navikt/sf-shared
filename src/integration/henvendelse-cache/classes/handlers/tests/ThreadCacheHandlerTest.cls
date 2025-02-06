@@ -35,7 +35,7 @@ public class ThreadCacheHandlerTest {
     }
 
     @IsTest
-    static void shouldCreateQueuableJobWhenThreadIsUpdatedByInternalUser() {
+    static void shouldNotCreateQueuableJobWhenFieldUpdateIsNotRelevant() {
         ApiMock.setTestMock(
             HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
             200,
@@ -43,49 +43,38 @@ public class ThreadCacheHandlerTest {
         );
 
         Thread__c thread = [
-            SELECT Id, CRM_Incorrectly_Sent__c
+            SELECT Id, CRM_Conversation_Summary__c
             FROM Thread__c
             LIMIT 1
         ];
 
         Test.startTest();
-        thread.CRM_Incorrectly_Sent__c = true;
+        thread.CRM_Conversation_Summary__c = 'test';
         update thread;
         Test.stopTest();
 
-        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
+        Assert.areEqual(0, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest
-    static void shouldCreateQueuableJobWhenThreadIsUpdatedByExperienceCloudUser() {
+    static void shouldCreateQueuableJobWhenCategoryIsChanged() {
         ApiMock.setTestMock(
             HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
             200,
             'OK'
         );
 
-        Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
-        Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
-            new Message__c(
-                CRM_Thread__c = threadId,
-                CRM_Message_Text__c = 'Test'
-            )
-        );
-
-        User experienceCloudUser = [
-            SELECT Id
-            FROM User
-            WHERE AccountId = :accountId
+        Thread__c thread = [
+            SELECT Id, STO_Category__c
+            FROM Thread__c
+            LIMIT 1
         ];
-        Test.startTest();
-        System.runAs(experienceCloudUser) {
-            msg.CRM_Read__c = true;
-            update msg;
-        }
 
+        Test.startTest();
+        thread.STO_Category__c = 'Helse';
+        update thread;
         Test.stopTest();
 
-        Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 }
