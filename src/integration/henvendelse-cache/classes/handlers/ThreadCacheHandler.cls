@@ -43,7 +43,6 @@ global class ThreadCacheHandler extends MyTriggers {
                 isCloseThreadChange = true;
             }
 
-            system.debug(isGeneralUpdateChange);
             if (
                 isGeneralUpdateChange ||
                 isRedactionChange ||

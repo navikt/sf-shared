@@ -1,4 +1,6 @@
 public without sharing class ThreadCacheFilterHelper {
+    //Get thread ids for threads that require cache clear
+    //Updates from Modia should only trigger cache clear when closing thread or redacting
     public static Set<Id> getRecordIdsRequiringCacheClear(
         List<HenvendelseUpdateWrapper> threadList
     ) {
@@ -6,7 +8,15 @@ public without sharing class ThreadCacheFilterHelper {
         Set<Id> threadIds = new Set<Id>();
 
         for (HenvendelseUpdateWrapper wrapper : threadList) {
-            threadIds.add(wrapper.thread.Id);
+            if (
+                wrapper.thread.LastModifiedById != modiaIntegrationUser.UserId
+            ) {
+                threadIds.add(wrapper.thread.Id);
+            } else if (wrapper.isCloseThreadChange) {
+                threadIds.add(wrapper.thread.Id);
+            } else if (wrapper.isRedactionChange) {
+                threadIds.add(wrapper.thread.Id);
+            }
         }
         return threadIds;
     }

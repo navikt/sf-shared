@@ -40,7 +40,7 @@ public class ThreadCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnOndThreadIdForThreadUpdatedByModiaIntegrationUser() {
+    static void shoulNotReturnAnyThreadIdsForGeneralThreadUpdatedByModiaIntegrationUser() {
         myTriggers.disable(MessageCacheHandler.class);
         myTriggers.disable(ThreadCacheHandler.class);
 
@@ -81,6 +81,110 @@ public class ThreadCacheFilterHelperTest {
         HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
         wrapper.thread = threads[0];
         wrapper.isGeneralUpdate = true;
+
+        Test.startTest();
+        Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            new List<HenvendelseUpdateWrapper>{ wrapper }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, result.size());
+    }
+
+    @IsTest
+    static void shouldReturnOneThreadIdForClosingThreadByModiaIntegrationUser() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+        Id experienceCloudUserId = [
+            SELECT Id
+            FROM User
+            WHERE AccountId = :accountId
+        ]
+        .Id;
+
+        //Create record as Modia Integration User
+        Id profileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'System Administrator'
+            LIMIT 1
+        ]
+        .Id;
+        User modiaIntegrationUser = (User) SharedTestDataFactory.createRecord(
+            new User(
+                username = 'modia.integrasjon@nav.no.test',
+                ProfileId = profileId
+            )
+        );
+
+        System.runAs(modiaIntegrationUser) {
+            SharedTestDataFactory.createRecord(
+                new Thread__c(
+                    CRM_Account__c = accountId,
+                    CRM_Thread_Type__c = 'STO',
+                    OwnerId = experienceCloudUserId
+                )
+            );
+        }
+
+        List<Thread__c> threads = [SELECT Id, LastModifiedById FROM Thread__c];
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.thread = threads[0];
+        wrapper.isCloseThreadChange = true;
+
+        Test.startTest();
+        Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
+            new List<HenvendelseUpdateWrapper>{ wrapper }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(1, result.size());
+    }
+
+    @IsTest
+    static void shouldReturnOneThreadIdForRedactionRequestByModiaIntegrationUser() {
+        myTriggers.disable(MessageCacheHandler.class);
+        myTriggers.disable(ThreadCacheHandler.class);
+
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+        Id experienceCloudUserId = [
+            SELECT Id
+            FROM User
+            WHERE AccountId = :accountId
+        ]
+        .Id;
+
+        //Create record as Modia Integration User
+        Id profileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'System Administrator'
+            LIMIT 1
+        ]
+        .Id;
+        User modiaIntegrationUser = (User) SharedTestDataFactory.createRecord(
+            new User(
+                username = 'modia.integrasjon@nav.no.test',
+                ProfileId = profileId
+            )
+        );
+
+        System.runAs(modiaIntegrationUser) {
+            SharedTestDataFactory.createRecord(
+                new Thread__c(
+                    CRM_Account__c = accountId,
+                    CRM_Thread_Type__c = 'STO',
+                    OwnerId = experienceCloudUserId
+                )
+            );
+        }
+
+        List<Thread__c> threads = [SELECT Id, LastModifiedById FROM Thread__c];
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.thread = threads[0];
+        wrapper.isRedactionChange = true;
 
         Test.startTest();
         Set<Id> result = ThreadCacheFilterHelper.getRecordIdsRequiringCacheClear(
