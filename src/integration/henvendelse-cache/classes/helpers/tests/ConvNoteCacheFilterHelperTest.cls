@@ -13,22 +13,25 @@ public class ConvNoteCacheFilterHelperTest {
             )
         );
 
-        List<Conversation_Note__c> convNotes = [
+        Conversation_Note__c convNote = [
             SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '123'
+            LIMIT 1
         ];
+
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.convNote = convNote;
 
         Test.startTest();
         Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            convNotes,
-            false //record is created
+            new List<HenvendelseUpdateWrapper>{ wrapper }
         );
         Test.stopTest();
 
         Assert.areEqual(1, result.size());
         Id actualRecordId = new List<Id>(result)[0];
-        Assert.areEqual(convNotes[0].Id, actualRecordId);
+        Assert.areEqual(convNote.Id, actualRecordId);
     }
 
     @IsTest
@@ -61,16 +64,19 @@ public class ConvNoteCacheFilterHelperTest {
             );
         }
 
-        List<Conversation_Note__c> convNotes = [
+        Conversation_Note__c convNote = [
             SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
+            LIMIT 1
         ];
+
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.convNote = convNote;
 
         Test.startTest();
         Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            convNotes,
-            false //record is created
+            new List<HenvendelseUpdateWrapper>{ wrapper }
         );
         Test.stopTest();
 
@@ -107,16 +113,19 @@ public class ConvNoteCacheFilterHelperTest {
             );
         }
 
-        List<Conversation_Note__c> convNotes = [
+        Conversation_Note__c convNote = [
             SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
+            LIMIT 1
         ];
+
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.convNote = convNote;
 
         Test.startTest();
         Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            convNotes,
-            true //record is updated
+            new List<HenvendelseUpdateWrapper>{ wrapper }
         );
         Test.stopTest();
 
@@ -124,7 +133,7 @@ public class ConvNoteCacheFilterHelperTest {
     }
 
     @IsTest
-    static void shouldReturnOneRecordIdForConvNoteUpdatedByModiaIntegrationUserAndSensitiveInformationIsTrue() {
+    static void shouldReturnOneRecordIdForRedactionReuestdByModiaIntegrationUser() {
         myTriggers.disable(ConvNoteCacheHandler.class);
 
         Id profileId = [
@@ -154,16 +163,20 @@ public class ConvNoteCacheFilterHelperTest {
             );
         }
 
-        List<Conversation_Note__c> convNotes = [
+        Conversation_Note__c convNote = [
             SELECT Id, LastModifiedById, STO_Sensitive_Information__c
             FROM Conversation_Note__c
             WHERE CRM_Henvendelse_BehandlingskjedeId__c = '789'
+            LIMIT 1
         ];
+
+        HenvendelseUpdateWrapper wrapper = new HenvendelseUpdateWrapper();
+        wrapper.convNote = convNote;
+        wrapper.isRedactionChange = true;
 
         Test.startTest();
         Set<Id> result = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            convNotes,
-            true //record is updated
+            new List<HenvendelseUpdateWrapper>{ wrapper }
         );
         Test.stopTest();
 

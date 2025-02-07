@@ -1,9 +1,15 @@
 global class ConvNoteCacheHandler extends MyTriggers {
     global override void onAfterInsert() {
-        createHenvendelseCacheQueueable(
-            (List<Conversation_Note__c>) records,
-            false
-        );
+        List<HenvendelseUpdateWrapper> convNotes = new List<HenvendelseUpdateWrapper>();
+        for (
+            Conversation_Note__c record : (List<Conversation_Note__c>) records
+        ) {
+            HenvendelseUpdateWrapper recordWrapper = new HenvendelseUpdateWrapper();
+            recordWrapper.convNote = record;
+            convNotes.add(recordWrapper);
+        }
+
+        createHenvendelseCacheQueueable(convNotes);
     }
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
         List<String> fieldNamesToCheck = new List<String>{
@@ -17,7 +23,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
             'CRM_Is_Redacted__c'
         };
 
-        List<Conversation_Note__c> convNotesWithRelevantChanges = new List<Conversation_Note__c>();
+        List<HenvendelseUpdateWrapper> convNotesWithRelevantChanges = new List<HenvendelseUpdateWrapper>();
         for (
             Conversation_Note__c record : (List<Conversation_Note__c>) records
         ) {
@@ -32,22 +38,36 @@ global class ConvNoteCacheHandler extends MyTriggers {
                     recordOld
                 )
             ) {
-                convNotesWithRelevantChanges.add(record);
+                HenvendelseUpdateWrapper recordWrapper = new HenvendelseUpdateWrapper();
+                recordWrapper.convNote = record;
+                recordWrapper.isGeneralUpdate = true;
+                convNotesWithRelevantChanges.add(recordWrapper);
+            }
+
+            if (
+                MyTriggers.hasChangedFields(
+                    new List<String>{ 'STO_Sensitive_Information__c' },
+                    record,
+                    recordOld
+                )
+            ) {
+                HenvendelseUpdateWrapper recordWrapper = new HenvendelseUpdateWrapper();
+                recordWrapper.convNote = record;
+                recordWrapper.isRedactionChange = true;
+                convNotesWithRelevantChanges.add(recordWrapper);
             }
         }
         if (convNotesWithRelevantChanges.isEmpty()) {
             return;
         }
-        createHenvendelseCacheQueueable(convNotesWithRelevantChanges, true);
+        createHenvendelseCacheQueueable(convNotesWithRelevantChanges);
     }
 
     private void createHenvendelseCacheQueueable(
-        List<Conversation_Note__c> convNoteList,
-        Boolean isUpdate
+        List<HenvendelseUpdateWrapper> convNoteList
     ) {
         Set<Id> recordIds = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            convNoteList,
-            isUpdate
+            convNoteList
         );
         if (recordIds.isEmpty()) {
             return;
