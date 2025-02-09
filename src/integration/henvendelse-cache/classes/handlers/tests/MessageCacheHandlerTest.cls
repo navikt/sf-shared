@@ -90,7 +90,7 @@ public class MessageCacheHandlerTest {
     }
 
     @IsTest
-    static void shouldCreateQueuableJobWhenMessageIsUpdatedByExperienceCloudUser() {
+    static void shouldCreateQueuableJobWhenMessageIsReadByExperienceCloudUser() {
         ApiMock.setTestMock(
             HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
             200,
@@ -120,5 +120,31 @@ public class MessageCacheHandlerTest {
         Test.stopTest();
 
         Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
+    }
+
+    @IsTest
+    static void shouldNotCreateQueuableJobWhenReadByNav() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+        Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
+            new Message__c(
+                CRM_Thread__c = threadId,
+                CRM_Message_Text__c = 'Test',
+                CRM_Read__c = true
+            )
+        );
+
+        Test.startTest();
+        msg.CRM_Read__c = true;
+        update msg;
+        Test.stopTest();
+
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 }
