@@ -61,7 +61,7 @@ public class ConvNoteCacheHandlerTest {
     }
 
     @IsTest
-    static void shouldNotCreateQueuableJobWhenConvNoteIsUpdatedByInternalUser() {
+    static void shouldNotCreateQueuableJobWhenNumbeOfApiRetriesIsUpdated() {
         ApiMock.setTestMock(
             HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
             200,
@@ -78,10 +78,10 @@ public class ConvNoteCacheHandlerTest {
         );
 
         Test.startTest();
-        convNote.CRM_Is_Read__c = true;
+        convNote.CRM_Number_of_API_Retries__c = 7;
         update convNote;
         Test.stopTest();
 
-        Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]); //Expect one job when creating conv note, but no job should be created when upddating
     }
 }
