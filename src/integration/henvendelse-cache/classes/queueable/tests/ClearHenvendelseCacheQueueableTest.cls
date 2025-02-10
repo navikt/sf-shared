@@ -42,7 +42,7 @@ private class ClearHenvendelseCacheQueueableTest {
         Test.startTest();
         ClearHenvendelseCacheQueueable queueable = new ClearHenvendelseCacheQueueable(
             new Set<Id>{ 'a1P1I0000001a1aUAA' },
-            'Message__c'
+            null
         );
         System.enqueueJob(queueable);
         Test.stopTest();
@@ -51,7 +51,7 @@ private class ClearHenvendelseCacheQueueableTest {
     }
 
     @isTest
-    static void shouldPostOneConversationNoteSuccessfully() {
+    static void shouldPostOneConversationNoteSuccessfullyForConversationNote() {
         Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
 
         ApiMock.setTestMock(
@@ -61,10 +61,33 @@ private class ClearHenvendelseCacheQueueableTest {
         );
 
         Test.startTest();
-        new ClearHenvendelseCacheQueueable(
-                new Set<Id>{ convNoteId },
-                'Conversation_Note__c'
-            )
+        new ClearHenvendelseCacheQueueable(new Set<Id>{ convNoteId }, null)
+            .sendActorIdsToHenvendelseDbApi();
+
+        Test.stopTest();
+
+        System.assertEquals(
+            0,
+            [
+                SELECT COUNT()
+                FROM Application_Log__c
+                WHERE Log_Level__c = 'Error'
+            ]
+        );
+    }
+
+    @isTest
+    static void shouldPostOneConversationNoteSuccessfullyForThread() {
+        Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
+
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Test.startTest();
+        new ClearHenvendelseCacheQueueable(null, new Set<Id>{ threadId })
             .sendActorIdsToHenvendelseDbApi();
 
         Test.stopTest();
@@ -90,10 +113,7 @@ private class ClearHenvendelseCacheQueueableTest {
         );
 
         Test.startTest();
-        new ClearHenvendelseCacheQueueable(
-                new Set<Id>{ convNoteId },
-                'Conversation_Note__c'
-            )
+        new ClearHenvendelseCacheQueueable(new Set<Id>{ convNoteId }, null)
             .sendActorIdsToHenvendelseDbApi();
 
         Test.stopTest();

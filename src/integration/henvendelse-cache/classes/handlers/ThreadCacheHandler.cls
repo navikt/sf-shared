@@ -27,7 +27,7 @@ global class ThreadCacheHandler extends MyTriggers {
         }
         if (!threadIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(threadIds, 'Thread__c')
+                new ClearHenvendelseCacheQueueable(null, threadIds)
             );
         }
     }

@@ -11,7 +11,7 @@ global class MessageCacheHandler extends MyTriggers {
 
         if (!threadIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(threadIds, 'Message__c')
+                new ClearHenvendelseCacheQueueable(null, threadIds)
             );
         }
     }
@@ -29,7 +29,7 @@ global class MessageCacheHandler extends MyTriggers {
         }
         if (!threadIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(threadIds, 'Message__c')
+                new ClearHenvendelseCacheQueueable(null, threadIds)
             );
         }
     }

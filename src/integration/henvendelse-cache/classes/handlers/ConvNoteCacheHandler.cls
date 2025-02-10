@@ -14,10 +14,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
 
         if (!convNoteIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(
-                    convNoteIds,
-                    'Conversation_Note__c'
-                )
+                new ClearHenvendelseCacheQueueable(convNoteIds, null)
             );
         }
     }
@@ -50,10 +47,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
         }
         if (!convNoteIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(
-                    convNoteIds,
-                    'Conversation_Note__c'
-                )
+                new ClearHenvendelseCacheQueueable(convNoteIds, null)
             );
         }
     }
