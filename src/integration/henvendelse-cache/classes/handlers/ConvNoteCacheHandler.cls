@@ -73,25 +73,21 @@ global class ConvNoteCacheHandler extends MyTriggers {
             'CRM_Is_Redacted__c'
         };
 
-        if (MyTriggers.hasChangedFields(fieldNamesToCheck, record, oldRecord)) {
-            return true;
-        }
-        return false;
+        return MyTriggers.hasChangedFields(
+            fieldNamesToCheck,
+            record,
+            oldRecord
+        );
     }
 
     private Boolean checkForRedactionChange(
         Conversation_Note__c record,
         Conversation_Note__c oldRecord
     ) {
-        if (
-            MyTriggers.hasChangedFields(
-                new List<String>{ 'STO_Sensitive_Information__c' },
-                record,
-                oldRecord
-            )
-        ) {
-            return true;
-        }
-        return false;
+        return MyTriggers.hasChangedFields(
+            new List<String>{ 'STO_Sensitive_Information__c' },
+            record,
+            oldRecord
+        );
     }
 }
