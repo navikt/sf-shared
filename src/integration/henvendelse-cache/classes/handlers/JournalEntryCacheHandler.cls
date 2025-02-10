@@ -9,10 +9,7 @@ global class JournalEntryCacheHandler extends MyTriggers {
 
         if (!conversationNoteIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(
-                    conversationNoteIds,
-                    'Conversation_Note__c'
-                )
+                new ClearHenvendelseCacheQueueable(conversationNoteIds, null)
             );
         }
     }
@@ -27,7 +24,7 @@ global class JournalEntryCacheHandler extends MyTriggers {
 
         if (!threadIds.isEmpty()) {
             System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(threadIds, 'Thread__c')
+                new ClearHenvendelseCacheQueueable(null, threadIds)
             );
         }
     }
