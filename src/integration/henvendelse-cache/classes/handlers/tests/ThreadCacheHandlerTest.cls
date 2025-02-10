@@ -77,4 +77,92 @@ public class ThreadCacheHandlerTest {
 
         Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
+
+    @IsTest
+    static void shouldNotCreateQueuableJobWhenUpdatedByModiaIntegrationUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Thread__c thread = [
+            SELECT Id, STO_Category__c
+            FROM Thread__c
+            LIMIT 1
+        ];
+
+        Test.startTest();
+        System.runAs(getModiaIntegrationUser()) {
+            thread.STO_Category__c = 'Helse';
+            update thread;
+        }
+        Test.stopTest();
+
+        Assert.areEqual(0, [SELECT COUNT() FROM AsyncApexJob]);
+    }
+
+    @IsTest
+    static void shouldCreateQueuableJobWhenThreadIsClosedByModiaIntegrationUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Thread__c thread = [
+            SELECT Id, STO_Category__c
+            FROM Thread__c
+            LIMIT 1
+        ];
+
+        Test.startTest();
+        System.runAs(getModiaIntegrationUser()) {
+            thread.CRM_Closed_Date__c = Date.today();
+            update thread;
+        }
+        Test.stopTest();
+
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
+    }
+
+    @IsTest
+    static void shouldCreateQueuableJobWhenRedactionRequestByModiaIntegrationUser() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Thread__c thread = [
+            SELECT Id, STO_Category__c
+            FROM Thread__c
+            LIMIT 1
+        ];
+
+        Test.startTest();
+        System.runAs(getModiaIntegrationUser()) {
+            thread.STO_Sensitive_Information__c = true;
+            update thread;
+        }
+        Test.stopTest();
+
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
+    }
+
+    private static User getModiaIntegrationUser() {
+        Id profileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'System Administrator'
+            LIMIT 1
+        ]
+        .Id;
+        return (User) SharedTestDataFactory.createRecord(
+            new User(
+                username = 'modia.integrasjon@nav.no.test',
+                ProfileId = profileId
+            )
+        );
+    }
 }
