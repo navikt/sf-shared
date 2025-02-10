@@ -1,17 +1,67 @@
 global class ConvNoteCacheHandler extends MyTriggers {
+    ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
+
     global override void onAfterInsert() {
-        List<HenvendelseUpdateWrapper> convNotes = new List<HenvendelseUpdateWrapper>();
+        Set<Id> convNoteIds = new Set<Id>();
         for (
             Conversation_Note__c record : (List<Conversation_Note__c>) records
         ) {
-            HenvendelseUpdateWrapper recordWrapper = new HenvendelseUpdateWrapper();
-            recordWrapper.convNote = record;
-            convNotes.add(recordWrapper);
+            //Ignore conversation notes created by Modia. Should be handled in the NAIS app
+            if (record.CreatedById != modiaIntegrationUser.UserId) {
+                convNoteIds.add(record.Id);
+            }
         }
 
-        createHenvendelseCacheQueueable(convNotes);
+        if (!convNoteIds.isEmpty()) {
+            System.enqueueJob(
+                new ClearHenvendelseCacheQueueable(
+                    convNoteIds,
+                    'Conversation_Note__c'
+                )
+            );
+        }
     }
+
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
+        Set<Id> convNoteIds = new Set<Id>();
+        for (
+            Conversation_Note__c record : (List<Conversation_Note__c>) records
+        ) {
+            Conversation_Note__c oldRecord = (Conversation_Note__c) triggerOldMap.get(
+                record.Id
+            );
+            Boolean isGeneralUpdate = checkForRelevantUpdates(
+                record,
+                oldRecord
+            );
+            Boolean isRedactionChange = checkForRedactionChange(
+                record,
+                oldRecord
+            );
+
+            //Ignore updates by Modia, except redaction requests
+            if (
+                (isGeneralUpdate &&
+                record.LastModifiedById != modiaIntegrationUser.UserId) ||
+                isRedactionChange
+            ) {
+                convNoteIds.add(record.Id);
+            }
+        }
+        if (!convNoteIds.isEmpty()) {
+            System.enqueueJob(
+                new ClearHenvendelseCacheQueueable(
+                    convNoteIds,
+                    'Conversation_Note__c'
+                )
+            );
+        }
+    }
+
+    private Boolean checkForRelevantUpdates(
+        Conversation_Note__c record,
+        Conversation_Note__c oldRecord
+    ) {
         List<String> fieldNamesToCheck = new List<String>{
             'CRM_Communication_Channel__c',
             'CRM_Disposal_Datetime__c',
@@ -23,60 +73,25 @@ global class ConvNoteCacheHandler extends MyTriggers {
             'CRM_Is_Redacted__c'
         };
 
-        List<HenvendelseUpdateWrapper> convNotesWithRelevantChanges = new List<HenvendelseUpdateWrapper>();
-        for (
-            Conversation_Note__c record : (List<Conversation_Note__c>) records
-        ) {
-            Conversation_Note__c recordOld = (Conversation_Note__c) triggerOldMap.get(
-                record.Id
-            );
-
-            if (
-                MyTriggers.hasChangedFields(
-                    fieldNamesToCheck,
-                    record,
-                    recordOld
-                )
-            ) {
-                HenvendelseUpdateWrapper recordWrapper = new HenvendelseUpdateWrapper();
-                recordWrapper.convNote = record;
-                recordWrapper.isGeneralUpdate = true;
-                convNotesWithRelevantChanges.add(recordWrapper);
-            }
-
-            if (
-                MyTriggers.hasChangedFields(
-                    new List<String>{ 'STO_Sensitive_Information__c' },
-                    record,
-                    recordOld
-                )
-            ) {
-                HenvendelseUpdateWrapper recordWrapper = new HenvendelseUpdateWrapper();
-                recordWrapper.convNote = record;
-                recordWrapper.isRedactionChange = true;
-                convNotesWithRelevantChanges.add(recordWrapper);
-            }
+        if (MyTriggers.hasChangedFields(fieldNamesToCheck, record, oldRecord)) {
+            return true;
         }
-        if (convNotesWithRelevantChanges.isEmpty()) {
-            return;
-        }
-        createHenvendelseCacheQueueable(convNotesWithRelevantChanges);
+        return false;
     }
 
-    private void createHenvendelseCacheQueueable(
-        List<HenvendelseUpdateWrapper> convNoteList
+    private Boolean checkForRedactionChange(
+        Conversation_Note__c record,
+        Conversation_Note__c oldRecord
     ) {
-        Set<Id> recordIds = ConvNoteCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            convNoteList
-        );
-        if (recordIds.isEmpty()) {
-            return;
-        }
-        System.enqueueJob(
-            new ClearHenvendelseCacheQueueable(
-                recordIds,
-                'Conversation_Note__c'
+        if (
+            MyTriggers.hasChangedFields(
+                new List<String>{ 'STO_Sensitive_Information__c' },
+                record,
+                oldRecord
             )
-        );
+        ) {
+            return true;
+        }
+        return false;
     }
 }
