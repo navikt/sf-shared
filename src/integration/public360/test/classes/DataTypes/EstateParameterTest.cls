@@ -1,10 +1,10 @@
 /**
- * @description Test class for `UnregisteredContactsParameterTest` class.
+ * @description Test class for `EstateParameter` class.
  *
  * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
  * @since 0.1.0, January 2025
  * @group Public 360 Integration
- * @see UnregisteredContactsParameterTest
+ * @see EstateParameter
  */
 @IsTest(IsParallel=true)
 private class EstateParameterTest {
