@@ -1,36 +1,49 @@
 global class MessageCacheHandler extends MyTriggers {
+    ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
+
     global override void onAfterInsert() {
-        createHenvendelseCacheQueueable((List<Message__c>) records);
+        Set<Id> threadIds = new Set<Id>();
+        for (Message__c record : (List<Message__c>) records) {
+            if (record.CreatedById != modiaIntegrationUser.UserId) {
+                threadIds.add(record.CRM_Thread__c);
+            }
+        }
+
+        if (!threadIds.isEmpty()) {
+            System.enqueueJob(
+                new ClearHenvendelseCacheQueueable(threadIds, 'Message__c')
+            );
+        }
     }
 
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
-        List<Message__c> messagesWithRelevantChanges = new List<Message__c>();
+        Set<Id> threadIds = new Set<Id>();
         for (Message__c record : (List<Message__c>) records) {
             Message__c oldRecord = (Message__c) triggerOldMap.get(record.Id);
             if (
-                MyTriggers.hasChangedFields(
-                    new List<String>{ 'CRM_Read__c' },
-                    record,
-                    oldRecord
-                )
+                record.LastModifiedById != modiaIntegrationUser.UserId &&
+                checkForRelevantUpdates(record, oldRecord)
             ) {
-                messagesWithRelevantChanges.add(record);
+                threadIds.add(record.CRM_Thread__c);
             }
         }
-        if (!messagesWithRelevantChanges.isEmpty()) {
-            createHenvendelseCacheQueueable(messagesWithRelevantChanges);
+        if (!threadIds.isEmpty()) {
+            System.enqueueJob(
+                new ClearHenvendelseCacheQueueable(threadIds, 'Message__c')
+            );
         }
     }
 
-    private void createHenvendelseCacheQueueable(List<Message__c> messageList) {
-        Set<Id> recordIds = MessageCacheFilterHelper.getRecordIdsRequiringCacheClear(
-            messageList
-        );
-        if (recordIds.isEmpty()) {
-            return;
-        }
-        System.enqueueJob(
-            new ClearHenvendelseCacheQueueable(recordIds, 'Message__c')
+    private Boolean checkForRelevantUpdates(
+        Message__c record,
+        Message__c oldRecord
+    ) {
+        List<String> fieldNamesToCheck = new List<String>{ 'CRM_Read__c' };
+
+        return MyTriggers.hasChangedFields(
+            fieldNamesToCheck,
+            record,
+            oldRecord
         );
     }
 }
