@@ -4,7 +4,10 @@ global class MessageCacheHandler extends MyTriggers {
     global override void onAfterInsert() {
         Set<Id> threadIds = new Set<Id>();
         for (Message__c record : (List<Message__c>) records) {
-            if (record.CreatedById != modiaIntegrationUser.UserId) {
+            if (
+                record.CreatedById != modiaIntegrationUser.UserId &&
+                record.CRM_Type__c == 'Message'
+            ) {
                 threadIds.add(record.CRM_Thread__c);
             }
         }

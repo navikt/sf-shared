@@ -202,6 +202,29 @@ public class MessageCacheHandlerTest {
         Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
+    @IsTest
+    static void shouldNotCreateQueuableJobForMessagesOfTypeEvent() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
+        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+        Test.startTest();
+        SharedTestDataFactory.createRecord(
+            new Message__c(
+                CRM_Thread__c = threadId,
+                CRM_Message_Text__c = 'Test',
+                CRM_Type__c = 'Event'
+            )
+        );
+        Test.stopTest();
+
+        Assert.areEqual(0, [SELECT COUNT() FROM AsyncApexJob]);
+    }
+
     private static User getModiaIntegrationUser() {
         Id profileId = [
             SELECT Id
