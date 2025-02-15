@@ -137,6 +137,30 @@ public class RemarkParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Serializes a list of `RemarkParameter` objects into a single JSON array string.
+     * Example result:
+     * [
+     *   {},
+     *   {}
+     * ]
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param items The list of RemarkParameter objects to serialize.
+     * @return A JSON string representing the array of archive code objects.
+     */
+    public static String toJsonList(List<RemarkParameter> items) {
+        if (items == null || items.isEmpty()) {
+            return '[]';
+        }
+
+        JsonHelper jsonHelper = new JsonHelper();
+        jsonHelper.writeObjectListAsRootArray(items);
+
+        return jsonHelper.getAsString();
+    }
+
+    /**
      * @description Deserializes a JSON string into an `RemarkParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav

@@ -104,6 +104,30 @@ public class EstateParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Serializes a list of `EstateParameter` objects into a single JSON array string.
+     * Example result:
+     * [
+     *   {},
+     *   {}
+     * ]
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param items The list of EstateParameter objects to serialize.
+     * @return A JSON string representing the array of archive code objects.
+     */
+    public static String toJsonList(List<EstateParameter> items) {
+        if (items == null || items.isEmpty()) {
+            return '[]';
+        }
+
+        JsonHelper jsonHelper = new JsonHelper();
+        jsonHelper.writeObjectListAsRootArray(items);
+
+        return jsonHelper.getAsString();
+    }
+
+    /**
      * @description Deserializes a JSON string into an `EstateParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav

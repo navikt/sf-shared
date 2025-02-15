@@ -154,6 +154,31 @@ public class ArchiveCodeParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Serializes a list of `ArchiveCodeParameter` objects into a single JSON array
+     * string.
+     * Example result:
+     * [
+     *   {"ArchiveType":"recno:60001","Sort":1,"ArchiveCode":"B32","IsManualText":false},
+     *   {"ArchiveType":"recno:60002","Sort":2}
+     * ]
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param items The list of ArchiveCodeParameter objects to serialize.
+     * @return A JSON string representing the array of archive code objects.
+     */
+    public static String toJsonList(List<ArchiveCodeParameter> items) {
+        if (items == null || items.isEmpty()) {
+            return '[]';
+        }
+
+        JsonHelper jsonHelper = new JsonHelper();
+        jsonHelper.writeObjectListAsRootArray(items);
+
+        return jsonHelper.getAsString();
+    }
+
+    /**
      * @description Deserializes a JSON string into an `ArchiveCodeParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -200,6 +225,29 @@ public class ArchiveCodeParameter implements IJsonSerializable {
         archiveCode.IsManualText = (Boolean) mapData.get('IsManualText');
 
         return archiveCode;
+    }
+
+    /**
+     * @description Deserializes a list of maps into a list of `ArchiveCodeParameter` objects.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param mapDataList A list of maps, where each map represents one ArchiveCodeParameter record.
+     * @return A list of ArchiveCodeParameter objects parsed from the provided map data.
+     */
+    public static List<ArchiveCodeParameter> fromMapList(
+        List<Map<String, Object>> mapDataList
+    ) {
+        List<ArchiveCodeParameter> result = new List<ArchiveCodeParameter>();
+        if (mapDataList == null) {
+            return result;
+        }
+        for (Map<String, Object> item : mapDataList) {
+            if (item != null) {
+                result.add(ArchiveCodeParameter.fromMap(item));
+            }
+        }
+        return result;
     }
 
     /**

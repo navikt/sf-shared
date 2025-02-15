@@ -249,4 +249,100 @@ public class JsonHelper {
             generator.writeEndArray();
         }
     }
+
+    /**
+     * @description Writes a list of IJsonSerializable objects as a top-level JSON array.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     */
+    public void writeObjectListAsRootArray(List<IJsonSerializable> objList) {
+        generator.writeStartArray();
+        if (objList != null) {
+            for (IJsonSerializable obj : objList) {
+                if (obj != null) {
+                    generator.writeObject(
+                        JSON.deserializeUntyped(obj.toJson())
+                    );
+                } else {
+                    generator.writeObject(null);
+                }
+            }
+        }
+        generator.writeEndArray();
+    }
+
+    /**
+     * @description Compares two JSON strings for equality.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param jsonA The first JSON string to compare.
+     * @param jsonB The second JSON string to compare.
+     * @return `Boolean` True if the JSON strings are equal, false otherwise.
+     */
+    public static Boolean jsonEquals(String jsonA, String jsonB) {
+        System.debug('jsonA: ' + jsonA);
+        System.debug('jsonB: ' + jsonB);
+
+        // Parse each JSON into a nested Map/List structure
+        Object objA = JSON.deserializeUntyped(jsonA);
+        Object objB = JSON.deserializeUntyped(jsonB);
+
+        return compareObjects(objA, objB);
+    }
+
+    /**
+     * @description Compares two objects for equality.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param a The first object to compare.
+     * @param b The second object to compare.
+     * @return `Boolean` True if the objects are equal, false otherwise.
+     */
+    private static Boolean compareObjects(Object a, Object b) {
+        // Case 1: Both null
+        if (a == null && b == null)
+            return true;
+        // If one is null but not the other
+        if (a == null || b == null)
+            return false;
+
+        // Case 2: Both are maps
+        if (
+            a instanceof Map<String, Object> && b instanceof Map<String, Object>
+        ) {
+            Map<String, Object> mapA = (Map<String, Object>) a;
+            Map<String, Object> mapB = (Map<String, Object>) b;
+            // Must have same number of keys
+            if (mapA.keySet().size() != mapB.keySet().size())
+                return false;
+            // Check each key
+            for (String key : mapA.keySet()) {
+                if (!mapB.containsKey(key))
+                    return false;
+                if (!compareObjects(mapA.get(key), mapB.get(key)))
+                    return false;
+            }
+            return true;
+        }
+
+        // Case 3: Both are lists
+        if (a instanceof List<Object> && b instanceof List<Object>) {
+            List<Object> listA = (List<Object>) a;
+            List<Object> listB = (List<Object>) b;
+            if (listA.size() != listB.size())
+                return false;
+            // Compare each element
+            for (Integer i = 0; i < listA.size(); i++) {
+                if (!compareObjects(listA[i], listB[i]))
+                    return false;
+            }
+            return true;
+        }
+
+        // Case 4: Otherwise treat as a primitive (String, Integer, etc.)
+        return a == b;
+    }
 }
