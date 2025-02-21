@@ -210,6 +210,43 @@ public class ArchiveCodeParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Converts the current `ArchiveCodeParameter` instance into a Map representation,
+     * where the keys match the field names used in fromMap(...) and external usage.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @return A `Map<String, Object>` containing the object's field data.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new Map<String, Object>();
+
+        result.put('ArchiveCode', this.ArchiveCode);
+        result.put('ArchiveType', this.ArchiveType);
+        result.put('Sort', this.SortOrder);
+        result.put('IsManualText', this.IsManualText);
+
+        return result;
+    }
+
+    /**
+     * @description Converts a list of `ArchiveCodeParameter` instances into a list of maps.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param items The list of `ArchiveCodeParameter` instances to convert.
+     * @return A `List<Map<String, Object>>` list of maps containing the object's field data.
+     */
+    public static List<Map<String, Object>> toMapList(
+        List<ArchiveCodeParameter> items
+    ) {
+        List<Map<String, Object>> result = new List<Map<String, Object>>();
+        for (ArchiveCodeParameter acp : items) {
+            result.add(acp.toMap());
+        }
+        return result;
+    }
+
+    /**
      * @description Deserializes a map into an `ArchiveCodeParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -219,10 +256,10 @@ public class ArchiveCodeParameter implements IJsonSerializable {
      */
     public static ArchiveCodeParameter fromMap(Map<String, Object> mapData) {
         ArchiveCodeParameter archiveCode = new ArchiveCodeParameter();
-        archiveCode.ArchiveCode = (String) mapData.get('ArchiveCode');
-        archiveCode.ArchiveType = (String) mapData.get('ArchiveType');
-        archiveCode.SortOrder = (Integer) mapData.get('Sort');
-        archiveCode.IsManualText = (Boolean) mapData.get('IsManualText');
+        archiveCode.ArchiveCode = (String) mapData?.get('ArchiveCode');
+        archiveCode.ArchiveType = (String) mapData?.get('ArchiveType');
+        archiveCode.SortOrder = (Integer) mapData?.get('Sort');
+        archiveCode.IsManualText = (Boolean) mapData?.get('IsManualText');
 
         return archiveCode;
     }

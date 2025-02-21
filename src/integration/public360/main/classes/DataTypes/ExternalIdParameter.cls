@@ -19,7 +19,7 @@
  * ExternalIdParameter deserializedExternalId = ExternalIdParameter.fromJson(json);
  */
 @SuppressWarnings('PMD.FieldNamingConventions')
-public class ExternalIdParameter implements IJsonSerializable {
+public class ExternalIdParameter implements IJsonSerializable, IMapConvertible {
     /**
      * @description Error message for the `ExternalIdParameter` class and the `Id` field.
      *
@@ -108,6 +108,37 @@ public class ExternalIdParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Converts the current `ExternalIdParameter` instance into a Map representation,
+     * where the keys match the field names used in fromMap(...) and external usage.
+     *
+     * @return A `Map<String, Object>` containing the object's field data.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new Map<String, Object>();
+
+        result.put('Id', this.Id);
+        result.put('Type', this.Type);
+
+        return result;
+    }
+
+    /**
+     * @description Converts a list of `ExternalIdParameter` instances into a list of maps.
+     *
+     * @param items The list of `ExternalIdParameter` instances to convert.
+     * @return A `List<Map<String, Object>>` list of maps containing the object's field data.
+     */
+    public static List<Map<String, Object>> toMapList(
+        List<ExternalIdParameter> items
+    ) {
+        List<Map<String, Object>> result = new List<Map<String, Object>>();
+        for (ExternalIdParameter eip : items) {
+            result.add(eip.toMap());
+        }
+        return result;
+    }
+
+    /**
      *@description Deserializes a JSON string into an `ExternalIdParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -132,8 +163,8 @@ public class ExternalIdParameter implements IJsonSerializable {
      */
     public static ExternalIdParameter fromMap(Map<String, Object> mapData) {
         ExternalIdParameter externalId = new ExternalIdParameter();
-        externalId.Id = (String) mapData.get('Id');
-        externalId.Type = (String) mapData.get('Type');
+        externalId.Id = (String) mapData?.get('Id');
+        externalId.Type = (String) mapData?.get('Type');
         return externalId;
     }
 

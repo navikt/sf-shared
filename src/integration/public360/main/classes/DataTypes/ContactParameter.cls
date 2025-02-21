@@ -177,6 +177,43 @@ public class ContactParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Converts the current `ContactParameter` instance into a Map representation,
+     * where the keys match the field names used in fromMap(...) and external usage.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @return A `Map<String, Object>` containing the object's field data.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new Map<String, Object>();
+
+        result.put('ReferenceNumber', this.ReferenceNumber);
+        result.put('ExternalId', this.ExternalId);
+        result.put('Role', this.Role);
+        result.put('IsUnofficial', this.IsUnofficial);
+
+        return result;
+    }
+
+    /**
+     * @description Converts a list of `ContactParameter` instances into a list of maps.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param contactParameterItems The list of `ContactParameter` instances to convert.
+     * @return A `List<Map<String, Object>>` list of maps containing the object's field data.
+     */
+    public static List<Map<String, Object>> toMapList(
+        List<ContactParameter> contactParameterItems
+    ) {
+        List<Map<String, Object>> result = new List<Map<String, Object>>();
+        for (ContactParameter contactParameterItem : contactParameterItems) {
+            result.add(contactParameterItem.toMap());
+        }
+        return result;
+    }
+
+    /**
      *@description Deserializes a JSON string into an `ContactParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -201,10 +238,10 @@ public class ContactParameter implements IJsonSerializable {
      */
     public static ContactParameter fromMap(Map<String, Object> mapData) {
         ContactParameter contact = new ContactParameter();
-        contact.ReferenceNumber = (String) mapData.get('ReferenceNumber');
-        contact.ExternalId = (String) mapData.get('ExternalId');
-        contact.Role = (String) mapData.get('Role');
-        contact.IsUnofficial = (Boolean) mapData.get('IsUnofficial');
+        contact.ReferenceNumber = (String) mapData?.get('ReferenceNumber');
+        contact.ExternalId = (String) mapData?.get('ExternalId');
+        contact.Role = (String) mapData?.get('Role');
+        contact.IsUnofficial = (Boolean) mapData?.get('IsUnofficial');
 
         return contact;
     }

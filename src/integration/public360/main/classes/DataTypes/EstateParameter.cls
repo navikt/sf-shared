@@ -128,6 +128,41 @@ public class EstateParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Converts the current `EstateParameter` instance into a Map representation,
+     * where the keys match the field names used in fromMap(...) and external usage.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @return A `Map<String, Object>` containing the object's field data.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new Map<String, Object>();
+
+        result.put('Recno', this.Recno);
+        result.put('ExternalId', this.ExternalId);
+
+        return result;
+    }
+
+    /**
+     * @description Converts a list of `EstateParameter` instances into a list of maps.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param estateParameterItems The list of `EstateParameter` instances to convert.
+     * @return A `List<Map<String, Object>>` list of maps containing the object's field data.
+     */
+    public static List<Map<String, Object>> toMapList(
+        List<EstateParameter> estateParameterItems
+    ) {
+        List<Map<String, Object>> result = new List<Map<String, Object>>();
+        for (EstateParameter estateParameterItem : estateParameterItems) {
+            result.add(estateParameterItem.toMap());
+        }
+        return result;
+    }
+
+    /**
      * @description Deserializes a JSON string into an `EstateParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -145,12 +180,17 @@ public class EstateParameter implements IJsonSerializable {
     /**
      * @description Deserializes a Map into an `EstateParameter` object instance.
      *
+     *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
      * @since 0.1.0, January 2025
      * @param mapData The Map to deserialize.
      * @return `EstateParameter` The deserialized object instance from the Map.
      */
     public static EstateParameter fromMap(Map<String, Object> mapData) {
+        if (mapData == null) {
+            return null;
+        }
+
         EstateParameter estateParameter = new EstateParameter();
         estateParameter.Recno = (String) mapData.get('Recno');
         estateParameter.ExternalId = (String) mapData.get('ExternalId');

@@ -19,4 +19,22 @@ public class P360Helper {
     public static String getDatetimeFormatGMT(Datetime datetimeValue) {
         return datetimeValue.formatGMT('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'');
     }
+
+    /**
+     * @description Deserializes a JSON string into a `Datetime` object instance.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.com>, Nav
+     * @since 0.1.0, February 2025
+     * @param dateObject The JSON string to deserialize.
+     * @return `Datetime` The deserialized object instance from the JSON string.
+     */
+    public static Datetime deserializeToDatetime(Object dateObject) {
+        if (dateObject == null) {
+            return null;
+        }
+        return (Datetime) JSON.deserialize(
+            '"' + dateObject + '"',
+            Datetime.class
+        );
+    }
 }

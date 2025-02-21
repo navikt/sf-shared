@@ -19,7 +19,9 @@
  * String json = unregisteredContacts.toJson();
  * UnregisteredContactsParameter deserializedUnregisteredContacts = UnregisteredContactsParameter.fromJson(json);
  */
-@SuppressWarnings('PMD.FieldNamingConventions')
+@SuppressWarnings(
+    'PMD.FieldNamingConventions, PMD.StdCyclomaticComplexity, PMD.ExcessivePublicCount'
+)
 public class UnregisteredContactsParameter implements IJsonSerializable {
     /**
      * @description Error messages for the `UnregisteredContactsParameter` class and the
@@ -471,6 +473,54 @@ public class UnregisteredContactsParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Converts the current `UnregisteredContactsParameter` instance into a Map representation,
+     * where the keys match the field names used in fromMap(...) and external usage.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @return A `Map<String, Object>` containing the object's field data.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new Map<String, Object>();
+
+        result.put('Role', this.Role);
+        result.put('IsUnofficial', this.IsUnofficial);
+        result.put('ContactName', this.ContactName);
+        result.put('ContactCompanyName', this.ContactCompanyName);
+        result.put('ReferenceNumber', this.ReferenceNumber);
+        result.put('Address', this.Address);
+        result.put('Country', this.Country);
+        result.put('MobilePhone', this.MobilePhone);
+        result.put('Phone', this.Phone);
+        result.put('Email', this.Email);
+        result.put('State', this.State);
+        result.put('ZipCode', this.ZipCode);
+        result.put('ZipPlace', this.ZipPlace);
+
+        return result;
+    }
+
+    /**
+     * @description Converts a list of `UnregisteredContactsParameter` instances into a list of maps.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param unregisteredContactsParameterItems The list of `UnregisteredContactsParameter` instances to convert.
+     * @return A `List<Map<String, Object>>` list of maps containing the object's field data.
+     */
+    public static List<Map<String, Object>> toMapList(
+        List<UnregisteredContactsParameter> unregisteredContactsParameterItems
+    ) {
+        List<Map<String, Object>> result = new List<Map<String, Object>>();
+        for (
+            UnregisteredContactsParameter unregisteredContactsParameterItem : unregisteredContactsParameterItems
+        ) {
+            result.add(unregisteredContactsParameterItem.toMap());
+        }
+        return result;
+    }
+
+    /**
      *@description Deserializes a JSON string into an `UnregisteredContactsParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -497,25 +547,22 @@ public class UnregisteredContactsParameter implements IJsonSerializable {
         Map<String, Object> mapData
     ) {
         UnregisteredContactsParameter unregisteredContacts = new UnregisteredContactsParameter();
-        unregisteredContacts.Role = (String) mapData.get('Role');
-        unregisteredContacts.IsUnofficial = (Boolean) mapData.get(
-            'IsUnofficial'
-        );
-        unregisteredContacts.ContactName = (String) mapData.get('ContactName');
-        unregisteredContacts.ContactCompanyName = (String) mapData.get(
-            'ContactCompanyName'
-        );
-        unregisteredContacts.ReferenceNumber = (String) mapData.get(
-            'ReferenceNumber'
-        );
-        unregisteredContacts.Address = (String) mapData.get('Address');
-        unregisteredContacts.Country = (String) mapData.get('Country');
-        unregisteredContacts.MobilePhone = (String) mapData.get('MobilePhone');
-        unregisteredContacts.Phone = (String) mapData.get('Phone');
-        unregisteredContacts.Email = (String) mapData.get('Email');
-        unregisteredContacts.State = (String) mapData.get('State');
-        unregisteredContacts.ZipCode = (String) mapData.get('ZipCode');
-        unregisteredContacts.ZipPlace = (String) mapData.get('ZipPlace');
+        unregisteredContacts.Role = (String) mapData?.get('Role');
+        unregisteredContacts.IsUnofficial = (Boolean) mapData
+            ?.get('IsUnofficial');
+        unregisteredContacts.ContactName = (String) mapData?.get('ContactName');
+        unregisteredContacts.ContactCompanyName = (String) mapData
+            ?.get('ContactCompanyName');
+        unregisteredContacts.ReferenceNumber = (String) mapData
+            ?.get('ReferenceNumber');
+        unregisteredContacts.Address = (String) mapData?.get('Address');
+        unregisteredContacts.Country = (String) mapData?.get('Country');
+        unregisteredContacts.MobilePhone = (String) mapData?.get('MobilePhone');
+        unregisteredContacts.Phone = (String) mapData?.get('Phone');
+        unregisteredContacts.Email = (String) mapData?.get('Email');
+        unregisteredContacts.State = (String) mapData?.get('State');
+        unregisteredContacts.ZipCode = (String) mapData?.get('ZipCode');
+        unregisteredContacts.ZipPlace = (String) mapData?.get('ZipPlace');
 
         return unregisteredContacts;
     }

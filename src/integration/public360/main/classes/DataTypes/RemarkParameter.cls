@@ -176,6 +176,42 @@ public class RemarkParameter implements IJsonSerializable {
     }
 
     /**
+     * @description Converts the current `RemarkParameter` instance into a Map representation,
+     * where the keys match the field names used in fromMap(...) and external usage.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @return A `Map<String, Object>` containing the object's field data.
+     */
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new Map<String, Object>();
+
+        result.put('Title', this.Title);
+        result.put('Content', this.Content);
+        result.put('RemarkType', this.RemarkType);
+
+        return result;
+    }
+
+    /**
+     * @description Converts a list of `RemarkParameter` instances into a list of maps.
+     *
+     * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
+     * @since 0.1.0, February 2025
+     * @param remarkParameterItems The list of `RemarkParameter` instances to convert.
+     * @return A `List<Map<String, Object>>` list of maps containing the object's field data.
+     */
+    public static List<Map<String, Object>> toMapList(
+        List<RemarkParameter> remarkParameterItems
+    ) {
+        List<Map<String, Object>> result = new List<Map<String, Object>>();
+        for (RemarkParameter remarkParameterItem : remarkParameterItems) {
+            result.add(remarkParameterItem.toMap());
+        }
+        return result;
+    }
+
+    /**
      * @description Deserializes a Map into an `RemarkParameter` object instance.
      *
      * @author Kenneth Soerensen <kenneth.sorensen@nav.no>, Nav
@@ -185,9 +221,9 @@ public class RemarkParameter implements IJsonSerializable {
      */
     public static RemarkParameter fromMap(Map<String, Object> mapData) {
         RemarkParameter remarkParameter = new RemarkParameter();
-        remarkParameter.Title = (String) mapData.get('Title');
-        remarkParameter.Content = (String) mapData.get('Content');
-        remarkParameter.RemarkType = (String) mapData.get('RemarkType');
+        remarkParameter.Title = (String) mapData?.get('Title');
+        remarkParameter.Content = (String) mapData?.get('Content');
+        remarkParameter.RemarkType = (String) mapData?.get('RemarkType');
 
         return remarkParameter;
     }
