@@ -51,9 +51,9 @@ global class JournalEntryCacheHandler extends MyTriggers {
         Journal_Entry__c oldRecord
     ) {
         return record.CRM_Thread__c != null &&
-            (record.Journal_Entry_Status__c == 'Completed' ||
+            ((record.Journal_Entry_Status__c == 'Completed' ||
             record.Journal_Entry_Status__c == 'Failed') ||
             (oldRecord.Journal_Entry_ID__c == null &&
-            record.Journal_Entry_ID__c != null);
+            record.Journal_Entry_ID__c != null));
     }
 }
