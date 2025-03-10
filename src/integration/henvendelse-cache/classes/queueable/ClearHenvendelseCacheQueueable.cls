@@ -50,15 +50,6 @@ public with sharing class ClearHenvendelseCacheQueueable implements Queueable, D
                 null,
                 CRM_ApplicationDomain.Domain.NKS
             );
-        } else {
-            logger.info(
-                'Clear cahce for actorIds ' +
-                    actorIds.toString() +
-                    ' triggered by ' +
-                    recordIds.toString(),
-                null,
-                CRM_ApplicationDomain.Domain.NKS
-            );
         }
         logger.publishSynch();
     }
