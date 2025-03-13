@@ -51,7 +51,10 @@ public class SharedTestDataFactory {
         Id profileId = [
             SELECT Id
             FROM Profile
-            WHERE Name = 'Customer Community Login User' OR Name = 'NAV Bruker'
+            WHERE
+                Name = 'Customer Community Login User'
+                OR Name = 'NAV Bruker'
+                OR Name = 'High Volume Customer Portal User'
             ORDER BY Name DESC
             LIMIT 1
         ]
