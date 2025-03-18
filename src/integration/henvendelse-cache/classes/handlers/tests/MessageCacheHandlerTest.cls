@@ -159,7 +159,7 @@ public class MessageCacheHandlerTest {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             SharedTestDataFactory.createRecord(
                 new Message__c(
                     CRM_Thread__c = threadId,
@@ -192,7 +192,7 @@ public class MessageCacheHandlerTest {
         );
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             msg.CRM_Read__c = true;
             update msg;
         }
@@ -223,21 +223,5 @@ public class MessageCacheHandlerTest {
         Test.stopTest();
 
         Assert.areEqual(0, [SELECT COUNT() FROM AsyncApexJob]);
-    }
-
-    private static User getModiaIntegrationUser() {
-        Id profileId = [
-            SELECT Id
-            FROM Profile
-            WHERE Name = 'System Administrator'
-            LIMIT 1
-        ]
-        .Id;
-        return (User) SharedTestDataFactory.createRecord(
-            new User(
-                username = 'modia.integrasjon@nav.no.test',
-                ProfileId = profileId
-            )
-        );
     }
 }
