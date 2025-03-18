@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Base_Endpoint__c</field>
-        <value xsi:type="xsd:string">https://sf-henvendelse-db.ekstern.nav.no</value>
+        <value xsi:type="xsd:string">https://sf-henvendelse-db.nav.no</value>
     </values>
     <values>
         <field>Domain__c</field>
