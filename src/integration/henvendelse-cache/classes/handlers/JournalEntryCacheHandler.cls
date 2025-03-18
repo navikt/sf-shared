@@ -1,11 +1,14 @@
 global class JournalEntryCacheHandler extends MyTriggers {
+    ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
+
     global override void onAfterInsert() {
         Set<Id> conversationNoteIds = new Set<Id>();
         for (Journal_Entry__c record : (List<Journal_Entry__c>) records) {
             if (
-                record.CRM_Conversation_Note__c != null ||
+                (record.CRM_Conversation_Note__c != null ||
                 record.CRM_Journal_Post_Type__c == 'INNGAAENDE' ||
-                record.CRM_Journal_Post_Type__c == 'UTGAAENDE'
+                record.CRM_Journal_Post_Type__c == 'UTGAAENDE') &&
+                record.CreatedById != modiaIntegrationUser.UserId
             ) {
                 conversationNoteIds.add(record.CRM_Conversation_Note__c);
             }
@@ -50,6 +53,9 @@ global class JournalEntryCacheHandler extends MyTriggers {
         Journal_Entry__c record,
         Journal_Entry__c oldRecord
     ) {
+        if (record.LastModifiedById == modiaIntegrationUser.UserId) {
+            return false;
+        }
         return record.CRM_Thread__c != null &&
             ((record.Journal_Entry_Status__c == 'Completed' ||
             record.Journal_Entry_Status__c == 'Failed') ||

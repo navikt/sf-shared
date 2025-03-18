@@ -65,6 +65,22 @@ public class SharedTestDataFactory {
         );
     }
 
+    public static User createModiaIntegrationUser() {
+        Id profileId = [
+            SELECT Id
+            FROM Profile
+            WHERE Name = 'System Administrator'
+            LIMIT 1
+        ]
+        .Id;
+        return (User) SharedTestDataFactory.createRecord(
+            new User(
+                username = 'modia.integrasjon@nav.no.test',
+                ProfileId = profileId
+            )
+        );
+    }
+
     public static sObject createRecord(sObject record) {
         return createRecord(record, true);
     }
