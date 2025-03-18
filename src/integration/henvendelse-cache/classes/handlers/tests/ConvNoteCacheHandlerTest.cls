@@ -96,7 +96,7 @@ public class ConvNoteCacheHandlerTest {
         Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             SharedTestDataFactory.createRecord(
                 new Conversation_Note__c(
                     CRM_Account__c = accountId,
@@ -128,7 +128,7 @@ public class ConvNoteCacheHandlerTest {
         );
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             convNote.CRM_Incorrectly_Sent__c = true;
             update convNote;
         }
@@ -155,28 +155,12 @@ public class ConvNoteCacheHandlerTest {
         );
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             convNote.STO_Sensitive_Information__c = true;
             update convNote;
         }
         Test.stopTest();
 
         Assert.areEqual(2, [SELECT COUNT() FROM AsyncApexJob]);
-    }
-
-    private static User getModiaIntegrationUser() {
-        Id profileId = [
-            SELECT Id
-            FROM Profile
-            WHERE Name = 'System Administrator'
-            LIMIT 1
-        ]
-        .Id;
-        return (User) SharedTestDataFactory.createRecord(
-            new User(
-                username = 'modia.integrasjon@nav.no.test',
-                ProfileId = profileId
-            )
-        );
     }
 }

@@ -93,7 +93,7 @@ public class ThreadCacheHandlerTest {
         ];
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             thread.STO_Category__c = 'Helse';
             update thread;
         }
@@ -117,7 +117,7 @@ public class ThreadCacheHandlerTest {
         ];
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             thread.CRM_Closed_Date__c = Date.today();
             update thread;
         }
@@ -141,28 +141,12 @@ public class ThreadCacheHandlerTest {
         ];
 
         Test.startTest();
-        System.runAs(getModiaIntegrationUser()) {
+        System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
             thread.STO_Sensitive_Information__c = true;
             update thread;
         }
         Test.stopTest();
 
         Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
-    }
-
-    private static User getModiaIntegrationUser() {
-        Id profileId = [
-            SELECT Id
-            FROM Profile
-            WHERE Name = 'System Administrator'
-            LIMIT 1
-        ]
-        .Id;
-        return (User) SharedTestDataFactory.createRecord(
-            new User(
-                username = 'modia.integrasjon@nav.no.test',
-                ProfileId = profileId
-            )
-        );
     }
 }
