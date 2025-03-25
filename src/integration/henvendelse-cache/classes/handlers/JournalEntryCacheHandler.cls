@@ -40,12 +40,12 @@ global class JournalEntryCacheHandler extends MyTriggers {
             if (shouldAddThreadId(record, oldRecord)) {
                 threadIds.add(record.CRM_Thread__c);
             }
-
-            if (!threadIds.isEmpty()) {
-                System.enqueueJob(
-                    new ClearHenvendelseCacheQueueable(null, threadIds)
-                );
-            }
+        }
+        
+        if (!threadIds.isEmpty()) {
+            System.enqueueJob(
+                new ClearHenvendelseCacheQueueable(null, threadIds)
+            );
         }
     }
 
