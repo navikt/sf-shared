@@ -5,7 +5,7 @@ public with sharing class ModiaIntegrationUser {
         get {
             if (cachedUserId == null) {
                 cachedUserId = getUserId();
-             }
+            }
             return cachedUserId;
         }
     }
