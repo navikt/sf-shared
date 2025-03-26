@@ -1,7 +1,12 @@
 public with sharing class ModiaIntegrationUser {
+    private Id cachedUserId;
+
     public Id UserId {
         get {
-            return getUserId();
+            if (cachedUserId == null) {
+                cachedUserId = getUserId();
+             }
+            return cachedUserId;
         }
     }
 
@@ -11,9 +16,6 @@ public with sharing class ModiaIntegrationUser {
             FROM User
             WHERE Username LIKE 'modia.integrasjon@nav.no%'
         ];
-        if (users.size() > 0) {
-            return users[0].Id;
-        }
-        return null;
-    }
+        return users.isEmpty() ? null : users[0].Id;
+    }   
 }

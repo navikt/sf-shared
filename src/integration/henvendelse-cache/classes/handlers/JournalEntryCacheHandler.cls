@@ -8,7 +8,7 @@ global class JournalEntryCacheHandler extends MyTriggers {
                 (record.CRM_Conversation_Note__c != null ||
                 record.CRM_Journal_Post_Type__c == 'INNGAAENDE' ||
                 record.CRM_Journal_Post_Type__c == 'UTGAAENDE') &&
-                record.CreatedById != modiaIntegrationUser.UserId
+                record.CreatedById != modiaIntegrationUser.cachedUserId
             ) {
                 conversationNoteIds.add(record.CRM_Conversation_Note__c);
             }
@@ -53,7 +53,7 @@ global class JournalEntryCacheHandler extends MyTriggers {
         Journal_Entry__c record,
         Journal_Entry__c oldRecord
     ) {
-        if (record.LastModifiedById == modiaIntegrationUser.UserId) {
+        if (record.LastModifiedById == modiaIntegrationUser.cachedUserId) {
             return false;
         }
         return record.CRM_Thread__c != null &&
