@@ -41,7 +41,7 @@ global class JournalEntryCacheHandler extends MyTriggers {
                 threadIds.add(record.CRM_Thread__c);
             }
         }
-        
+
         if (!threadIds.isEmpty()) {
             System.enqueueJob(
                 new ClearHenvendelseCacheQueueable(null, threadIds)
@@ -53,9 +53,6 @@ global class JournalEntryCacheHandler extends MyTriggers {
         Journal_Entry__c record,
         Journal_Entry__c oldRecord
     ) {
-        if (record.LastModifiedById == modiaIntegrationUser.UserId) {
-            return false;
-        }
         return record.CRM_Thread__c != null &&
             ((record.Journal_Entry_Status__c == 'Completed' ||
             record.Journal_Entry_Status__c == 'Failed') ||
