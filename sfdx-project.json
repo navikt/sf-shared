@@ -20,7 +20,7 @@
     {
       "path": "src/integration/henvendelse-cache",
       "package": "henvendelse-cache",
-      "versionNumber": "0.4.0.NEXT",
+      "versionNumber": "0.5.0.NEXT",
       "dependencies": [
         {
           "package": "crm-platform-base",

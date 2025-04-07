@@ -14,13 +14,11 @@ global class ThreadCacheHandler extends MyTriggers {
                 record,
                 oldRecord
             );
-            Boolean isThreadClosing = checkForThreadClosing(record, oldRecord);
 
             if (
                 (isGeneralUpdateChange &&
                 record.LastModifiedById != modiaIntegrationUser.UserId) ||
-                isRedactionChange ||
-                isThreadClosing
+                isRedactionChange
             ) {
                 threadIds.add(record.Id);
             }
@@ -38,7 +36,8 @@ global class ThreadCacheHandler extends MyTriggers {
     ) {
         List<String> generaUpdateFieldChange = new List<String>{
             'STO_Category__c',
-            'CRM_Thread_Type__c'
+            'CRM_Thread_Type__c',
+            'CRM_Closed_Date__c'
         };
 
         return MyTriggers.hasChangedFields(
@@ -54,17 +53,6 @@ global class ThreadCacheHandler extends MyTriggers {
     ) {
         return MyTriggers.hasChangedFields(
             new List<String>{ 'STO_Sensitive_Information__c' },
-            record,
-            oldRecord
-        );
-    }
-
-    private Boolean checkForThreadClosing(
-        Thread__c record,
-        Thread__c oldRecord
-    ) {
-        return MyTriggers.hasChangedFields(
-            new List<String>{ 'CRM_Closed_Date__c' },
             record,
             oldRecord
         );

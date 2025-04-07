@@ -103,7 +103,7 @@ public class ThreadCacheHandlerTest {
     }
 
     @IsTest
-    static void shouldCreateQueuableJobWhenThreadIsClosedByModiaIntegrationUser() {
+    static void shouldNotCreateQueuableJobWhenThreadIsClosedByModiaIntegrationUser() {
         ApiMock.setTestMock(
             HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
             200,
@@ -123,7 +123,7 @@ public class ThreadCacheHandlerTest {
         }
         Test.stopTest();
 
-        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
+        Assert.areEqual(0, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
     @IsTest

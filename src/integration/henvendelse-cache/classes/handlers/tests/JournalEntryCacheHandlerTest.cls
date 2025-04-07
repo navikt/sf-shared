@@ -241,7 +241,7 @@ public class JournalEntryCacheHandlerTest {
     }
 
     @IsTest
-    static void shouldNotCreateQueuableJobWhenJournalEntryIsUpdatedByModiaIntegrationUser() {
+    static void shouldCreateQueuableJobWhenJournalEntryIsUpdatedByModiaIntegrationUser() {
         myTriggers.disable(ConvNoteCacheHandler.class);
         ApiMock.setTestMock(
             HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
@@ -266,6 +266,6 @@ public class JournalEntryCacheHandlerTest {
         }
 
         Test.stopTest();
-        Assert.areEqual(0, [SELECT COUNT() FROM AsyncApexJob]);
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 }
