@@ -10,15 +10,13 @@ global class ThreadCacheHandler extends MyTriggers {
                 record,
                 oldRecord
             );
-            Boolean isRedactionChange = checkForRedactionUpdates(
-                record,
-                oldRecord
-            );
+            Boolean isRedactionChange = hasFieldChanged('STO_Sensitive_Information__c', newRecord, oldRecord);
+            Boolean isCloseChange = hasFieldChanged('CRM_Closed_Date__c', newRecord, oldRecord);
 
             if (
                 (isGeneralUpdateChange &&
                 record.LastModifiedById != modiaIntegrationUser.UserId) ||
-                isRedactionChange
+                isRedactionChange || isCloseChange
             ) {
                 threadIds.add(record.Id);
             }
@@ -47,14 +45,7 @@ global class ThreadCacheHandler extends MyTriggers {
         );
     }
 
-    private Boolean checkForRedactionUpdates(
-        Thread__c record,
-        Thread__c oldRecord
-    ) {
-        return MyTriggers.hasChangedFields(
-            new List<String>{ 'STO_Sensitive_Information__c' },
-            record,
-            oldRecord
-        );
+    private Boolean hasFieldChanged(String fieldName, Thread__c newRecord, Thread__c oldRecord) {
+        return MyTriggers.hasChangedFields(new List<String>{ fieldName }, newRecord, oldRecord);
     }
 }
