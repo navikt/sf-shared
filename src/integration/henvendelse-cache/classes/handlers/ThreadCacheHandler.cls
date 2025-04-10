@@ -10,8 +10,8 @@ global class ThreadCacheHandler extends MyTriggers {
                 record,
                 oldRecord
             );
-            Boolean isRedactionChange = hasFieldChanged('STO_Sensitive_Information__c', newRecord, oldRecord);
-            Boolean isCloseChange = hasFieldChanged('CRM_Closed_Date__c', newRecord, oldRecord);
+            Boolean isRedactionChange = hasFieldChanged('STO_Sensitive_Information__c', record, oldRecord);
+            Boolean isCloseChange = hasFieldChanged('CRM_Closed_Date__c', record, oldRecord);
 
             if (
                 (isGeneralUpdateChange &&
