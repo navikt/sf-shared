@@ -75,6 +75,9 @@
     "liveAgentSettings": {
       "enableLiveAgent": true
     },
+    "liveMessageSettings": {
+      "enableLiveMessage": true
+    },
     "nameSettings": {
       "enableMiddleName": true
     },
@@ -108,9 +111,6 @@
       "permsetsInFieldCreation": true,
       "psaExpirationUIEnabled": true,
       "restrictedProfileCloning": false
-    },
-    "liveMessageSettings": {
-      "enableLiveMessage": true
     }
   }
 }

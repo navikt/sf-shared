@@ -1,0 +1,158 @@
+name: "Run static code validation"
+on:
+  workflow_call:
+    inputs:
+      validateEntireRepo:
+        description: "Validate entire repo (setting to false will only validate the diff against main)"
+        default: true
+        required: false
+        type: boolean
+      gitRef:
+        description: "Which git ref to use"
+        default: ${{ github.ref }}
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      validateEntireRepo:
+        description: "Validate entire repo (unchecking will only validate the diff against main)"
+        default: true
+        required: false
+        type: boolean
+jobs:
+  validate:
+    name: Static code validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    defaults:
+      run:
+        shell: "bash"
+    steps:
+      - name: "Install SF CLI"
+        uses: navikt/sf-shared/.github/actions/installSfCli@43547b9d59b9b46374648e0650250fc93fbd7596
+        with:
+          version: ${{ vars.SF_CLI_VERSION }}
+
+      - name: "Install Salesforce Code Analyzer"
+        run: |
+          echo "::group::Install Salesforce Code Analyzer Plugin"
+          sf plugins install code-analyzer@${SF_SCANNER_VERSION}
+          sf plugins --core
+          echo "::endgroup::"
+        env:
+          SF_SCANNER_VERSION: ${{ vars.SF_SCANNER_VERSION }}
+
+      - name: "Checkout"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.gitRef }}
+          fetch-depth: "0"
+          persist-credentials: false
+
+      - name: "Install dev dependencies"
+        run: |
+          npm ci
+
+      - name: "Set variables"
+        id: paths
+        run: |
+          prettierPathsToValidate='**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
+          eslintPathsToValidate='**/{aura,lwc}/**/*.js'
+          sfCodeAnalyzerPathToValidate='src'
+
+          if [ "${VALIDATE_ENTIRE_REPO}" = "false" ]; then
+            mapfile -t prettier_diffed_files_to_lint < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
+            mapfile -t eslint_diffed_files_to_lint < <(git diff --name-only --diff-filter=d HEAD~ -- \*.js)
+            mapfile -t codeAnalyzer_diffed_sf_files < <(git diff --name-only --diff-filter=d HEAD~ -- src/**/*.{cls,cmp,component,css,html,js,json,page,trigger,xml})
+            codeAnalyzer_json=$(jq -c -n '$ARGS.positional' --args "${codeAnalyzer_diffed_sf_files[@]}")
+            
+            prettierPathsToValidate="$(printf "%s\n" "${prettier_diffed_files_to_lint[@]}")"
+            eslintPathsToValidate="$(printf '%s\n' "${eslint_diffed_files_to_lint[@]}")"
+            sfCodeAnalyzerPathToValidate="$codeAnalyzer_json"
+          fi
+
+          echo "prettierPathsToValidate=$prettierPathsToValidate" >> $GITHUB_OUTPUT
+          echo "eslintPathsToValidate=$eslintPathsToValidate" >> $GITHUB_OUTPUT
+          echo "sfCodeAnalyzerPathToValidate=$sfCodeAnalyzerPathToValidate" >> $GITHUB_OUTPUT
+        env:
+          VALIDATE_ENTIRE_REPO: ${{ inputs.validateEntireRepo != '' && inputs.validateEntireRepo || true }}
+
+      - name: Prettier Check
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
+        uses: navikt/sf-shared/.github/actions/prettierCheck@43547b9d59b9b46374648e0650250fc93fbd7596
+        with:
+          pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
+
+      - name: Eslint check
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
+        uses: navikt/sf-shared/.github/actions/eslintCheck@43547b9d59b9b46374648e0650250fc93fbd7596
+        with:
+          pathToValidate: ${{ steps.paths.outputs.eslintPathsToValidate }}
+
+      - name: Run Salesforce Code Analyzer
+        id: run-code-analyzer
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
+        uses: forcedotcom/run-code-analyzer@13c0e7699093dc6294eefe19d1106eeda363c898
+        with:
+          run-arguments: --workspace ${{ steps.paths.outputs.sfCodeAnalyzerPathToValidate }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
+          results-artifact-name: salesforce-code-analyzer-results
+
+      # Code Analyser generates an empty SARIF file if no violations are found.
+      # In that case this step ensures that the SARIF file is valid and contains a default structure.
+      # This is required for the SARIF file to be uploaded to GitHub.
+      - name: Check SARIF file
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
+        run: |
+          echo "::group::Print SARIF file before check"
+          cat code-analyzer-report.sarif
+          echo "::endgroup::"
+          echo "::group::Check SARIF file"
+          jq --arg wd "$GITHUB_WORKSPACE" '
+            if .runs == [] then
+              .runs = [
+                {
+                  "tool": {
+                    "driver": {
+                      "name": "pmd",
+                      "rules": []
+                    }
+                  },
+                  "results": [],
+                  "invocations": [
+                    {
+                      "executionSuccessful": true,
+                      "workingDirectory": {
+                        "uri": $wd
+                      }
+                    }
+                  ]
+                }
+              ]
+            else
+              .
+            end
+          ' code-analyzer-report.sarif > temp.sarif && mv temp.sarif code-analyzer-report.sarif
+          echo "::endgroup::"
+          echo "::group::Print SARIF file after check"
+          cat code-analyzer-report.sarif
+          echo "::endgroup::"
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@7e3036b9cd87fc26dd06747b7aa4b96c27aaef3a
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' && github.ref_name == 'main'  }}
+        with:
+          sarif_file: code-analyzer-report.sarif
+          category: salesforce-code-analyzer
+
+      - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' && ( steps.run-code-analyzer.outputs.exit-code > 0 || steps.run-code-analyzer.outputs.num-sev1-violations > 0 || steps.run-code-analyzer.outputs.num-violations > 10 ) }}
+        shell: bash
+        run: |
+          echo "::error title=Code Analyzer failed with exit code: ${EXIT_CODE}::Number of Sev1 violations: ${NUM_SEV1_VIOLATIONS} (max 0). Number of violations: ${NUM_VIOLATIONS} (max 10)."
+          exit 1
+        env:
+          EXIT_CODE: ${{ steps.run-code-analyzer.outputs.exit-code }}
+          NUM_SEV1_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev1-violations }}
+          NUM_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-violations }}

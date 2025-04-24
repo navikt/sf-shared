@@ -1,0 +1,9 @@
+{
+  "pools": [
+    {
+      "poolConfigPath": "config/sf-ci-shared-pool-def.json",
+      "deleteJobType": "allscratchorgs",
+      "isCiPool": true
+    }
+  ]
+}

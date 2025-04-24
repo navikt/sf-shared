@@ -1,0 +1,145 @@
+# Workflow: Build and Publish
+# Purpose: Builds Salesforce packages and publishes artifacts.
+# Triggers: Manual (workflow_dispatch) or workflow call.
+name: "Build and Publish"
+on:
+  workflow_call:
+    outputs:
+      hasNewArtifacts:
+        description: "Whether new artifacts were generated during the build step."
+        value: ${{ jobs.buildAndPublish.outputs.artifactsFound || false}}
+    secrets:
+      SF_DEVHUB_URL:
+        required: true
+        description: "Salesforce DevHub authentication URL"
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+
+jobs:
+  staticCodeValidation:
+    name: Validation Jobs
+    uses: navikt/sf-shared/.github/workflows/ciStaticCodeValidation.yml@main
+    permissions:
+      contents: read
+      security-events: write
+
+  detectPackageChanges:
+    name: Detect Package Changes
+    needs: staticCodeValidation
+    runs-on: ubuntu-latest
+    outputs:
+      hasSrcChanges: ${{ steps.checkChanges.outputs.hasSrcChanges || 'false' }}
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0 # Full history needed for change detection
+          persist-credentials: false
+
+      # Check for changes in the src directory excluding .md files
+      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@43547b9d59b9b46374648e0650250fc93fbd7596
+        id: checkChanges
+
+  buildAndPublish:
+    name: Build and Publish
+    needs: [detectPackageChanges] # , createReleaseName]
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.detectPackageChanges.outputs.hasSrcChanges == 'true' }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/flxbl-io/sfp:${{ vars.SFP_CONTAINER_VERSION || 'latest' }}
+    outputs:
+      artifactsFound: ${{ steps.build.outputs.artifactsFound || 'false' }}
+    permissions:
+      contents: write
+      packages: write
+    env:
+      SFP_LOG_LEVEL: ${{ vars.SFP_LOG_LEVEL || 'INFO' }}
+      GH_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SCOPE: ${{ github.repository_owner }}
+      PATH_TO_CONFIG_FILE: "config/releaseConfig.yml"
+      GIT_REF: ${{ github.sha }}
+      BRANCH_NAME: ${{ github.ref_name }}
+      WORKITEM_FILTER: ${{ vars.WORKITEM_FILTER || 'PTCRM-[0-9]' }}
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0 # Full history for release definition and changelog
+          persist-credentials: true
+
+      - name: Authenticate Node
+        uses: actions/setup-node@v4
+        with:
+          registry-url: "https://npm.pkg.github.com"
+
+      # Sets up Salesforce CLI authentication for the DevHub
+      - name: Authenticate DevHub
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@43547b9d59b9b46374648e0650250fc93fbd7596
+        with:
+          auth-url: ${{ secrets.SF_DEVHUB_URL }}
+          alias: "devhub"
+          setDefaultDevhubUsername: "true"
+
+      - name: Build
+        id: build
+        run: |
+          echo "::group::Running sfp build"
+          if sfp build \
+            --devhubalias devhub \
+            --diffcheck \
+            --buildnumber "${GITHUB_RUN_ID}" \
+            --branch main \
+            --releaseconfig "${PATH_TO_CONFIG_FILE}" \
+            --loglevel "${SFP_LOG_LEVEL}" \
+            2>&1; then
+            
+            # Check if artifacts were generated
+            if [ -d "artifacts" ] && [ -n "$(ls -A artifacts)" ]; then
+              echo "Artifacts found"
+              echo "artifactsFound=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "::warning::No artifacts found after running Build step."
+              echo "artifactsFound=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "::error::Build command failed"
+            echo "artifactsFound=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: Promote Artifacts
+        if: steps.build.outputs.artifactsFound == 'true'
+        run: |
+          sfp artifacts promote --targetdevhubusername devhub --loglevel="${SFP_LOG_LEVEL}"
+
+      - name: Publish Artifacts
+        if: steps.build.outputs.artifactsFound == 'true'
+        run: |
+          echo "::group::Publishing artifacts"
+
+          sfp publish \
+            --artifactdir artifacts \
+            --npm \
+            --scope "@${SCOPE}" \
+            --devhubalias devhub \
+            --loglevel "${SFP_LOG_LEVEL}" \
+            --gittag \
+            --pushgittag \
+            --logsgroupsymbol ::group::,::endgroup:: \
+          || { echo "::error::Publish failed"; exit 1; }
+
+          echo "::endgroup::"
+
+      # Upload build artifacts and logs if present
+      - name: Upload Artifacts and Logs
+        if: steps.build.outputs.artifactsFound == 'true'
+        uses: navikt/sf-shared/.github/actions/uploadWorkflowArtifactsAndLogs@43547b9d59b9b46374648e0650250fc93fbd7596
+        with:
+          artifactName: "build-artifacts"
+          uploadArtifacts: true
+          logName: "build-logs"
+          publishLogs: true
