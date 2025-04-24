@@ -157,9 +157,16 @@ jobs:
 
       - name: "Create Pool"
         run: |
-          sfp pool prepare --poolconfig "${{ matrix.pool.poolConfigPath }}" --targetdevhubusername devhub
+          keys=""
+
+          if [ -s "config/packagesWithKeys.txt" ]; then
+            keys=$(cat config/packagesWithKeys.txt)
+          fi
+
+          sfp pool prepare --poolconfig "${{ matrix.pool.poolConfigPath }}" --targetdevhubusername devhub --keys "$keys"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
 
       - name: "Delete orphans"
         uses: navikt/sf-shared/.github/actions/ciDeletePool@43547b9d59b9b46374648e0650250fc93fbd7596
