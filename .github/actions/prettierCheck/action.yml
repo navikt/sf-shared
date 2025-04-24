@@ -1,0 +1,17 @@
+name: "Prettier Check"
+description: "Run Prettier on the code"
+inputs:
+  pathToValidate:
+    description: "The path to the files we want to validate"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Prettier Check
+      shell: bash
+      run: |
+        echo "::group::Run Prettier Check"
+        npx prettier --check --ignore-path .gitignore --ignore-path .prettierignore --no-error-on-unmatched-pattern ${PATH_TO_VALIDATE}
+        echo "::endgroup::"
+      env:
+        PATH_TO_VALIDATE: ${{ inputs.pathToValidate }}
