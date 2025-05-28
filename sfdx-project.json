@@ -67,6 +67,11 @@
           "versionNumber": "0.157.0.LATEST"
         }
       ]
+    },
+    {
+      "path": "src/integration//audit-logging",
+      "package": "audit-logging",
+      "versionNumber": "0.1.0.NEXT"
     }
   ],
   "packageAliases": {
