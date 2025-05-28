@@ -51,4 +51,33 @@ private class AuditLoggingPersonIdentServiceTest {
             responseBody
         );
     }
+
+    @IsTest
+    static void shouldReturn500StatusCodeWhenUnknownObject() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'Account2';
+        request.personIdentField = 'INT_PersonIdent__c';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM Account WHERE Name = 'Test Account 1']
+            .Id,
+            [SELECT Id FROM Account WHERE Name = 'Test Account 2']
+            .Id
+        };
+        system.debug(JSON.serialize(request));
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(500, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        String expectedErrorMessage = 'sObject type \'Account2\' is not supported.';
+        Assert.isTrue((responseBody.contains(expectedErrorMessage)));
+    }
 }
