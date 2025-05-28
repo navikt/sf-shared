@@ -13,7 +13,8 @@ global with sharing class AuditLoggingPersonIdentService {
             request.personIdentField +
             ' FROM ' +
             request.objectName +
-            ' WHERE Id IN :recordIds';
+            ' WHERE Id IN :recordIds' +
+            ' WITH SECURITY_ENFORCED';
 
         try {
             List<SObject> records = Database.query(soqlQuery);
@@ -21,11 +22,13 @@ global with sharing class AuditLoggingPersonIdentService {
             for (SObject record : records) {
                 PersonIdentResponse response = new PersonIdentResponse();
                 response.recordId = (String) record.get('Id');
-                response.personIdent = (String) record.get(
-                    request.personIdentField
+                response.personIdent = getPersonIdent(
+                    request.personIdentField,
+                    record
                 );
                 responses.add(response);
             }
+
             // Serialize the response to JSON
             setResponse(200, JSON.serialize(responses));
         } catch (Exception e) {
@@ -44,6 +47,26 @@ global with sharing class AuditLoggingPersonIdentService {
         response.statusCode = statusCode;
         response.responseBody = Blob.valueOf(payload);
         response.addHeader('Content-Type', 'application/json');
+    }
+
+    private static String getPersonIdent(
+        String personIdentField,
+        SObject record
+    ) {
+        if (personIdentField.contains('.')) {
+            List<String> parts = personIdentField.split('\\.');
+            SObject related = record;
+            for (Integer i = 0; i < parts.size() - 1; i++) {
+                related = (SObject) related.getSObject(parts[i]);
+                if (related == null)
+                    break;
+            }
+            return (related != null &&
+                related.get(parts[parts.size() - 1]) != null)
+                ? String.valueOf(related.get(parts[parts.size() - 1]))
+                : null;
+        }
+        return (String) record.get(personIdentField);
     }
 
     global class PersonIdentResponse {
