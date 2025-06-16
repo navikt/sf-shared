@@ -67,6 +67,20 @@
           "versionNumber": "0.157.0.LATEST"
         }
       ]
+    },
+    {
+      "versionName": "ver 0.2",
+      "versionNumber": "0.2.0.NEXT",
+      "path": "src/integration/audit-logging",
+      "default": false,
+      "package": "audit-logging",
+      "versionDescription": "Overføring av logger til ArcSight",
+      "dependencies": [
+        {
+          "package": "crm-platform-base",
+          "versionNumber": "0.253.0.LATEST"
+        }
+      ]
     }
   ],
   "packageAliases": {
@@ -83,6 +97,7 @@
     "crm-shared-flowComponents": "0Ho2o000000fxYJCAY",
     "crm-platform-integration": "0Ho2o0000008ORrCAM",
     "crm-platform-oppgave": "0Ho2o000000fxXzCAI",
-    "crm-platform-reporting": "0Ho2o0000008OSfCAM"
+    "crm-platform-reporting": "0Ho2o0000008OSfCAM",
+    "audit-logging": "0HoQC00000003sL0AQ"
   }
 }

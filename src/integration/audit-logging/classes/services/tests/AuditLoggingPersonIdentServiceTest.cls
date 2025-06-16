@@ -1,0 +1,252 @@
+@IsTest
+private class AuditLoggingPersonIdentServiceTest {
+    @TestSetup
+    static void makeData() {
+        List<Account> accounts = new List<Account>{
+            new Account(
+                Name = 'Test Account 1',
+                INT_PersonIdent__c = '1234567890'
+            ),
+            new Account(
+                Name = 'Test Account 2',
+                INT_PersonIdent__c = '0987654321'
+            ),
+            new Account(Name = 'Test Account 3')
+        };
+        insert accounts;
+
+        Case testCase = new Case(
+            Subject = 'Test Case',
+            AccountId = accounts[0].Id
+        );
+        insert testCase;
+
+        WorkOrder workOrder = new WorkOrder(
+            Subject = 'Test Work Order',
+            AccountId = accounts[0].Id
+        );
+        insert workOrder;
+
+        WorkOrderLineItem workOrderLineItem = new WorkOrderLineItem(
+            WorkOrderId = workOrder.Id,
+            Subject = 'Test Work Order Line Item'
+        );
+        insert workOrderLineItem;
+    }
+
+    @IsTest
+    static void shouldReturnTwoPersonIdentsWhenToRecordIdsAsInput() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'Account';
+        request.personIdentField = 'INT_PersonIdent__c';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM Account WHERE Name = 'Test Account 1']
+            .Id,
+            [SELECT Id FROM Account WHERE Name = 'Test Account 2']
+            .Id
+        };
+
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(200, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        Assert.areNotEqual(null, responseBody);
+
+        Assert.areEqual(
+            '[{"recordId":"' +
+                request.recordIds[0] +
+                '","personIdent":"1234567890"},{"recordId":"' +
+                request.recordIds[1] +
+                '","personIdent":"0987654321"}]',
+            responseBody
+        );
+    }
+
+    @IsTest
+    static void shouldReturnNullForPersonIdentWhenAccountIsMissingPersonIdent() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'Account';
+        request.personIdentField = 'INT_PersonIdent__c';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM Account WHERE Name = 'Test Account 3']
+            .Id
+        };
+
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(200, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        Assert.areNotEqual(null, responseBody);
+
+        Assert.areEqual(
+            '[{"recordId":"' + request.recordIds[0] + '","personIdent":null}]',
+            responseBody
+        );
+    }
+
+    @IsTest
+    static void shouldReturnEmptyListWhenRecordIdDoesNotExist() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'Account';
+        request.personIdentField = 'INT_PersonIdent__c';
+        request.recordIds = new List<Id>{ '001xx000003DGYAAA4' };
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(200, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        Assert.areNotEqual(null, responseBody);
+
+        Assert.areEqual('[]', responseBody);
+    }
+
+    @IsTest
+    static void shouldReturn500StatusCodeWhenUnknownObject() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'Account2';
+        request.personIdentField = 'INT_PersonIdent__c';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM Account WHERE Name = 'Test Account 1']
+            .Id,
+            [SELECT Id FROM Account WHERE Name = 'Test Account 2']
+            .Id
+        };
+
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(500, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        String expectedErrorMessage = 'sObject type \'Account2\' is not supported.';
+        Assert.isTrue((responseBody.contains(expectedErrorMessage)));
+    }
+
+    @IsTest
+    static void shouldReturn500StatusCodeWhenUnknownPersonIdentField() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'Account';
+        request.personIdentField = 'Unknown';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM Account WHERE Name = 'Test Account 1']
+            .Id,
+            [SELECT Id FROM Account WHERE Name = 'Test Account 2']
+            .Id
+        };
+
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(500, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        String expectedErrorMessage = 'No such column \'Unknown\' on entity';
+        Assert.isTrue((responseBody.contains(expectedErrorMessage)));
+    }
+
+    @IsTest
+    static void shouldReturnOnePersonIdentsWhenOneCaseIdAsInput() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = ' Case';
+        request.personIdentField = 'Account.INT_PersonIdent__c';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM Case WHERE Subject = 'Test Case']
+            .Id
+        };
+
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(200, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        Assert.areNotEqual(null, responseBody);
+
+        Assert.areEqual(
+            '[{"recordId":"' +
+                request.recordIds[0] +
+                '","personIdent":"1234567890"}]',
+            responseBody
+        );
+    }
+
+    @IsTest
+    static void shouldReturnOnePersonIdentsWhenOneWrokOrderLineItemAsInput() {
+        // Arrange
+        AuditLoggingPersonIdentService.PersonIdentRequest request = new AuditLoggingPersonIdentService.PersonIdentRequest();
+        request.objectName = 'WorkOrderLineItem';
+        request.personIdentField = 'WorkOrder.Account.INT_PersonIdent__c';
+        request.recordIds = new List<Id>{
+            [SELECT Id FROM WorkOrderLineItem LIMIT 1]
+            .Id
+        };
+
+        RestContext.request = new RestRequest();
+        RestContext.request.requestBody = Blob.valueOf(JSON.serialize(request));
+
+        // Act
+        Test.startTest();
+        RestContext.response = new RestResponse();
+        AuditLoggingPersonIdentService.getPersonIdents();
+        Test.stopTest();
+
+        // Assert
+        Assert.areEqual(200, RestContext.response.statusCode);
+        String responseBody = RestContext.response.responseBody.toString();
+        Assert.areNotEqual(null, responseBody);
+
+        Assert.areEqual(
+            '[{"recordId":"' +
+                request.recordIds[0] +
+                '","personIdent":"1234567890"}]',
+            responseBody
+        );
+    }
+}
