@@ -31,7 +31,7 @@ jobs:
         shell: "bash"
     steps:
       - name: "Install SF CLI"
-        uses: navikt/sf-shared/.github/actions/installSfCli@43547b9d59b9b46374648e0650250fc93fbd7596
+        uses: navikt/sf-shared/.github/actions/installSfCli@0baa12a1b03bb423a23feb5fd760647d31efadb6
         with:
           version: ${{ vars.SF_CLI_VERSION }}
 
@@ -81,20 +81,20 @@ jobs:
 
       - name: Prettier Check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/prettierCheck@43547b9d59b9b46374648e0650250fc93fbd7596
+        uses: navikt/sf-shared/.github/actions/prettierCheck@0baa12a1b03bb423a23feb5fd760647d31efadb6
         with:
           pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
 
       - name: Eslint check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/eslintCheck@43547b9d59b9b46374648e0650250fc93fbd7596
+        uses: navikt/sf-shared/.github/actions/eslintCheck@0baa12a1b03bb423a23feb5fd760647d31efadb6
         with:
           pathToValidate: ${{ steps.paths.outputs.eslintPathsToValidate }}
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: forcedotcom/run-code-analyzer@13c0e7699093dc6294eefe19d1106eeda363c898
+        uses: forcedotcom/run-code-analyzer@6a95b0e734fadae32b7a35520bda9fee28af2420
         with:
           run-arguments: --workspace ${{ steps.paths.outputs.sfCodeAnalyzerPathToValidate }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
           results-artifact-name: salesforce-code-analyzer-results
