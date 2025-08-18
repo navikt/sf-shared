@@ -25,12 +25,12 @@ jobs:
       contents: read
     steps:
       - name: "Checkout"
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@0baa12a1b03bb423a23feb5fd760647d31efadb6
+      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@3e2eaabf911b9478594c2dfac4b84e0cd878a4b3
         id: checkChanges
 
   validateChanges:
@@ -52,13 +52,13 @@ jobs:
       PULL_REQUEST_ID: ${{ github.event.pull_request.node_id }}
     steps:
       - name: "Checkout"
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Authenticate DevHub
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@0baa12a1b03bb423a23feb5fd760647d31efadb6
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@3e2eaabf911b9478594c2dfac4b84e0cd878a4b3
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: "devhub"
@@ -107,6 +107,6 @@ jobs:
 
       - name: Set pull request to draft
         if: ${{ failure() && github.event_name == 'pull_request' }}
-        uses: navikt/sf-shared/.github/actions/setPrToDraft@0baa12a1b03bb423a23feb5fd760647d31efadb6
+        uses: navikt/sf-shared/.github/actions/setPrToDraft@3e2eaabf911b9478594c2dfac4b84e0cd878a4b3
         with:
           pullRequestId: ${{ github.event.pull_request.node_id }}
