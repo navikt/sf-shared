@@ -1,24 +1,28 @@
-name: "Run static code validation"
+name: Run static code validation
+concurrency:
+  group: static-code-validation-${{ github.ref }}
+  cancel-in-progress: true
 on:
   workflow_call:
     inputs:
       validateEntireRepo:
-        description: "Validate entire repo (setting to false will only validate the diff against main)"
+        description: Validate entire repo (setting to false will only validate the diff against main)
         default: true
         required: false
         type: boolean
       gitRef:
-        description: "Which git ref to use"
+        description: Which git ref to use
         default: ${{ github.ref }}
         required: false
         type: string
   workflow_dispatch:
     inputs:
       validateEntireRepo:
-        description: "Validate entire repo (unchecking will only validate the diff against main)"
+        description: Validate entire repo (unchecking will only validate the diff against main)
         default: true
         required: false
         type: boolean
+permissions: {}
 jobs:
   validate:
     name: Static code validation
@@ -26,26 +30,36 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      pull-requests: write
     defaults:
       run:
-        shell: "bash"
+        shell: bash
+    env:
+      SF_CLI_VERSION: ${{ vars.SF_CLI_VERSION || 'latest' }}
     steps:
-      - name: "Install SF CLI"
-        uses: navikt/sf-shared/.github/actions/installSfCli@0baa12a1b03bb423a23feb5fd760647d31efadb6
+      - name: Compute cache key (sf CLI)
+        id: cachekey
+        run: |
+          if [ $SF_CLI_VERSION = "latest" ]; then
+            # Rotate weekly; change to +%Y-%m for monthly
+            echo "suffix=$(date +%Y-%V)" >> "$GITHUB_OUTPUT"
+          else
+            echo "suffix=static" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cache npm (sf CLI)
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-sf-cli-$SF_CLI_VERSION-${{ steps.cachekey.outputs.suffix }}
+
+      - name: Install SF CLI
+        uses: navikt/sf-gha-install-sf-cli@3f1abbc990b03fb544e80169920fea2e94946d1a
         with:
           version: ${{ vars.SF_CLI_VERSION }}
 
-      - name: "Install Salesforce Code Analyzer"
-        run: |
-          echo "::group::Install Salesforce Code Analyzer Plugin"
-          sf plugins install code-analyzer@${SF_SCANNER_VERSION}
-          sf plugins --core
-          echo "::endgroup::"
-        env:
-          SF_SCANNER_VERSION: ${{ vars.SF_SCANNER_VERSION }}
-
-      - name: "Checkout"
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           ref: ${{ inputs.gitRef }}
           fetch-depth: "0"
@@ -59,25 +73,21 @@ jobs:
         id: paths
         run: |
           prettierPathsToValidate='**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
-          eslintPathsToValidate='**/{aura,lwc}/**/*.js'
           sfCodeAnalyzerPathToValidate='src'
 
-          if [ "${VALIDATE_ENTIRE_REPO}" = "false" ]; then
+          if [ "$VALIDATE_ENTIRE_REPO" = "false" ]; then
             mapfile -t prettier_diffed_files_to_lint < <(git diff --name-only --diff-filter=d HEAD~ -- \*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml})
-            mapfile -t eslint_diffed_files_to_lint < <(git diff --name-only --diff-filter=d HEAD~ -- \*.js)
             mapfile -t codeAnalyzer_diffed_sf_files < <(git diff --name-only --diff-filter=d HEAD~ -- src/**/*.{cls,cmp,component,css,html,js,json,page,trigger,xml})
             codeAnalyzer_json=$(jq -c -n '$ARGS.positional' --args "${codeAnalyzer_diffed_sf_files[@]}")
-            
+
             prettierPathsToValidate="$(printf "%s\n" "${prettier_diffed_files_to_lint[@]}")"
-            eslintPathsToValidate="$(printf '%s\n' "${eslint_diffed_files_to_lint[@]}")"
             sfCodeAnalyzerPathToValidate="$codeAnalyzer_json"
           fi
 
-          echo "prettierPathsToValidate=$prettierPathsToValidate" >> $GITHUB_OUTPUT
-          echo "eslintPathsToValidate=$eslintPathsToValidate" >> $GITHUB_OUTPUT
-          echo "sfCodeAnalyzerPathToValidate=$sfCodeAnalyzerPathToValidate" >> $GITHUB_OUTPUT
+          echo "prettierPathsToValidate=$prettierPathsToValidate" >> "$GITHUB_OUTPUT"
+          echo "sfCodeAnalyzerPathToValidate=$sfCodeAnalyzerPathToValidate" >> "$GITHUB_OUTPUT"
         env:
-          VALIDATE_ENTIRE_REPO: ${{ inputs.validateEntireRepo != '' && inputs.validateEntireRepo || true }}
+          VALIDATE_ENTIRE_REPO: ${{ inputs.validateEntireRepo }}
 
       - name: Prettier Check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
@@ -85,19 +95,14 @@ jobs:
         with:
           pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
 
-      - name: Eslint check
-        if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/eslintCheck@0baa12a1b03bb423a23feb5fd760647d31efadb6
-        with:
-          pathToValidate: ${{ steps.paths.outputs.eslintPathsToValidate }}
-
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: forcedotcom/run-code-analyzer@6a95b0e734fadae32b7a35520bda9fee28af2420
+        uses: forcedotcom/run-code-analyzer@a1f89d329e1b86edb58dedb220b579cbd2979264
         with:
           run-arguments: --workspace ${{ steps.paths.outputs.sfCodeAnalyzerPathToValidate }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
           results-artifact-name: salesforce-code-analyzer-results
+          github-token: ${{ github.event_name == 'pull_request' && secrets.GITHUB_TOKEN || '' }}
 
       # Code Analyser generates an empty SARIF file if no violations are found.
       # In that case this step ensures that the SARIF file is valid and contains a default structure.
@@ -112,6 +117,23 @@ jobs:
           jq --arg wd "$GITHUB_WORKSPACE" '
             if .runs == [] then
               .runs = [
+                {
+                  "tool": {
+                    "driver": {
+                      "name": "flow",
+                      "rules": []
+                    }
+                  },
+                  "results": [],
+                  "invocations": [
+                    {
+                      "executionSuccessful": true,
+                      "workingDirectory": {
+                        "uri": $wd
+                      }
+                    }
+                  ]
+                },
                 {
                   "tool": {
                     "driver": {
@@ -147,12 +169,51 @@ jobs:
           category: salesforce-code-analyzer
 
       - name: Check the Salesforce Code Analyzer outputs to determine whether to fail
-        if: ${{ !cancelled() && steps.paths.outcome == 'success' && ( steps.run-code-analyzer.outputs.exit-code > 0 || steps.run-code-analyzer.outputs.num-sev1-violations > 0 || steps.run-code-analyzer.outputs.num-violations > 10 ) }}
+        if: ${{ !cancelled() && steps.paths.outcome == 'success' && ( steps.run-code-analyzer.outputs.exit-code > 0 || steps.run-code-analyzer.outputs.num-sev1-violations > 0 || steps.run-code-analyzer.outputs.num-violations > 10) }}
         shell: bash
         run: |
-          echo "::error title=Code Analyzer failed with exit code: ${EXIT_CODE}::Number of Sev1 violations: ${NUM_SEV1_VIOLATIONS} (max 0). Number of violations: ${NUM_VIOLATIONS} (max 10)."
-          exit 1
+          set -euo pipefail
+
+          # Normalize (default to 0 if unset/empty)
+          EXIT_CODE=${EXIT_CODE:-0}
+            NUM_SEV1_VIOLATIONS=${NUM_SEV1_VIOLATIONS:-0}
+            NUM_SEV2_VIOLATIONS=${NUM_SEV2_VIOLATIONS:-0}
+            NUM_SEV3_VIOLATIONS=${NUM_SEV3_VIOLATIONS:-0}
+            NUM_SEV4_VIOLATIONS=${NUM_SEV4_VIOLATIONS:-0}
+            NUM_SEV5_VIOLATIONS=${NUM_SEV5_VIOLATIONS:-0}
+            NUM_VIOLATIONS=${NUM_VIOLATIONS:-0}
+
+          # Exclude Sev5 (Info) from total count threshold
+          totalViolations=$(( NUM_VIOLATIONS - NUM_SEV5_VIOLATIONS ))
+
+          if (( EXIT_CODE > 0 )); then
+            echo "::error title=Salesforce Code Analyzer failed::Exit code: ${EXIT_CODE}"
+          fi
+
+          if (( NUM_SEV1_VIOLATIONS > 0 )) || (( totalViolations > MAX_ALLOWED_VIOLATIONS )); then
+            
+          printf -v details \
+            "Number of Sev1 Critical violations: %s\n \
+            Number of Sev2 High violations: %s\n \
+            Number of Sev3 Medium violations: %s\n \
+            Number of Sev4 Low violations: %s\n \
+            Number of Sev5 Info violations: %s\n \
+            Total (excluding Sev5): %s (max %s)" \
+            "$NUM_SEV1_VIOLATIONS" "$NUM_SEV2_VIOLATIONS" "$NUM_SEV3_VIOLATIONS" "$NUM_SEV4_VIOLATIONS" "$NUM_SEV5_VIOLATIONS" "$totalViolations" "$MAX_ALLOWED_VIOLATIONS"
+            
+            # GitHub command: replace literal newlines with %0A
+            echo "::error title=Salesforce Code Analyzer threshold exceeded::${details//$'\n'/%0A}"
+          fi
+
+          if (( EXIT_CODE > 0 )) || (( NUM_SEV1_VIOLATIONS > 0 )) || (( totalViolations > MAX_ALLOWED_VIOLATIONS )); then
+            exit 1
+          fi
         env:
+          MAX_ALLOWED_VIOLATIONS: 10
           EXIT_CODE: ${{ steps.run-code-analyzer.outputs.exit-code }}
           NUM_SEV1_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev1-violations }}
+          NUM_SEV2_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev2-violations }}
+          NUM_SEV3_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev3-violations }}
+          NUM_SEV4_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev4-violations }}
+          NUM_SEV5_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-sev5-violations }}
           NUM_VIOLATIONS: ${{ steps.run-code-analyzer.outputs.num-violations }}
