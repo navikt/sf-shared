@@ -45,19 +45,19 @@ jobs:
           echo "RELEASE_NAME=sf-platform_$(date +%s%3N)" >> "$GITHUB_ENV"
 
       - name: Authenticate Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           registry-url: "https://npm.pkg.github.com"
 
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           fetch-depth: 0 # Full history for release definition and changelog
           persist-credentials: true
       # Sets up Salesforce CLI authentication for the DevHub
 
       - name: Authenticate DevHub
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@0baa12a1b03bb423a23feb5fd760647d31efadb6
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@ac5a20f2360145d954d3e412a02bcf7f06e15035
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: "${{ env.DEVHUB_ALIAS }}"

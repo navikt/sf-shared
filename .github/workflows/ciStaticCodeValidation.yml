@@ -31,7 +31,7 @@ jobs:
         shell: "bash"
     steps:
       - name: "Install SF CLI"
-        uses: navikt/sf-shared/.github/actions/installSfCli@0baa12a1b03bb423a23feb5fd760647d31efadb6
+        uses: navikt/sf-shared/.github/actions/installSfCli@ac5a20f2360145d954d3e412a02bcf7f06e15035
         with:
           version: ${{ vars.SF_CLI_VERSION }}
 
@@ -45,7 +45,7 @@ jobs:
           SF_SCANNER_VERSION: ${{ vars.SF_SCANNER_VERSION }}
 
       - name: "Checkout"
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
           ref: ${{ inputs.gitRef }}
           fetch-depth: "0"
@@ -81,20 +81,20 @@ jobs:
 
       - name: Prettier Check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/prettierCheck@0baa12a1b03bb423a23feb5fd760647d31efadb6
+        uses: navikt/sf-shared/.github/actions/prettierCheck@ac5a20f2360145d954d3e412a02bcf7f06e15035
         with:
           pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
 
       - name: Eslint check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/eslintCheck@0baa12a1b03bb423a23feb5fd760647d31efadb6
+        uses: navikt/sf-shared/.github/actions/eslintCheck@ac5a20f2360145d954d3e412a02bcf7f06e15035
         with:
           pathToValidate: ${{ steps.paths.outputs.eslintPathsToValidate }}
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: forcedotcom/run-code-analyzer@6a95b0e734fadae32b7a35520bda9fee28af2420
+        uses: forcedotcom/run-code-analyzer@a1f89d329e1b86edb58dedb220b579cbd2979264
         with:
           run-arguments: --workspace ${{ steps.paths.outputs.sfCodeAnalyzerPathToValidate }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
           results-artifact-name: salesforce-code-analyzer-results
