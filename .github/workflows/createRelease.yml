@@ -57,7 +57,7 @@ jobs:
       # Sets up Salesforce CLI authentication for the DevHub
 
       - name: Authenticate DevHub
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@a815c084bd6806769c02208a7b1d45cf9e5eb834
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@7f5949beb23c59057305023e384169c59e8b2907
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: "${{ env.DEVHUB_ALIAS }}"
