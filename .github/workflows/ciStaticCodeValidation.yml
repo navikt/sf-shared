@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Cache npm (sf CLI)
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae
         with:
           path: ~/.npm
           key: npm-${{ runner.os }}-sf-cli-$SF_CLI_VERSION-${{ steps.cachekey.outputs.suffix }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: Prettier Check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/prettierCheck@7f5949beb23c59057305023e384169c59e8b2907
+        uses: navikt/sf-shared/.github/actions/prettierCheck@bdaf80f82389ca3658527ad0edd752e8d114c166
         with:
           pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
 
