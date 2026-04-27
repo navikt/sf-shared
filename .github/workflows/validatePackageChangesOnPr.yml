@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@bdaf80f82389ca3658527ad0edd752e8d114c166
+      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@4597e1bd3d0cc84ab55e001f23acc4869505163a
         id: checkChanges
 
   validateChanges:
