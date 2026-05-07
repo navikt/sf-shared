@@ -1,7 +1,7 @@
 public with sharing class ModiaIntegrationUser {
     private Id cachedUserId;
 
-    public Id UserId {
+    public Id userId {
         get {
             if (cachedUserId == null) {
                 cachedUserId = getUserId();
@@ -17,5 +17,5 @@ public with sharing class ModiaIntegrationUser {
             WHERE Username LIKE 'modia.integrasjon@nav.no%'
         ];
         return users.isEmpty() ? null : users[0].Id;
-    }   
+    }
 }

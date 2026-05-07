@@ -1,13 +1,13 @@
-global class ConvNoteCacheHandler extends MyTriggers {
+public class ConvNoteCacheHandler extends MyTriggers {
     ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
 
-    global override void onAfterInsert() {
+    public override void onAfterInsert() {
         Set<Id> convNoteIds = new Set<Id>();
         for (
             Conversation_Note__c record : (List<Conversation_Note__c>) records
         ) {
             //Ignore conversation notes created by Modia. Should be handled in the NAIS app
-            if (record.CreatedById != modiaIntegrationUser.UserId) {
+            if (record.CreatedById != modiaIntegrationUser.userId) {
                 convNoteIds.add(record.Id);
             }
         }
@@ -15,7 +15,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
         HenvendelseCacheQueueDispatcher.addConversationNoteIds(convNoteIds);
     }
 
-    global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
+    public override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
         Set<Id> convNoteIds = new Set<Id>();
         for (
             Conversation_Note__c record : (List<Conversation_Note__c>) records
@@ -35,7 +35,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
             //Ignore updates by Modia, except redaction requests
             if (
                 (isGeneralUpdate &&
-                record.LastModifiedById != modiaIntegrationUser.UserId) ||
+                record.LastModifiedById != modiaIntegrationUser.userId) ||
                 isRedactionChange
             ) {
                 convNoteIds.add(record.Id);

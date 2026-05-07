@@ -1,25 +1,25 @@
-global class JournalEntryCacheHandler extends MyTriggers {
+public class JournalEntryCacheHandler extends MyTriggers {
     ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
 
-    global override void onAfterInsert() {
+    public override void onAfterInsert() {
         Set<Id> conversationNoteIds = new Set<Id>();
         for (Journal_Entry__c record : (List<Journal_Entry__c>) records) {
             if (
                 record.CRM_Conversation_Note__c != null &&
-                (
-                    record.CRM_Journal_Post_Type__c == 'INNGAAENDE' ||
-                    record.CRM_Journal_Post_Type__c == 'UTGAAENDE'
-                ) &&
-                record.CreatedById != modiaIntegrationUser.UserId
+                (record.CRM_Journal_Post_Type__c == 'INNGAAENDE' ||
+                record.CRM_Journal_Post_Type__c == 'UTGAAENDE') &&
+                record.CreatedById != modiaIntegrationUser.userId
             ) {
                 conversationNoteIds.add(record.CRM_Conversation_Note__c);
             }
         }
 
-        HenvendelseCacheQueueDispatcher.addConversationNoteIds(conversationNoteIds);
+        HenvendelseCacheQueueDispatcher.addConversationNoteIds(
+            conversationNoteIds
+        );
     }
 
-    global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
+    public override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
         Set<Id> threadIds = new Set<Id>();
         for (Journal_Entry__c record : (List<Journal_Entry__c>) records) {
             Journal_Entry__c oldRecord = (Journal_Entry__c) triggerOldMap.get(

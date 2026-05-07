@@ -116,9 +116,10 @@ private class ClearHenvendelseCacheQueueableTest {
 
         Test.startTest();
         new ClearHenvendelseCacheQueueable(
-            new Set<Id>{ convNoteId },
-            new Set<Id>{ threadId }
-        ).sendActorIdsToHenvendelseDbApi();
+                new Set<Id>{ convNoteId },
+                new Set<Id>{ threadId }
+            )
+            .sendActorIdsToHenvendelseDbApi();
         Test.stopTest();
 
         Assert.areEqual(
@@ -194,9 +195,7 @@ private class ClearHenvendelseCacheQueueableTest {
         HenvendelseCacheQueueDispatcher.addConversationNoteIds(
             new Set<Id>{ convNoteId }
         );
-        HenvendelseCacheQueueDispatcher.addThreadIds(
-            new Set<Id>{ threadId }
-        );
+        HenvendelseCacheQueueDispatcher.addThreadIds(new Set<Id>{ threadId });
         Test.stopTest();
 
         Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);

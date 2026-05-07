@@ -1,7 +1,7 @@
-global class ThreadCacheHandler extends MyTriggers {
+public class ThreadCacheHandler extends MyTriggers {
     ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
 
-    global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
+    public override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
         Set<Id> threadIds = new Set<Id>();
 
         for (Thread__c record : (List<Thread__c>) records) {
@@ -17,7 +17,7 @@ global class ThreadCacheHandler extends MyTriggers {
 
             if (
                 (isGeneralUpdateChange &&
-                record.LastModifiedById != modiaIntegrationUser.UserId) ||
+                record.LastModifiedById != modiaIntegrationUser.userId) ||
                 isRedactionChange
             ) {
                 threadIds.add(record.Id);

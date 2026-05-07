@@ -1,11 +1,11 @@
-global class MessageCacheHandler extends MyTriggers {
+public class MessageCacheHandler extends MyTriggers {
     ModiaIntegrationUser modiaIntegrationUser = new ModiaIntegrationUser();
 
-    global override void onAfterInsert() {
+    public override void onAfterInsert() {
         Set<Id> threadIds = new Set<Id>();
         for (Message__c record : (List<Message__c>) records) {
             if (
-                record.CreatedById != modiaIntegrationUser.UserId &&
+                record.CreatedById != modiaIntegrationUser.userId &&
                 record.CRM_Type__c == 'Message' &&
                 record.CRM_Thread__c != null
             ) {
@@ -16,12 +16,12 @@ global class MessageCacheHandler extends MyTriggers {
         HenvendelseCacheQueueDispatcher.addThreadIds(threadIds);
     }
 
-    global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
+    public override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
         Set<Id> threadIds = new Set<Id>();
         for (Message__c record : (List<Message__c>) records) {
             Message__c oldRecord = (Message__c) triggerOldMap.get(record.Id);
             if (
-                record.LastModifiedById != modiaIntegrationUser.UserId &&
+                record.LastModifiedById != modiaIntegrationUser.userId &&
                 checkForRelevantUpdates(record, oldRecord) &&
                 record.CRM_Thread__c != null
             ) {

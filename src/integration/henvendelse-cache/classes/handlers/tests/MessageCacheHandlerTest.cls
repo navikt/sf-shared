@@ -23,7 +23,7 @@ public class MessageCacheHandlerTest {
         );
 
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
         Test.startTest();
         SharedTestDataFactory.createRecord(
             new Message__c(
@@ -73,7 +73,7 @@ public class MessageCacheHandlerTest {
         );
 
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
             new Message__c(
                 CRM_Thread__c = threadId,
@@ -131,7 +131,7 @@ public class MessageCacheHandlerTest {
         );
 
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
             new Message__c(
                 CRM_Thread__c = threadId,
@@ -156,7 +156,6 @@ public class MessageCacheHandlerTest {
         );
 
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Test.startTest();
         System.runAs(SharedTestDataFactory.createModiaIntegrationUser()) {
@@ -182,7 +181,6 @@ public class MessageCacheHandlerTest {
         );
 
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
 
         Message__c msg = (Message__c) SharedTestDataFactory.createRecord(
             new Message__c(
@@ -211,7 +209,7 @@ public class MessageCacheHandlerTest {
         );
 
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
-        Id accountId = [SELECT Id FROM Account LIMIT 1].Id;
+
         Test.startTest();
         SharedTestDataFactory.createRecord(
             new Message__c(
