@@ -12,11 +12,7 @@ global class ConvNoteCacheHandler extends MyTriggers {
             }
         }
 
-        if (!convNoteIds.isEmpty()) {
-            System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(convNoteIds, null)
-            );
-        }
+        HenvendelseCacheQueueDispatcher.addConversationNoteIds(convNoteIds);
     }
 
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
@@ -45,11 +41,8 @@ global class ConvNoteCacheHandler extends MyTriggers {
                 convNoteIds.add(record.Id);
             }
         }
-        if (!convNoteIds.isEmpty()) {
-            System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(convNoteIds, null)
-            );
-        }
+
+        HenvendelseCacheQueueDispatcher.addConversationNoteIds(convNoteIds);
     }
 
     private Boolean checkForRelevantUpdates(

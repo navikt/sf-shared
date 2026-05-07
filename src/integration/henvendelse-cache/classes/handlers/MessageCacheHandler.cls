@@ -6,17 +6,14 @@ global class MessageCacheHandler extends MyTriggers {
         for (Message__c record : (List<Message__c>) records) {
             if (
                 record.CreatedById != modiaIntegrationUser.UserId &&
-                record.CRM_Type__c == 'Message'
+                record.CRM_Type__c == 'Message' &&
+                record.CRM_Thread__c != null
             ) {
                 threadIds.add(record.CRM_Thread__c);
             }
         }
 
-        if (!threadIds.isEmpty()) {
-            System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(null, threadIds)
-            );
-        }
+        HenvendelseCacheQueueDispatcher.addThreadIds(threadIds);
     }
 
     global override void onAfterUpdate(Map<Id, SObject> triggerOldMap) {
@@ -25,16 +22,14 @@ global class MessageCacheHandler extends MyTriggers {
             Message__c oldRecord = (Message__c) triggerOldMap.get(record.Id);
             if (
                 record.LastModifiedById != modiaIntegrationUser.UserId &&
-                checkForRelevantUpdates(record, oldRecord)
+                checkForRelevantUpdates(record, oldRecord) &&
+                record.CRM_Thread__c != null
             ) {
                 threadIds.add(record.CRM_Thread__c);
             }
         }
-        if (!threadIds.isEmpty()) {
-            System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(null, threadIds)
-            );
-        }
+
+        HenvendelseCacheQueueDispatcher.addThreadIds(threadIds);
     }
 
     private Boolean checkForRelevantUpdates(

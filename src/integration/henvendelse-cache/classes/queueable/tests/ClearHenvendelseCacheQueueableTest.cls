@@ -2,9 +2,10 @@
 private class ClearHenvendelseCacheQueueableTest {
     @TestSetup
     static void makeData() {
-        myTriggers.disable(MessageCacheHandler.class);
-        myTriggers.disable(ThreadCacheHandler.class);
-        myTriggers.disable(ConvNoteCacheHandler.class);
+        MyTriggers.disable(MessageCacheHandler.class);
+        MyTriggers.disable(ThreadCacheHandler.class);
+        MyTriggers.disable(ConvNoteCacheHandler.class);
+        MyTriggers.disable(JournalEntryCacheHandler.class);
 
         Account personAccount = SharedTestDataFactory.createPersonAccount();
 
@@ -39,9 +40,11 @@ private class ClearHenvendelseCacheQueueableTest {
             'OK'
         );
 
+        Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
+
         Test.startTest();
         ClearHenvendelseCacheQueueable queueable = new ClearHenvendelseCacheQueueable(
-            new Set<Id>{ 'a1P1I0000001a1aUAA' },
+            new Set<Id>{ convNoteId },
             null
         );
         System.enqueueJob(queueable);
@@ -50,7 +53,7 @@ private class ClearHenvendelseCacheQueueableTest {
         System.assertEquals(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 
-    @isTest
+    @IsTest
     static void shouldPostOneConversationNoteSuccessfullyForConversationNote() {
         Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
 
@@ -63,10 +66,9 @@ private class ClearHenvendelseCacheQueueableTest {
         Test.startTest();
         new ClearHenvendelseCacheQueueable(new Set<Id>{ convNoteId }, null)
             .sendActorIdsToHenvendelseDbApi();
-
         Test.stopTest();
 
-        System.assertEquals(
+        Assert.areEqual(
             0,
             [
                 SELECT COUNT()
@@ -76,7 +78,7 @@ private class ClearHenvendelseCacheQueueableTest {
         );
     }
 
-    @isTest
+    @IsTest
     static void shouldPostOneConversationNoteSuccessfullyForThread() {
         Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
 
@@ -89,10 +91,9 @@ private class ClearHenvendelseCacheQueueableTest {
         Test.startTest();
         new ClearHenvendelseCacheQueueable(null, new Set<Id>{ threadId })
             .sendActorIdsToHenvendelseDbApi();
-
         Test.stopTest();
 
-        System.assertEquals(
+        Assert.areEqual(
             0,
             [
                 SELECT COUNT()
@@ -102,7 +103,58 @@ private class ClearHenvendelseCacheQueueableTest {
         );
     }
 
-    @isTest
+    @IsTest
+    static void shouldHandleConversationNoteAndThreadInSameExecution() {
+        Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
+        Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
+
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Test.startTest();
+        new ClearHenvendelseCacheQueueable(
+            new Set<Id>{ convNoteId },
+            new Set<Id>{ threadId }
+        ).sendActorIdsToHenvendelseDbApi();
+        Test.stopTest();
+
+        Assert.areEqual(
+            0,
+            [
+                SELECT COUNT()
+                FROM Application_Log__c
+                WHERE Log_Level__c = 'Error'
+            ]
+        );
+    }
+
+    @IsTest
+    static void shouldReturnWhenNoIdsAreProvided() {
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Test.startTest();
+        new ClearHenvendelseCacheQueueable(null, null)
+            .sendActorIdsToHenvendelseDbApi();
+        Test.stopTest();
+
+        Assert.areEqual(
+            0,
+            [
+                SELECT COUNT()
+                FROM Application_Log__c
+                WHERE Log_Level__c = 'Error'
+            ]
+        );
+    }
+
+    @IsTest
     static void shouldLogErrorMessageWhenStatusCodeFromTheApiIs500() {
         Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
 
@@ -115,10 +167,9 @@ private class ClearHenvendelseCacheQueueableTest {
         Test.startTest();
         new ClearHenvendelseCacheQueueable(new Set<Id>{ convNoteId }, null)
             .sendActorIdsToHenvendelseDbApi();
-
         Test.stopTest();
 
-        System.assertEquals(
+        Assert.areEqual(
             1,
             [
                 SELECT COUNT()
@@ -126,5 +177,28 @@ private class ClearHenvendelseCacheQueueableTest {
                 WHERE Log_Level__c = 'Error'
             ]
         );
+    }
+
+    @IsTest
+    static void shouldOnlyEnqueueOneJobFromDispatcher() {
+        Id convNoteId = [SELECT Id FROM Conversation_Note__c LIMIT 1].Id;
+        Id threadId = [SELECT Id FROM Thread__c LIMIT 1].Id;
+
+        ApiMock.setTestMock(
+            HenvendelseCacheCalloutService.SERVICES.DELETE_HENVENDELSE_CACHE_API.name(),
+            200,
+            'OK'
+        );
+
+        Test.startTest();
+        HenvendelseCacheQueueDispatcher.addConversationNoteIds(
+            new Set<Id>{ convNoteId }
+        );
+        HenvendelseCacheQueueDispatcher.addThreadIds(
+            new Set<Id>{ threadId }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(1, [SELECT COUNT() FROM AsyncApexJob]);
     }
 }

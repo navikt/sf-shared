@@ -17,19 +17,19 @@ public with sharing class ClearHenvendelseCacheQueueable implements Queueable, D
 
     @TestVisible
     private void sendActorIdsToHenvendelseDbApi() {
-        Set<String> actorIds;
-        Set<Id> recordIds;
+        Set<String> actorIds = new Set<String>();
+        Set<Id> recordIds = new Set<Id>();
 
         if (conversationNoteIds != null && !conversationNoteIds.isEmpty()) {
-            actorIds = ConvNoteCacheFilterHelper.getActorIds(
-                conversationNoteIds
+            actorIds.addAll(
+                ConvNoteCacheFilterHelper.getActorIds(conversationNoteIds)
             );
-            recordIds = conversationNoteIds;
+            recordIds.addAll(conversationNoteIds);
         }
 
         if (threadIds != null && !threadIds.isEmpty()) {
-            actorIds = ThreadCacheFilterHelper.getActorIds(threadIds);
-            recordIds = threadIds;
+            actorIds.addAll(ThreadCacheFilterHelper.getActorIds(threadIds));
+            recordIds.addAll(threadIds);
         }
 
         if (actorIds.isEmpty()) {
@@ -41,7 +41,7 @@ public with sharing class ClearHenvendelseCacheQueueable implements Queueable, D
 
         if (response.getStatusCode() != 200) {
             logger.error(
-                'Failed to clear henvendelse cache for acotorIds ' +
+                'Failed to clear henvendelse cache for actorIds ' +
                     actorIds.toString() +
                     ' ' +
                     response.getBody() +

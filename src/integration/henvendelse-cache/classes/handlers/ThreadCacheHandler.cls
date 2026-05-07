@@ -23,11 +23,8 @@ global class ThreadCacheHandler extends MyTriggers {
                 threadIds.add(record.Id);
             }
         }
-        if (!threadIds.isEmpty()) {
-            System.enqueueJob(
-                new ClearHenvendelseCacheQueueable(null, threadIds)
-            );
-        }
+
+        HenvendelseCacheQueueDispatcher.addThreadIds(threadIds);
     }
 
     private Boolean checkForRelevantUpdates(
