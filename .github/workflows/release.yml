@@ -38,7 +38,7 @@ jobs:
 
       # Sets up Salesforce CLI authentication for the DevHub
       - name: Authenticate DevHub
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@c5735d314fe8ce2e70dca0786cbdd9cbd1b03086
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@df227497cfed6678a1578ef89a878512705b18fb
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: "devhub"
@@ -46,7 +46,7 @@ jobs:
 
       # Sets up Salesforce CLI authentication for the DevHub
       - name: Authenticate Target Org
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@c5735d314fe8ce2e70dca0786cbdd9cbd1b03086
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@df227497cfed6678a1578ef89a878512705b18fb
         with:
           auth-url: ${{ secrets.TARGET_ORG_URL }}
           alias: "targetorg"
