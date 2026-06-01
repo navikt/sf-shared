@@ -43,12 +43,12 @@ jobs:
       canReplenishPool: ${{ steps.checkLimits.outputs.canReplenishPool }}
     steps:
       - name: Setup SF CLI
-        uses: navikt/sf-shared/.github/actions/installSfCli@df227497cfed6678a1578ef89a878512705b18fb
+        uses: navikt/sf-shared/.github/actions/installSfCli@573422c01b61d7e3c95d89b096c4698fc3ee02e1
         with:
           version: ${{ vars.SF_CLI_VERSION }}
 
       - name: "Authenticate Dev Hub"
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@df227497cfed6678a1578ef89a878512705b18fb
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@573422c01b61d7e3c95d89b096c4698fc3ee02e1
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: devhub
@@ -140,7 +140,7 @@ jobs:
           CLEAR_POOLS: ${{ inputs.clearPools }}
 
       - name: "Authenticate Dev Hub"
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@df227497cfed6678a1578ef89a878512705b18fb
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@573422c01b61d7e3c95d89b096c4698fc3ee02e1
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: devhub
@@ -148,7 +148,7 @@ jobs:
       - name: "Clear pool"
         id: clearPool
         if: ${{ inputs.clearPools }}
-        uses: navikt/sf-shared/.github/actions/ciDeletePool@df227497cfed6678a1578ef89a878512705b18fb
+        uses: navikt/sf-shared/.github/actions/ciDeletePool@573422c01b61d7e3c95d89b096c4698fc3ee02e1
         with:
           devhub: "devhub"
           poolTag: ${{ env.POOL_TAG }}
@@ -169,7 +169,7 @@ jobs:
           PACKAGE_KEY: ${{ secrets.PACKAGE_KEY }}
 
       - name: "Delete orphans"
-        uses: navikt/sf-shared/.github/actions/ciDeletePool@df227497cfed6678a1578ef89a878512705b18fb
+        uses: navikt/sf-shared/.github/actions/ciDeletePool@573422c01b61d7e3c95d89b096c4698fc3ee02e1
         with:
           devhub: "devhub"
           deleteJobType: orphans
