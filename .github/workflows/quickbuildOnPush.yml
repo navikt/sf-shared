@@ -23,11 +23,11 @@ jobs:
       contents: read
     steps:
       - name: "Checkout"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@573422c01b61d7e3c95d89b096c4698fc3ee02e1
+      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@55a03a1544a922df2623c91e0b27d610ffcb5502
         id: checkChanges
 
   quickBuild:
@@ -41,13 +41,13 @@ jobs:
       packages: write
     steps:
       - name: "Checkout"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
           persist-credentials: true
 
       - name: Authenticate DevHub
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@573422c01b61d7e3c95d89b096c4698fc3ee02e1
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@55a03a1544a922df2623c91e0b27d610ffcb5502
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: "devhub"
@@ -63,7 +63,7 @@ jobs:
 
       - name: Upload artifacts and logs
         if: always()
-        uses: navikt/sf-shared/.github/actions/uploadWorkflowArtifactsAndLogs@573422c01b61d7e3c95d89b096c4698fc3ee02e1
+        uses: navikt/sf-shared/.github/actions/uploadWorkflowArtifactsAndLogs@55a03a1544a922df2623c91e0b27d610ffcb5502
         with:
           artifactName: "build-artifacts"
           uploadArtifacts: true
