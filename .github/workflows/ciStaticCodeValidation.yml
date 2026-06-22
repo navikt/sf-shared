@@ -59,7 +59,7 @@ jobs:
           version: ${{ vars.SF_CLI_VERSION }}
 
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ inputs.gitRef }}
           fetch-depth: "0"
@@ -91,14 +91,14 @@ jobs:
 
       - name: Prettier Check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/prettierCheck@793daedf0a8825d9fbdbb86a4b7769f97b19da58
+        uses: navikt/sf-shared/.github/actions/prettierCheck@a364fbc9ecbc3f286a6b85bc4a7e16c34a998853
         with:
           pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
 
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: forcedotcom/run-code-analyzer@5470f6c3cdbfa3aeaf289160652ab17cdd22d41c
+        uses: forcedotcom/run-code-analyzer@f75cebd59250e423677b9884b8c368077f156a76
         with:
           run-arguments: --workspace ${{ steps.paths.outputs.sfCodeAnalyzerPathToValidate }} --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file code-analyzer-report.sarif
           results-artifact-name: salesforce-code-analyzer-results

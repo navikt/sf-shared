@@ -38,7 +38,7 @@ jobs:
 
       # Sets up Salesforce CLI authentication for the DevHub
       - name: Authenticate DevHub
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@793daedf0a8825d9fbdbb86a4b7769f97b19da58
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@a364fbc9ecbc3f286a6b85bc4a7e16c34a998853
         with:
           auth-url: ${{ secrets.SF_DEVHUB_URL }}
           alias: "devhub"
@@ -46,7 +46,7 @@ jobs:
 
       # Sets up Salesforce CLI authentication for the DevHub
       - name: Authenticate Target Org
-        uses: navikt/sf-shared/.github/actions/authenticateOrg@793daedf0a8825d9fbdbb86a4b7769f97b19da58
+        uses: navikt/sf-shared/.github/actions/authenticateOrg@a364fbc9ecbc3f286a6b85bc4a7e16c34a998853
         with:
           auth-url: ${{ secrets.TARGET_ORG_URL }}
           alias: "targetorg"
@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           ref: ${{ env.RELEASE_TAG }}
           persist-credentials: false
