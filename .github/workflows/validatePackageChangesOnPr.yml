@@ -27,12 +27,12 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@8e519f5cbd6ebf1729b3785fa54f96075521e773
+      - uses: navikt/sf-shared/.github/actions/checkForPackageChanges@84ec40c3bfc5f39fc2d863980d70465b24fed842
         id: checkChanges
 
   validateChanges:
@@ -53,7 +53,7 @@ jobs:
       PULL_REQUEST_ID: ${{ github.event.pull_request.node_id }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
           persist-credentials: false
