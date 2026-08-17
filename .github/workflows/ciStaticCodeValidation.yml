@@ -91,7 +91,7 @@ jobs:
 
       - name: Prettier Check
         if: ${{ !cancelled() && steps.paths.outcome == 'success' }}
-        uses: navikt/sf-shared/.github/actions/prettierCheck@7c3b035036ced99574718c17311f59fb4241f8a1
+        uses: navikt/sf-shared/.github/actions/prettierCheck@e846976f2bba321f1cef50027d5988a3134908c7
         with:
           pathToValidate: ${{ steps.paths.outputs.prettierPathsToValidate }}
 
