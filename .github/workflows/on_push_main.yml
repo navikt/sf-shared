@@ -28,7 +28,7 @@ jobs:
   release_to_dev:
     needs: create_release
     if: needs.create_release.result == 'success'
-    uses: navikt/sf-shared/.github/workflows/releaseToDev.yml@cd2888f6ceb6bf169d430ad63d04865d40bf9ecd
+    uses: navikt/sf-shared/.github/workflows/releaseToDev.yml@4a55ce6da0e472e1cb9d7f76605096783865f981
     permissions:
       contents: read
       packages: read
