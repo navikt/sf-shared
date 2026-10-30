@@ -63,7 +63,7 @@ jobs:
 
       - name: Upload artifacts and logs
         if: always()
-        uses: navikt/sf-shared/.github/actions/uploadWorkflowArtifactsAndLogs@0972cd83b67f7566b033ba1e50ff2140a089ba0b
+        uses: navikt/sf-shared/.github/actions/uploadWorkflowArtifactsAndLogs@4a55ce6da0e472e1cb9d7f76605096783865f981
         with:
           artifactName: "build-artifacts"
           uploadArtifacts: true
