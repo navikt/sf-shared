@@ -10,7 +10,7 @@ on:
     - cron: "15 1 * * 1-5" # At 01:15 from Monday through Friday.
 jobs:
   createPool:
-    uses: navikt/sf-shared/.github/workflows/ciCreatePool.yml@cd2888f6ceb6bf169d430ad63d04865d40bf9ecd
+    uses: navikt/sf-shared/.github/workflows/ciCreatePool.yml@4a55ce6da0e472e1cb9d7f76605096783865f981
     with:
       clearPools: ${{ github.event.schedule == '15 1 * * 1-5' }}
       poolMatrixDefPath: "config/poolMatrixdef.json"
