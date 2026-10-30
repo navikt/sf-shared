@@ -19,7 +19,7 @@ concurrency:
 jobs:
   staticCodeValidation:
     name: Validation Jobs
-    uses: navikt/sf-shared/.github/workflows/ciStaticCodeValidation.yml@main
+    uses: navikt/sf-shared/.github/workflows/ciStaticCodeValidation.yml@cd2888f6ceb6bf169d430ad63d04865d40bf9ecd
     permissions:
       contents: read
       security-events: write
@@ -71,7 +71,7 @@ jobs:
           persist-credentials: true
 
       - name: Authenticate Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 #v 7.1.0
         with:
           registry-url: "https://npm.pkg.github.com"
 

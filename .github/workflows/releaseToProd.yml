@@ -10,7 +10,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
 jobs:
   release:
-    uses: navikt/sf-shared/.github/workflows/release.yml@main
+    uses: navikt/sf-shared/.github/workflows/release.yml@cd2888f6ceb6bf169d430ad63d04865d40bf9ecd
     with:
       release_tag: ${{ github.event.inputs.release_tag }}
     secrets:
