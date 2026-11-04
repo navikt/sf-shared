@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    uses: navikt/sf-shared/.github/workflows/buildAndPublish.yml@cd2888f6ceb6bf169d430ad63d04865d40bf9ecd
+    uses: navikt/sf-shared/.github/workflows/buildAndPublish.yml@00ade46a4708769edacef62b2caf8d3fdf0e6766
     permissions:
       contents: write
       packages: write
