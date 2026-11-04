@@ -43,7 +43,7 @@ jobs:
       canReplenishPool: ${{ steps.checkLimits.outputs.canReplenishPool }}
     steps:
       - name: Setup SF CLI
-        uses: navikt/sf-shared/.github/actions/installSfCli@4a55ce6da0e472e1cb9d7f76605096783865f981
+        uses: navikt/sf-shared/.github/actions/installSfCli@00ade46a4708769edacef62b2caf8d3fdf0e6766
         with:
           version: ${{ vars.SF_CLI_VERSION }}
 
