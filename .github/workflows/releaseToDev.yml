@@ -34,7 +34,7 @@ concurrency:
 jobs:
   release:
     name: Release to DEV
-    uses: navikt/sf-shared/.github/workflows/release.yml@cd2888f6ceb6bf169d430ad63d04865d40bf9ecd
+    uses: navikt/sf-shared/.github/workflows/release.yml@8119dc0d2cb558a8158e0cfaeffc886412901b0a
     with:
       release_tag: ${{ github.event.inputs.release_tag }}
       loglevel: ${{ github.event.inputs.loglevel}}
